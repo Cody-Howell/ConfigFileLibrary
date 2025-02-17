@@ -1,0 +1,6 @@
+﻿namespace ConfigFileLibrary;
+
+class JSONConfigFile {
+
+}
+

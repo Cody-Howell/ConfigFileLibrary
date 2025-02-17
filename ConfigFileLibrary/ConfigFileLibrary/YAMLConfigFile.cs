@@ -1,0 +1,5 @@
+﻿namespace ConfigFileLibrary;
+
+class YAMLConfigFile {
+
+}

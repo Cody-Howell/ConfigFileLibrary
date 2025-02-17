@@ -1,0 +1,5 @@
+Lorem: 1.23
+Lorem2: 2.23
+Lorem3: -3.23
+Lorem4: 4.23
+Lorem5: 5.23
