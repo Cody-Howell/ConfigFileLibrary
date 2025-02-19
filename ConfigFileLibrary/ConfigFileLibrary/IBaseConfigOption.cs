@@ -1,7 +1,7 @@
 ﻿namespace ConfigFileLibrary;
 
 public interface IBaseConfigOption {
-    int LineNumber { get; }
+    IBaseConfigOption? Parent { get; }
     IBaseConfigOption this[string key] { get; }
     IBaseConfigOption this[int index] { get; }
     string AsString();

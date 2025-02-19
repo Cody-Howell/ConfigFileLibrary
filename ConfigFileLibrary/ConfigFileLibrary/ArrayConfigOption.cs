@@ -2,13 +2,13 @@
 
 public class ArrayConfigOption : IBaseConfigOption {
     private List<IBaseConfigOption> array = new List<IBaseConfigOption>();
-    private int lineNumber;
+    private IBaseConfigOption? parent;
 
-    public int LineNumber { get => lineNumber; }
+    public IBaseConfigOption? Parent { get => parent; }
 
-    public ArrayConfigOption(List<IBaseConfigOption> array, int lineNumber = 0) {
+    public ArrayConfigOption(List<IBaseConfigOption> array, IBaseConfigOption? parent = null) {
         this.array = array;
-        this.lineNumber = lineNumber;
+        this.parent = parent;
     }
 
     public IBaseConfigOption this[string key] => throw new InvalidOperationException("Operation invalid on type of ArrayConfigOption.");

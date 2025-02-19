@@ -6,13 +6,4 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\BaseConfigAnalyzer\BaseConfigAnalyzer.CodeFixes\BaseConfigAnalyzer.CodeFixes.csproj"
-						   PrivateAssets="all"
-						  ReferenceOutputAssembly="false" />
-		<ProjectReference Include="..\BaseConfigAnalyzer\BaseConfigAnalyzer\BaseConfigAnalyzer.csproj"
-						   PrivateAssets="all"
-						  ReferenceOutputAssembly="false" />
-	</ItemGroup>
-
 </Project>

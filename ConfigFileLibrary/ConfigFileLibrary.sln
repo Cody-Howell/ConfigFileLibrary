@@ -7,16 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigFileLibrary", "Config
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigFileLibrary.Tests", "ConfigFileLibrary.Tests\ConfigFileLibrary.Tests.csproj", "{0CD5BDD8-B3B3-4E06-909D-7C17E6A0A677}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseConfigAnalyzer", "BaseConfigAnalyzer\BaseConfigAnalyzer\BaseConfigAnalyzer.csproj", "{40ADB4D7-70DE-4A3A-9E28-20948ABBC240}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseConfigAnalyzer.CodeFixes", "BaseConfigAnalyzer\BaseConfigAnalyzer.CodeFixes\BaseConfigAnalyzer.CodeFixes.csproj", "{85CE78AA-5401-42C7-BE2A-530EB664F623}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseConfigAnalyzer.Package", "BaseConfigAnalyzer\BaseConfigAnalyzer.Package\BaseConfigAnalyzer.Package.csproj", "{6457B359-A63B-4FA0-8947-3CBD9D881397}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseConfigAnalyzer.Test", "BaseConfigAnalyzer\BaseConfigAnalyzer.Test\BaseConfigAnalyzer.Test.csproj", "{DC2A5DB5-8660-4161-8014-A1402398DC8F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseConfigAnalyzer.Vsix", "BaseConfigAnalyzer\BaseConfigAnalyzer.Vsix\BaseConfigAnalyzer.Vsix.csproj", "{08836478-1A75-430D-9252-A1517AF01061}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,26 +21,6 @@ Global
 		{0CD5BDD8-B3B3-4E06-909D-7C17E6A0A677}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CD5BDD8-B3B3-4E06-909D-7C17E6A0A677}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CD5BDD8-B3B3-4E06-909D-7C17E6A0A677}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40ADB4D7-70DE-4A3A-9E28-20948ABBC240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40ADB4D7-70DE-4A3A-9E28-20948ABBC240}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40ADB4D7-70DE-4A3A-9E28-20948ABBC240}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40ADB4D7-70DE-4A3A-9E28-20948ABBC240}.Release|Any CPU.Build.0 = Release|Any CPU
-		{85CE78AA-5401-42C7-BE2A-530EB664F623}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{85CE78AA-5401-42C7-BE2A-530EB664F623}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{85CE78AA-5401-42C7-BE2A-530EB664F623}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{85CE78AA-5401-42C7-BE2A-530EB664F623}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6457B359-A63B-4FA0-8947-3CBD9D881397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6457B359-A63B-4FA0-8947-3CBD9D881397}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6457B359-A63B-4FA0-8947-3CBD9D881397}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6457B359-A63B-4FA0-8947-3CBD9D881397}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DC2A5DB5-8660-4161-8014-A1402398DC8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DC2A5DB5-8660-4161-8014-A1402398DC8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DC2A5DB5-8660-4161-8014-A1402398DC8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC2A5DB5-8660-4161-8014-A1402398DC8F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{08836478-1A75-430D-9252-A1517AF01061}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{08836478-1A75-430D-9252-A1517AF01061}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{08836478-1A75-430D-9252-A1517AF01061}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{08836478-1A75-430D-9252-A1517AF01061}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

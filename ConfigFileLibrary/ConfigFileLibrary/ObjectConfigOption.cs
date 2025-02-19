@@ -2,13 +2,13 @@
 
 public class ObjectConfigOption : IBaseConfigOption {
     private Dictionary<string, IBaseConfigOption> obj = new Dictionary<string, IBaseConfigOption>();
-    private int lineNumber;
+    private IBaseConfigOption? parent;
 
-    public int LineNumber { get => lineNumber; }
+    public IBaseConfigOption? Parent { get => parent; }
 
-    public ObjectConfigOption(Dictionary<string, IBaseConfigOption> obj, int lineNumber = 0) {
-        this.obj = obj;
-        this.lineNumber = lineNumber;
+    public ObjectConfigOption(Dictionary<string, IBaseConfigOption> obj, IBaseConfigOption? parent = null) {
+        this.obj = new (obj);
+        this.parent = parent;
     }
 
     public IBaseConfigOption this[string key] {

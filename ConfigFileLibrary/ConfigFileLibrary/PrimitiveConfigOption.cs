@@ -3,13 +3,13 @@ namespace ConfigFileLibrary;
 
 public class PrimitiveConfigOption : IBaseConfigOption {
     private string value;
-    private int lineNumber;
+    private IBaseConfigOption? parent;
 
-    public int LineNumber { get => lineNumber; }
+    public IBaseConfigOption? Parent { get => parent; }
 
-    public PrimitiveConfigOption(string value, int lineNumber = 0) {
+    public PrimitiveConfigOption(string value, IBaseConfigOption? parent = null) {
         this.value = value.Trim();
-        this.lineNumber = lineNumber;
+        this.parent = parent;
     }
 
     public IBaseConfigOption this[string key] => throw new InvalidOperationException("Operation invalid on type of PrimitiveConfigOption.");
