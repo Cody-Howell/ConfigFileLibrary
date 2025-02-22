@@ -1,6 +1,6 @@
 ﻿namespace ConfigFileLibrary.Tests.Object;
 
-public class ObjectConfigTests {
+public class FirstOrderObjectConfigTests {
     [Test]
     public async Task SingleObjectWorks() {
         var config = new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
@@ -23,9 +23,72 @@ public class ObjectConfigTests {
     public async Task ObjectThrowsCorrectError() {
         var config = new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
             { "key1", new PrimitiveConfigOption("value1") }
-        });
+        }, "test");
         await Assert.That(() => config["key2"])
             .Throws<KeyNotFoundException>()
-            .WithMessage("File did not contain key \"key2\".");
+            .WithMessage("Object does not contain key \"key2\".\n\tPath: test");
+    }
+}
+public class SecondOrderObjectConfigTests {
+    [Test]
+    public async Task SimpleSecondOrderObject() {
+        ObjectConfigOption c = new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
+            { "first", new ObjectConfigOption(new Dictionary<string, IBaseConfigOption>{
+                { "second", new PrimitiveConfigOption("10")}
+            })}
+        });
+        await Assert.That(c["first"]["second"].AsInt()).IsEqualTo(10);
+    }
+
+    [Test]
+    public async Task SimpleSecondOrderObjectWithPrimitives() {
+        ObjectConfigOption c = new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
+            { "first", new ObjectConfigOption(new Dictionary<string, IBaseConfigOption>{
+                { "second", new PrimitiveConfigOption("10")}
+            })},
+            {"prim", new PrimitiveConfigOption("true") }
+        });
+        await Assert.That(c["first"]["second"].AsInt()).IsEqualTo(10);
+        await Assert.That(c["prim"].AsBool()).IsEqualTo(true);
+    }
+
+    [Test]
+    public async Task SimpleSecondOrderObjectThrowsErrors() {
+        ObjectConfigOption c = new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
+            { "first", new ObjectConfigOption(new Dictionary<string, IBaseConfigOption>{
+                { "second", new PrimitiveConfigOption("10")}
+            }, "test", "first")},
+            {"prim", new PrimitiveConfigOption("true") }
+        }, "test");
+        await Assert.That(() => c["first"]["third"])
+            .Throws<KeyNotFoundException>()
+            .WithMessage("Object does not contain key \"third\".\n\tPath: test[first]");
+    }
+}
+public class ThirdOrderObjectConfigTests {
+    [Test]
+    public async Task SimpleThirdOrderObjectWithPrimitives() {
+        ObjectConfigOption c = new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
+            { "first", new ObjectConfigOption(new Dictionary<string, IBaseConfigOption>{
+                { "second", new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
+                    { "third", new PrimitiveConfigOption("10") }
+                })}
+            })},
+        });
+        await Assert.That(c["first"]["second"]["third"].AsInt()).IsEqualTo(10);
+    }
+
+    [Test]
+    public async Task SimpleThirdOrderObjectThrowsErrors() {
+        ObjectConfigOption c = new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
+            { "first", new ObjectConfigOption(new Dictionary<string, IBaseConfigOption>{
+                { "second", new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
+                    { "third", new PrimitiveConfigOption("10") }
+                }, "test[first]", "second")}
+            }, "test", "first")},
+        }, "test");
+        await Assert.That(() => c["first"]["second"]["fourth"])
+            .Throws<KeyNotFoundException>()
+            .WithMessage("Object does not contain key \"fourth\".\n\tPath: test[first][second]");
     }
 }

@@ -225,20 +225,19 @@ public class SecondOrderArrayConfigTests {
     }
 
     [Test]
-    public async Task NestedArraysReturnHelpfulMessages() {
+    public async Task NestedArraysThrowHelpfulErrors() {
         ArrayConfigOption array = new ArrayConfigOption([
             new ArrayConfigOption([
                 new PrimitiveConfigOption("Lorem"),
                 new PrimitiveConfigOption("2.34")
-                ]),
+                ], "test", "0"),
             new ArrayConfigOption([
                 new PrimitiveConfigOption("Lorem"),
                 new PrimitiveConfigOption("2.34")
-                ])
-            ]);
-        //var ex = array[0][2];
+                ], "test", "1")
+            ], "test");
         await Assert.That(() => array[0][2])
             .Throws<IndexOutOfRangeException>()
-            .WithMessage("Index 2 is out of range. This array has 2 items.\n\tat index 0");
+            .WithMessage("Index 2 is out of range. This array has 2 items.\n\tPath: test[0]");
     }
 }

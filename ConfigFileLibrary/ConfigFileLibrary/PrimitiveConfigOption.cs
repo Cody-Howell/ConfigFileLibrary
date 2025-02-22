@@ -3,13 +3,9 @@ namespace ConfigFileLibrary;
 
 public class PrimitiveConfigOption : IBaseConfigOption {
     private string value;
-    private IBaseConfigOption? parent;
 
-    public IBaseConfigOption? Parent { get => parent; }
-
-    public PrimitiveConfigOption(string value, IBaseConfigOption? parent = null) {
+    public PrimitiveConfigOption(string value) {
         this.value = value.Trim();
-        this.parent = parent;
     }
 
     public IBaseConfigOption this[string key] => throw new InvalidOperationException("Operation invalid on type of PrimitiveConfigOption.");

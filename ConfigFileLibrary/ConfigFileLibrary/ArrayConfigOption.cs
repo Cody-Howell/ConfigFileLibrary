@@ -2,30 +2,25 @@
 
 public class ArrayConfigOption : IBaseConfigOption {
     private List<IBaseConfigOption> array = new List<IBaseConfigOption>();
-    private IBaseConfigOption? parent;
+    private string resourcePath;
 
-    public IBaseConfigOption? Parent { get => parent; }
-
-    public ArrayConfigOption(List<IBaseConfigOption> array, IBaseConfigOption? parent = null) {
+    public ArrayConfigOption(List<IBaseConfigOption> array, string parentPath = "", string myPath = "") {
         this.array = array;
-        this.parent = parent;
+        resourcePath = parentPath;
+        if (myPath.Length > 0) resourcePath += "[" + myPath + "]";
     }
 
     public IBaseConfigOption this[string key] => throw new InvalidOperationException("Operation invalid on type of ArrayConfigOption.");
 
     public IBaseConfigOption this[int index] {
         get {
-            if (index < 0 || index >= array.Count)
-                throw new IndexOutOfRangeException($"Index {index} is out of range. This array has {array.Count} items.");
-
-            try {
-                var result = array[index]; // Retrieve the object
-                return result; // Let the next level handle errors
-            } catch (IndexOutOfRangeException ex) {
-                throw new IndexOutOfRangeException($"{ex.Message}\n\tat index {index}", ex);
-            } catch (KeyNotFoundException ex) {
-                throw new KeyNotFoundException($"{ex.Message}\n\tat index {index}", ex);
+            if (index < 0 || index >= array.Count) {
+                string error = $"Index {index} is out of range. This array has {array.Count} items.";
+                if (resourcePath.Length >= 3) error += $"\n\tPath: {resourcePath}";
+                throw new IndexOutOfRangeException(error);
             }
+
+            return array[index];
         }
     }
 

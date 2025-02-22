@@ -1,0 +1,8 @@
+Lorem:  Test string
+Lorem2: 15
+Lorem3: 3.25
+                
+Lorem4: true
+
+     
+Lorem5: -25

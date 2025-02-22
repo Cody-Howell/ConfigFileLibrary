@@ -1,28 +1,26 @@
-﻿namespace ConfigFileLibrary;
+﻿using System;
+
+namespace ConfigFileLibrary;
 
 public class ObjectConfigOption : IBaseConfigOption {
     private Dictionary<string, IBaseConfigOption> obj = new Dictionary<string, IBaseConfigOption>();
-    private IBaseConfigOption? parent;
+    private string resourcePath;
 
-    public IBaseConfigOption? Parent { get => parent; }
-
-    public ObjectConfigOption(Dictionary<string, IBaseConfigOption> obj, IBaseConfigOption? parent = null) {
-        this.obj = new (obj);
-        this.parent = parent;
+    public ObjectConfigOption(Dictionary<string, IBaseConfigOption> obj, string parentPath = "", string myPath = "") {
+        this.obj = new(obj);
+        resourcePath = parentPath;
+        if (myPath.Length > 0) resourcePath += "[" + myPath + "]";
     }
 
     public IBaseConfigOption this[string key] {
         get {
-            if (!obj.TryGetValue(key, out var value))
-                throw new KeyNotFoundException($"File did not contain key \"{key}\".");
-
-            try {
-                return value;
-            } catch (KeyNotFoundException ex) {
-                throw new KeyNotFoundException($"\tat key '{key}'\n{ex.Message}", ex);
-            } catch (IndexOutOfRangeException ex) {
-                throw new IndexOutOfRangeException($"\tat key '{key}'\n{ex.Message}", ex);
+            if (!obj.TryGetValue(key, out var value)) {
+                string error = $"Object does not contain key \"{key}\".";
+                if (resourcePath.Length >= 3) error += $"\n\tPath: {resourcePath}";
+                throw new KeyNotFoundException(error);
             }
+
+            return value;
         }
     }
 

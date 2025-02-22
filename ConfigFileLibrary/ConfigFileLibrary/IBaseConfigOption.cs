@@ -1,7 +1,8 @@
-﻿namespace ConfigFileLibrary;
+﻿using System.Runtime.CompilerServices;
+
+namespace ConfigFileLibrary;
 
 public interface IBaseConfigOption {
-    IBaseConfigOption? Parent { get; }
     IBaseConfigOption this[string key] { get; }
     IBaseConfigOption this[int index] { get; }
     string AsString();
