@@ -1,4 +1,4 @@
-﻿
+﻿using ConfigFileLibrary.Primitives;
 namespace ConfigFileLibrary;
 
 public class YAMLConfigFile : IBaseConfigOption {
@@ -11,9 +11,9 @@ public class YAMLConfigFile : IBaseConfigOption {
         if (lines[0].Contains(':')) {
             // Read lines as dictionary
             option = ReadLinesAsDictionary(lines, filename);
-        } else if (lines[0].StartsWith('-')) {
+        } else if (lines[0].Trim().StartsWith('-')) {
             // Read lines as list
-            option = new ArrayConfigOption(new List<IBaseConfigOption>());
+            option = ReadLinesAsList(lines);
         } else {
             // Read lines as primitive
             option = ReadLineAsPrimitive(string.Join("\n", lines));
@@ -40,7 +40,7 @@ public class YAMLConfigFile : IBaseConfigOption {
         foreach (string line in lines) {
             string[] splits = line.Split(':');
             if (splits.Length > 2) {
-                throw new FormatException($"Don't include multiple (:) on the same line. Read key: \"{splits[0].Trim()}\"");
+                throw new FormatException($"Don't include multiple (:) on the same line. I read key: \"{splits[0].Trim()}\"");
             }
             if (splits.Length < 2) {
                 throw new FormatException($"No value found for key: \"{splits[0].Trim()}\"");
@@ -52,6 +52,10 @@ public class YAMLConfigFile : IBaseConfigOption {
     }
 
     private IBaseConfigOption ReadLinesAsList(string[] lines) {
-        return new ArrayConfigOption(new List<IBaseConfigOption>());
+        List<IBaseConfigOption> start = new List<IBaseConfigOption>();
+        foreach (string line in lines) {
+            start.Add(ReadLineAsPrimitive(line.Replace('-', ' ')));
+        }
+        return new ArrayConfigOption(start);
     }
 }

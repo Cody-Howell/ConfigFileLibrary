@@ -1,4 +1,5 @@
-﻿namespace ConfigFileLibrary.Tests.Object;
+﻿using ConfigFileLibrary.Primitives;
+namespace ConfigFileLibrary.Tests.ObjectConfig;
 
 public class FirstOrderObjectConfigTests {
     [Test]
@@ -27,6 +28,16 @@ public class FirstOrderObjectConfigTests {
         await Assert.That(() => config["key2"])
             .Throws<KeyNotFoundException>()
             .WithMessage("Object does not contain key \"key2\".\n\tPath: test");
+    }
+
+    [Test]
+    public async Task ObjectCannotDuplicateKeys() {
+        await Assert.That(() => new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
+            { "key1", new PrimitiveConfigOption("value1") },
+            { "key1", new PrimitiveConfigOption("value2") }
+        }, "test"))
+            .Throws<ArgumentException>()
+            .WithMessage("An item with the same key has already been added. Key: key1");
     }
 }
 public class SecondOrderObjectConfigTests {

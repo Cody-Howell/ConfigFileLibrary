@@ -1,7 +1,8 @@
-﻿using System;
+﻿using System.ComponentModel;
 
-namespace ConfigFileLibrary;
+namespace ConfigFileLibrary.Primitives;
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 public class ObjectConfigOption : IBaseConfigOption {
     private Dictionary<string, IBaseConfigOption> obj = new Dictionary<string, IBaseConfigOption>();
     private string resourcePath;

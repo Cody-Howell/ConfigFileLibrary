@@ -1,6 +1,7 @@
-﻿namespace ConfigFileLibrary;
+﻿using ConfigFileLibrary.Primitives;
+namespace ConfigFileLibrary;
 
-class JSONConfigFile {
+public class JSONConfigFile {
 
 }
 

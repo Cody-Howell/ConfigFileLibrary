@@ -1,7 +1,8 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.ComponentModel;
 
-namespace ConfigFileLibrary;
+namespace ConfigFileLibrary.Primitives;
 
+[EditorBrowsable(EditorBrowsableState.Never)]
 public interface IBaseConfigOption {
     IBaseConfigOption this[string key] { get; }
     IBaseConfigOption this[int index] { get; }

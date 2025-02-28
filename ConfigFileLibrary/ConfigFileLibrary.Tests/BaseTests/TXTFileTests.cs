@@ -1,6 +1,4 @@
-﻿using TUnit.Assertions.Extensions;
-
-namespace ConfigFileLibrary.Tests.Txt;
+﻿namespace ConfigFileLibrary.Tests.TXTFile;
 
 public class SingleLineTests {
     [Test]

@@ -1,4 +1,5 @@
-﻿namespace ConfigFileLibrary.Tests.MixedSecondAndThird;
+﻿using ConfigFileLibrary.Primitives;
+namespace ConfigFileLibrary.Tests.MixedObject;
 
 public class MixedObjectTests {
     [Test]

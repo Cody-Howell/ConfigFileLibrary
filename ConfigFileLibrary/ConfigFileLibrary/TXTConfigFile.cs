@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿using ConfigFileLibrary.Primitives;
 namespace ConfigFileLibrary;
 
 /// <summary>

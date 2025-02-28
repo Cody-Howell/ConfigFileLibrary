@@ -1,5 +1,5 @@
-﻿using ConfigFileLibrary;
-namespace ConfigFileLibrary.Tests.Primitive;
+﻿using ConfigFileLibrary.Primitives;
+namespace ConfigFileLibrary.Tests.PrimitiveConfig;
 
 public class PrimitiveConfigTests {
     [Test]
@@ -68,9 +68,9 @@ public class PrimitiveConfigTests {
         PrimitiveConfigOption p = new PrimitiveConfigOption("Lorem");
         await Assert.That(() => p["Lorem"])
             .Throws<InvalidOperationException>()
-            .WithMessage("Operation invalid on type of PrimitiveConfigOption.");
+            .WithMessage("Key indexing operation invalid on type of PrimitiveConfigOption.");
         await Assert.That(() => p[15])
             .Throws<InvalidOperationException>()
-            .WithMessage("Operation invalid on type of PrimitiveConfigOption.");
+            .WithMessage("List indexing operation invalid on type of PrimitiveConfigOption.");
     }
 }

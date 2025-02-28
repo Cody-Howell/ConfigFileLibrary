@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="TXT\Realistic\" />
+    <Folder Include="YAML\SecondOrder\" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,8 @@
-﻿namespace ConfigFileLibrary;
+﻿using System.ComponentModel;
 
+namespace ConfigFileLibrary.Primitives;
+
+[EditorBrowsable(EditorBrowsableState.Never)]
 public class ArrayConfigOption : IBaseConfigOption {
     private List<IBaseConfigOption> array = new List<IBaseConfigOption>();
     private string resourcePath;

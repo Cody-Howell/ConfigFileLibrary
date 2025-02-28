@@ -1,6 +1,8 @@
-﻿
-namespace ConfigFileLibrary;
+﻿using System.ComponentModel;
 
+namespace ConfigFileLibrary.Primitives;
+
+[EditorBrowsable(EditorBrowsableState.Never)]
 public class PrimitiveConfigOption : IBaseConfigOption {
     private string value;
 
@@ -8,9 +10,9 @@ public class PrimitiveConfigOption : IBaseConfigOption {
         this.value = value.Trim();
     }
 
-    public IBaseConfigOption this[string key] => throw new InvalidOperationException("Operation invalid on type of PrimitiveConfigOption.");
+    public IBaseConfigOption this[string key] => throw new InvalidOperationException("Key indexing operation invalid on type of PrimitiveConfigOption.");
 
-    public IBaseConfigOption this[int index] => throw new InvalidOperationException("Operation invalid on type of PrimitiveConfigOption.");
+    public IBaseConfigOption this[int index] => throw new InvalidOperationException("List indexing operation invalid on type of PrimitiveConfigOption.");
 
     public string AsString() {
         return value;

@@ -1,4 +1,5 @@
-﻿namespace ConfigFileLibrary.Tests.Array;
+﻿using ConfigFileLibrary.Primitives;
+namespace ConfigFileLibrary.Tests.ArrayConfig;
 
 public class FirstOrderArrayConfigTests {
     [Test]
