@@ -11,6 +11,8 @@ arrays can have any type within them (string, int, double, and bool), and you ca
 at runtime. I've included a number of error messages to help you debug your files and ensure proper 
 type matching back to C# primitives. 
 
+See the wiki [here](https://wiki.codyhowell.dev/configfilelibrary) for more information.
+
 ## Weak Typing
 
 This was accomplished by my primitive classes implementing an interface (IBaseConfigOption) that includes 
@@ -85,7 +87,7 @@ reader["info"].AsStringList(); // ["John Doe", "29", "6.1", "True"]
 
 ### YAML
 
-This supports any amount of nested objects and arrays, and (somewhat) follows the YAML spec. I spend some time 
+This supports any amount of nested objects and arrays, and (somewhat) follows the YAML spec. I spent some time 
 reading through it and as I am writing all the parsing logic, I've decided to stop where I'm at. 
 
 Tabs are supported, and I also currently support only 4 space indents. The below object will show what I 
@@ -125,7 +127,7 @@ Not yet implemented.
 
 ## Changelog
 
-0.7 (2/27/25)
+0.4 (2/27/25)
 	
 - Primitive objects are fully implemented with errors and tests
 - Arrays and objects seem to be working fine

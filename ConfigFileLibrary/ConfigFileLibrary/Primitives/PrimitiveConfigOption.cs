@@ -52,4 +52,8 @@ public class PrimitiveConfigOption : IBaseConfigOption {
     public List<int> AsIntList() => throw new InvalidOperationException("List returning not allowed on type PrimitiveConfigOption");
     public List<double> AsDoubleList() => throw new InvalidOperationException("List returning not allowed on type PrimitiveConfigOption");
     public List<bool> AsBoolList() => throw new InvalidOperationException("List returning not allowed on type PrimitiveConfigOption");
+
+    public override string ToString() {
+        return value;
+    }
 }
