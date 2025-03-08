@@ -43,17 +43,30 @@ public class YAMLConfigFile : IBaseConfigOption {
 
     private IBaseConfigOption ReadLinesAsDictionary(List<(int indentCount, string data)> lines) {
         Dictionary<string, IBaseConfigOption> start = new Dictionary<string, IBaseConfigOption>();
+        int currentIndent = lines[0].indentCount;
         for (int i = 0; i < lines.Count; i++) {
             (int indentCount, string data) line = lines[i];
             string[] splits = line.data.Split(':');
             if (splits.Length > 2) {
                 throw new FormatException($"Don't include multiple (:) on the same line. I read key: \"{splits[0].Trim()}\"");
             }
-            if (splits.Length < 2 && line.indentCount >= lines[i+1].indentCount) {
-                throw new FormatException($"No value found for key: \"{splits[0].Trim()}\"");
-            }
 
-            start.Add(splits[0].Replace('-', ' ').Trim(), ReadLineAsPrimitive(splits[1].Trim()));
+            if (string.IsNullOrWhiteSpace(splits[1])) {
+                if (lines[i+1].data.StartsWith('-')) {
+                    start.Add(splits[0].Replace('-', ' ').Trim(), ReadLinesAsList(NextLineLessOrEqual(lines, i + 1)));
+                    i++;
+                    while (i < lines.Count && lines[i].data.StartsWith('-')) { i++; }
+                    i--; // Don't really know what's up with this stuff.
+                } else {
+                    // Is dictionary
+                    start.Add(splits[0].Replace('-', ' ').Trim(), ReadLinesAsDictionary(NextLineLessOrEqual(lines, i + 1)));
+                    i++;
+                    while (i < lines.Count && lines[i].indentCount != currentIndent) { i++; }
+                    i--;
+                }
+            } else {
+                start.Add(splits[0].Replace('-', ' ').Trim(), ReadLineAsPrimitive(splits[1].Trim()));
+            }
         }
         return new ObjectConfigOption(start);
     }
