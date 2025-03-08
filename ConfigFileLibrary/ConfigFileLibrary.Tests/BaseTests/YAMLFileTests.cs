@@ -1,7 +1,7 @@
 ﻿using ConfigFileLibrary;
 namespace ConfigFileLibrary.Tests.YAMLFile;
 
-public class YAMLFileTests {
+public class FirstOrderTests {
     [Test]
     public async Task PrimitiveTest1() {
         YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/FirstOrder/Primitive1.yaml");
@@ -12,7 +12,7 @@ public class YAMLFileTests {
     [Test]
     public async Task PrimitiveTest2() {
         YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/FirstOrder/Primitive2.yaml");
-        await Assert.That(reader.AsString()).IsEqualTo("test string");
+        await Assert.That(reader.AsString()).IsEqualTo("This is a sample multiline string that may become useful");
     }
 
     [Test]
@@ -38,5 +38,86 @@ public class YAMLFileTests {
         await Assert.That(reader[1].AsInt()).IsEqualTo(15);
         await Assert.That(reader[2].AsDouble()).IsEqualTo(3.15);
         await Assert.That(reader[3].AsBool()).IsEqualTo(true);
+    }
+}
+public class SecondOrderTests {
+    [Test]
+    public async Task ObjectWithObject() {
+        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/ObjectWithObject.yaml");
+
+        await Assert.That(reader["first"]["lorem"].AsString()).IsEqualTo("test");
+        await Assert.That(reader["first"]["num"].AsInt()).IsEqualTo(1);
+        await Assert.That(reader["first"]["double"].AsDouble()).IsEqualTo(2.0);
+        await Assert.That(reader["first"]["bool"].AsBool()).IsEqualTo(true);
+        await Assert.That(reader["second"]["ipsum"].AsString()).IsEqualTo("something");
+        await Assert.That(reader["second"]["num"].AsInt()).IsEqualTo(2);
+        await Assert.That(reader["second"]["double"].AsDouble()).IsEqualTo(3.2);
+        await Assert.That(reader["second"]["bool"].AsBool()).IsEqualTo(false);
+    }
+
+    [Test]
+    public async Task ObjectWithArray() {
+        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/ObjectWithArray.yaml");
+
+        await Assert.That(reader["first"][0].AsInt()).IsEqualTo(1);
+        await Assert.That(reader["first"][1].AsInt()).IsEqualTo(5);
+        await Assert.That(reader["first"][2].AsString()).IsEqualTo("string");
+        await Assert.That(reader["second"][0].AsString()).IsEqualTo("this shoudl have 4 spaces before it");
+        await Assert.That(reader["second"][1].AsBool()).IsEqualTo(false);
+    }
+
+    [Test]
+    public async Task ArrayWithObject() {
+        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/ArrayWithObject.yaml");
+
+        await Assert.That(reader[0]["lorem"].AsString()).IsEqualTo("inside");
+        await Assert.That(reader[0]["whatsthis"].AsDouble()).IsEqualTo(2.5);
+        await Assert.That(reader[1]["arrayCount"].AsString()).IsEqualTo("second");
+        await Assert.That(reader[1]["bool"].AsBool()).IsEqualTo(false);
+        await Assert.That(reader[1]["int"].AsInt()).IsEqualTo(5);
+    }
+
+    [Test]
+    public async Task ArrayWithArray() {
+        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/ArrayWithArray.yaml");
+
+        await Assert.That(reader[0][0].AsString()).IsEqualTo("lorem");
+        await Assert.That(reader[0][1].AsDouble()).IsEqualTo(2.5);
+        await Assert.That(reader[0][2].AsString()).IsEqualTo("allowed");
+        await Assert.That(reader[1][0].AsString()).IsEqualTo("second");
+        await Assert.That(reader[1][1].AsInt()).IsEqualTo(3);
+        await Assert.That(reader[1][2].AsBool()).IsEqualTo(false);
+    }
+
+    [Test]
+    public async Task MixedArray() {
+        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/MixedArray.yaml");
+
+        await Assert.That(reader[0]["object"].AsString()).IsEqualTo("this is");
+        await Assert.That(reader[0]["part2"].AsString()).IsEqualTo("still part of this object");
+        await Assert.That(reader[0]["part3"].AsDouble()).IsEqualTo(45.3);
+        await Assert.That(reader[1].AsInt()).IsEqualTo(15);
+        await Assert.That(reader[2].AsString()).IsEqualTo("test string");
+    }
+}
+public class RealisticTests {
+    [Test]
+    public async Task RealisticTest() {
+        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/Realistic/ComplexObject.yaml");
+        await Assert.That(reader["first"]["simpleArray"][0].AsInt()).IsEqualTo(1);
+        await Assert.That(reader["first"]["simpleArray"][1].AsInt()).IsEqualTo(2);
+        await Assert.That(reader["first"]["simpleArray"][2].AsInt()).IsEqualTo(3);
+        await Assert.That(reader["first"]["brother"].AsString()).IsEqualTo("sample String");
+        await Assert.That(reader["first"]["other sibling"]["sibKey"].AsString()).IsEqualTo("sibValue");
+
+        await Assert.That(reader["second"]["arrayOfObjects"][0]["lorem"].AsString()).IsEqualTo("ipsum");
+        await Assert.That(reader["second"]["arrayOfObjects"][0]["something"].AsDouble()).IsEqualTo(1.2);
+        await Assert.That(reader["second"]["arrayOfObjects"][1]["lorem2"].AsString()).IsEqualTo("ipsum2");
+        await Assert.That(reader["second"]["arrayOfObjects"][1]["something2"].AsBool()).IsEqualTo(false);
+        await Assert.That(reader["second"]["otherThing"].AsString()).IsEqualTo("hopefully");
+
+
+
+
     }
 }

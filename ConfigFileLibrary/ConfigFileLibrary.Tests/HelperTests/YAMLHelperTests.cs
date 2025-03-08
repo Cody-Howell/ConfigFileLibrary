@@ -31,7 +31,7 @@ public class FirstOrderYAMLHelperTests {
 public class SecondOrderYAMLHelperTests {
     [Test]
     public async Task SimpleObjectTest() {
-        List<(int, string)> vals = YAMLHelper.ReturnOrderedLines("../../../YAML/SecondOrder/SimpleObject.yaml");
+        List<(int, string)> vals = YAMLHelper.ReturnOrderedLines("../../../YAML/SecondOrder/ObjectWithObject.yaml");
         await Assert.That(vals[0].Item1).IsEqualTo(0);
         await Assert.That(vals[0].Item2).IsEqualTo("first:");
         await Assert.That(vals[1].Item1).IsEqualTo(1);
@@ -75,21 +75,19 @@ public class ComplexObjectYAMLHelperTests {
         await Assert.That(vals[6].Item2).IsEqualTo("other sibling:");
         await Assert.That(vals[7].Item1).IsEqualTo(2);
         await Assert.That(vals[7].Item2).IsEqualTo("sibKey: sibValue");
-        await Assert.That(vals[8].Item1).IsEqualTo(2);
-        await Assert.That(vals[8].Item2).IsEqualTo("sibKey2: sibValue2");
-        await Assert.That(vals[9].Item1).IsEqualTo(0);
-        await Assert.That(vals[9].Item2).IsEqualTo("second:");
-        await Assert.That(vals[10].Item1).IsEqualTo(1);
-        await Assert.That(vals[10].Item2).IsEqualTo("arrayOfObjects:");
+        await Assert.That(vals[8].Item1).IsEqualTo(0);
+        await Assert.That(vals[8].Item2).IsEqualTo("second:");
+        await Assert.That(vals[9].Item1).IsEqualTo(1);
+        await Assert.That(vals[9].Item2).IsEqualTo("arrayOfObjects:");
+        await Assert.That(vals[10].Item1).IsEqualTo(2);
+        await Assert.That(vals[10].Item2).IsEqualTo("- lorem: ipsum");
         await Assert.That(vals[11].Item1).IsEqualTo(2);
-        await Assert.That(vals[11].Item2).IsEqualTo("- lorem: ipsum");
+        await Assert.That(vals[11].Item2).IsEqualTo("something: 1.2");
         await Assert.That(vals[12].Item1).IsEqualTo(2);
-        await Assert.That(vals[12].Item2).IsEqualTo("something: 1.2");
+        await Assert.That(vals[12].Item2).IsEqualTo("- lorem2: ipsum2");
         await Assert.That(vals[13].Item1).IsEqualTo(2);
-        await Assert.That(vals[13].Item2).IsEqualTo("- lorem2: ipsum2");
-        await Assert.That(vals[14].Item1).IsEqualTo(2);
-        await Assert.That(vals[14].Item2).IsEqualTo("something2: false");
-        await Assert.That(vals[15].Item1).IsEqualTo(1);
-        await Assert.That(vals[15].Item2).IsEqualTo("otherThing: hopefully");
+        await Assert.That(vals[13].Item2).IsEqualTo("something2: false");
+        await Assert.That(vals[14].Item1).IsEqualTo(1);
+        await Assert.That(vals[14].Item2).IsEqualTo("otherThing: hopefully");
     }
 }

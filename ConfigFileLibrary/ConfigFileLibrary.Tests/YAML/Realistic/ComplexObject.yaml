@@ -6,7 +6,6 @@ first:
     brother: sample String
     other sibling: 
         sibKey: sibValue
-        sibKey2: sibValue2
 second: 
     arrayOfObjects: 
         - lorem: ipsum
