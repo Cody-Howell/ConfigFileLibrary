@@ -127,6 +127,11 @@ Not yet implemented.
 
 ## Changelog
 
+0.7 (3/8/25)
+
+- Added a helper class for YAML parsing
+- YAML parsing works as expected and passes all tests
+
 0.4 (2/27/25)
 	
 - Primitive objects are fully implemented with errors and tests

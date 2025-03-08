@@ -1,0 +1,10 @@
+{
+  "first": {
+    "type": "object",
+    "number": 15
+  },
+  "second": {
+    "type": "still an object", 
+    "boolean":  true
+  }
+}

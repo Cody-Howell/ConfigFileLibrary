@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="JSON\Realistic\" />
     <Folder Include="TXT\Realistic\" />
   </ItemGroup>
 
