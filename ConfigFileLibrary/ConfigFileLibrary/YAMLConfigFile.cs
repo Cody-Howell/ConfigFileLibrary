@@ -75,6 +75,7 @@ public class YAMLConfigFile : IBaseConfigOption {
                     start.Add(ReadLinesAsDictionary(NextLineLessOrEqual(lines, i, '-')));
                     i++;
                     while (i < lines.Count && !lines[i].data.StartsWith('-')) { i++; }
+                    i--; // Don't really know what's up with this stuff.
                 } else {
                     start.Add(ReadLineAsPrimitive(lineData));
                 }
