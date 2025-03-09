@@ -68,13 +68,16 @@ public class JSONConfigFile {
     private IBaseConfigOption ReadAsDictionary(string file, ref int readingIndex) {
         Dictionary<string, IBaseConfigOption> dict = new Dictionary<string, IBaseConfigOption>();
         readingIndex++;
-        int nextComma = file.IndexOf(',', readingIndex);
-        int nextBracket = file.IndexOf('}', readingIndex);
+        int nextComma = 0;
+        int nextBracket = 0;
 
         string subString = "";
         string key = "";
         string value = "";
         while (readingIndex != 0) {
+            nextComma = file.IndexOf(',', readingIndex);
+            nextBracket = file.IndexOf('}', readingIndex);
+
             if (nextComma < 0) {
                 subString = file[readingIndex..nextBracket].Replace('"', ' '); // Uses a "range" operator for the substring
                 int colonIndex = subString.IndexOf(':');
@@ -84,6 +87,10 @@ public class JSONConfigFile {
             } else {
                 subString = file[readingIndex..nextComma].Replace('"', ' ');
                 int colonIndex = subString.IndexOf(':');
+                if (colonIndex < 0) {
+                    readingIndex = nextComma + 1;
+                    break;
+                }
                 key = subString[0..colonIndex];
                 colonIndex++;
                 value = subString[colonIndex..];
@@ -97,11 +104,18 @@ public class JSONConfigFile {
             if (value.TrimStart().StartsWith('[')) {
                 readingIndex = file.IndexOf('[', readingIndex);
                 dict.Add(key.Trim(), ReadAsList(file, ref readingIndex));
+                continue;
             } else if (value.TrimStart().StartsWith('{')) {
                 readingIndex = file.IndexOf('{', readingIndex);
                 dict.Add(key.Trim(), ReadAsDictionary(file, ref readingIndex));
+                continue;
             } else {
                 dict.Add(key.Trim(), new PrimitiveConfigOption(value.Replace('}', ' ')));
+            }
+
+            if (nextComma > nextBracket) {
+                readingIndex = nextBracket + 2;
+                break;
             }
 
             readingIndex = nextComma + 1;
