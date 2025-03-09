@@ -86,3 +86,22 @@ public class SecondOrderTests {
         await Assert.That(reader["second"][1].AsString()).IsEqualTo("closed string");
     }
 }
+public class RealisticTests {
+    [Test]
+    public async Task RealisticTest() {
+        // Copied from the YAML system because I was lazy. But they're interoperable!
+        JSONConfigFile reader = new JSONConfigFile("../../../JSON/Realistic/ComplexObject.json");
+
+        await Assert.That(reader["first"]["simple Array"][0].AsInt()).IsEqualTo(1);
+        await Assert.That(reader["first"]["simple Array"][1].AsInt()).IsEqualTo(2);
+        await Assert.That(reader["first"]["simple Array"][2].AsInt()).IsEqualTo(3);
+        await Assert.That(reader["first"]["brother"].AsString()).IsEqualTo("sample String");
+        await Assert.That(reader["first"]["other sibling"]["sibKey"].AsString()).IsEqualTo("sibValue");
+
+        await Assert.That(reader["second"]["arrayOfObjects"][0]["lorem"].AsString()).IsEqualTo("ipsum");
+        await Assert.That(reader["second"]["arrayOfObjects"][0]["something"].AsDouble()).IsEqualTo(1.2);
+        await Assert.That(reader["second"]["arrayOfObjects"][1]["lorem2"].AsString()).IsEqualTo("ipsum2");
+        await Assert.That(reader["second"]["arrayOfObjects"][1]["something2"].AsBool()).IsEqualTo(false);
+        await Assert.That(reader["second"]["otherThing"].AsString()).IsEqualTo("hopefully");
+    }
+}

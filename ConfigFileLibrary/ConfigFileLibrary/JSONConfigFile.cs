@@ -6,7 +6,7 @@ public class JSONConfigFile {
     private IBaseConfigOption option;
     public JSONConfigFile(string path) {
         string file = File.ReadAllText(path).Replace('\r', ' ').Replace('\n', ' ');
-        int _ = 1; // Just to satisfy the compiler
+        int _ = 0; // Just to satisfy the compiler
         if (file.StartsWith("[")) {
             option = ReadAsList(file, ref _);
         } else if (file.StartsWith("{")) {
@@ -26,20 +26,40 @@ public class JSONConfigFile {
 
     private IBaseConfigOption ReadAsList(string file, ref int readingIndex) {
         List<IBaseConfigOption> list = new List<IBaseConfigOption>();
-        int nextComma = file.IndexOf(',', readingIndex);
-        int nextBracket = file.IndexOf(']', readingIndex);
+        readingIndex++;
+        int nextComma = 0;
+        int nextBracket = 1;
 
         string subString = "";
-        while (nextBracket > nextComma && readingIndex != 0) {
+        while (readingIndex != 0) {
+            nextComma = file.IndexOf(',', readingIndex);
+            nextBracket = file.IndexOf(']', readingIndex);
+
+            if (readingIndex >= nextBracket) {
+                readingIndex += 2;
+                break;
+            }
+
             if (nextComma < 0) {
                 subString = file[readingIndex..nextBracket].Replace('"', ' '); // Uses a "range" operator for the substring
             } else {
                 subString = file[readingIndex..nextComma].Replace('"', ' '); // Uses a "range" operator for the substring
             }
-            list.Add(new PrimitiveConfigOption(subString));
 
-            readingIndex = nextComma + 1;
-            nextComma = file.IndexOf(',', readingIndex);
+            if (subString.TrimStart().StartsWith('[')) {
+                readingIndex = file.IndexOf('[', readingIndex);
+                list.Add(ReadAsList(file, ref readingIndex));
+            } else if (subString.TrimStart().StartsWith('{')) {
+                readingIndex = file.IndexOf('{', readingIndex);
+                list.Add(ReadAsDictionary(file, ref readingIndex));
+            } else {
+                list.Add(new PrimitiveConfigOption(subString.Replace(']', ' ')));
+                if (nextBracket > nextComma) {
+                    readingIndex = nextComma + 1;
+                } else {
+                    readingIndex = file.IndexOf(']', readingIndex);
+                }
+            }
         }
 
         return new ArrayConfigOption(list);
@@ -47,13 +67,14 @@ public class JSONConfigFile {
 
     private IBaseConfigOption ReadAsDictionary(string file, ref int readingIndex) {
         Dictionary<string, IBaseConfigOption> dict = new Dictionary<string, IBaseConfigOption>();
+        readingIndex++;
         int nextComma = file.IndexOf(',', readingIndex);
         int nextBracket = file.IndexOf('}', readingIndex);
 
         string subString = "";
         string key = "";
         string value = "";
-        while (nextBracket > nextComma && readingIndex != 0) {
+        while (readingIndex != 0) {
             if (nextComma < 0) {
                 subString = file[readingIndex..nextBracket].Replace('"', ' '); // Uses a "range" operator for the substring
                 int colonIndex = subString.IndexOf(':');
@@ -68,8 +89,20 @@ public class JSONConfigFile {
                 value = subString[colonIndex..];
             }
 
+            if (readingIndex >= nextBracket) {
+                readingIndex += 2;
+                break;
+            }
 
-            dict.Add(key.Trim(), new PrimitiveConfigOption(value));
+            if (value.TrimStart().StartsWith('[')) {
+                readingIndex = file.IndexOf('[', readingIndex);
+                dict.Add(key.Trim(), ReadAsList(file, ref readingIndex));
+            } else if (value.TrimStart().StartsWith('{')) {
+                readingIndex = file.IndexOf('{', readingIndex);
+                dict.Add(key.Trim(), ReadAsDictionary(file, ref readingIndex));
+            } else {
+                dict.Add(key.Trim(), new PrimitiveConfigOption(value.Replace('}', ' ')));
+            }
 
             readingIndex = nextComma + 1;
             nextComma = file.IndexOf(',', readingIndex);
