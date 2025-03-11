@@ -11,7 +11,7 @@
     }
   },
   "second": {
-    "arrayOfObject": [
+    "arrayOfObjects": [
       {
         "lorem": "ipsum",
         "something": 1.2

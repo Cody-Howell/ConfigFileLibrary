@@ -60,6 +60,11 @@ public class JSONConfigFile {
                     readingIndex = file.IndexOf(']', readingIndex);
                 }
             }
+
+            //if (nextChar(file, readingIndex) == ']') {
+            //    readingIndex += 2;
+            //    break;
+            //}
         }
 
         return new ArrayConfigOption(list);
@@ -74,6 +79,7 @@ public class JSONConfigFile {
         string subString = "";
         string key = "";
         string value = "";
+        bool breakFlag = false;
         while (readingIndex != 0) {
             nextComma = file.IndexOf(',', readingIndex);
             nextBracket = file.IndexOf('}', readingIndex);
@@ -93,7 +99,12 @@ public class JSONConfigFile {
                 }
                 key = subString[0..colonIndex];
                 colonIndex++;
-                value = subString[colonIndex..];
+                if (nextComma > nextBracket) {
+                    breakFlag = true;
+                    value = subString[colonIndex..(subString.Length - 1)];
+                } else {
+                    value = subString[colonIndex..];
+                }
             }
 
             if (readingIndex >= nextBracket) {
@@ -113,7 +124,7 @@ public class JSONConfigFile {
                 dict.Add(key.Trim(), new PrimitiveConfigOption(value.Replace('}', ' ')));
             }
 
-            if (nextComma > nextBracket) {
+            if (breakFlag) {
                 readingIndex = nextBracket + 2;
                 break;
             }
@@ -122,6 +133,15 @@ public class JSONConfigFile {
             nextComma = file.IndexOf(',', readingIndex);
         }
         return new ObjectConfigOption(dict);
+    }
+
+    private char nextChar(string file, int index) {
+        for (int i = index; i < file.Length; i++) {
+            if (file[i] != ' ') {
+                return file[i];
+            }
+        }
+        return ' ';
     }
 }
 
