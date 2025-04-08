@@ -6,14 +6,7 @@ public class JSONConfigFile {
     private IBaseConfigOption option;
     public JSONConfigFile(string path) {
         string file = File.ReadAllText(path).Replace('\r', ' ').Replace('\n', ' ');
-        int _ = 0; // Just to satisfy the compiler
-        if (file.StartsWith("[")) {
-            option = ReadAsList(file, ref _);
-        } else if (file.StartsWith("{")) {
-            option = ReadAsDictionary(file, ref _);
-        } else {
-            throw new InvalidDataException("JSON file must start with either [ or {");
-        }
+        option = ParseFileContents(file);
     }
 
     public IBaseConfigOption this[string key] => option[key];
@@ -135,13 +128,15 @@ public class JSONConfigFile {
         return new ObjectConfigOption(dict);
     }
 
-    private char nextChar(string file, int index) {
-        for (int i = index; i < file.Length; i++) {
-            if (file[i] != ' ') {
-                return file[i];
-            }
+    private IBaseConfigOption ParseFileContents(string file) {
+        int _ = 0; // Just to satisfy the compiler
+        if (file.StartsWith("[")) {
+            return ReadAsList(file, ref _);
+        } else if (file.StartsWith("{")) {
+            return ReadAsDictionary(file, ref _);
+        } else {
+            throw new InvalidDataException("JSON file must start with either [ or {");
         }
-        return ' ';
     }
 }
 
