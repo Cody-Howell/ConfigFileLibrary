@@ -51,6 +51,13 @@ and their calls to read the values. In each case they start with "reader[...]", 
 for each file type. The constructor just takes in the path to the file, and some have options for a different 
 splitter or something like that. Read the XML comments for more information.
 
+### Collector
+
+I added a new class called `ConfigFileCollector` that takes in a list of filepaths and parses them 
+all together. When you need a specific file, request it from the proper method and use it as normal. 
+
+There's a number of exceptions thrown to help with the process. 
+
 ### TXT
 
 This only supports single-order objects, though you can have arrays within them (which are split via commas). It's 
@@ -123,9 +130,63 @@ reader["second"]["arrayOfObjects"][1]["something2"].AsBool(); // false
 
 ### JSON
 
-Not yet implemented. 
+The way I'm implementing JSON requires some syntax specifics; first, you can only start with a 
+[] or a {} for an array or object. Arrays are always split by commas ',' and objects are 
+always keyed with a colon ':' and again split via commas. I don't support escape characters 
+at the moment (or comments, in any form), but otherwise is formatted exactly like JSON.
+
+This is the exact same data as stored in the above YAML file, referenced in the same way in C#.
+
+```json
+{
+  "first": {
+    "simple Array": [
+      1,
+      2,
+      3
+    ],
+    "brother": "sample String",
+    "other sibling": {
+      "sibKey": "sibValue"
+    }
+  },
+  "second": {
+    "arrayOfObjects": [
+      {
+        "lorem": "ipsum",
+        "something": 1.2
+      },
+      {
+        "lorem2": "ipsum2",
+        "something2": false
+      }
+    ],
+    "otherThing": "hopefully"
+  }
+}
+```
+
+```csharp
+reader["first"]["simple Array"][1].AsInt(); // 2
+reader["first"]["other sibling"]["sibKey"].AsString(); // "sibValue"
+reader["second"]["arrayOfObjects"][0]["lorem"].AsString(); // "ipsum"
+reader["second"]["arrayOfObjects"][0]["something"].AsDouble(); // 1.2
+reader["second"]["arrayOfObjects"][1]["something2"].AsBool(); // false
+```
+
 
 ## Changelog
+
+1.0 (6/25/25)
+
+- Added new class to compile multiple file readers together, ConfigFileCollector
+    - with a number of tests in many configurations
+- Removed all warnings
+- Updated all documentation
+
+0.8 (5/12/25)
+
+- Added JSON option
 
 0.7 (3/8/25)
 

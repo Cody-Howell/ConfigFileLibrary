@@ -2,18 +2,31 @@
 using System.Collections.Generic;
 namespace ConfigFileLibrary;
 
+/// <summary>
+/// This reads a JSON file and parses it into their Config option. 
+/// </summary>
 public class JSONConfigFile {
     private IBaseConfigOption option;
+    
+    /// <summary>
+    /// Parses in the entire file as a single line and parses it using my own parser. 
+    /// </summary>
     public JSONConfigFile(string path) {
         string file = File.ReadAllText(path).Replace('\r', ' ').Replace('\n', ' ');
         option = ParseFileContents(file);
     }
 
+    /// <summary/>
     public IBaseConfigOption this[string key] => option[key];
+    /// <summary/>
     public IBaseConfigOption this[int index] => option[index];
+    /// <summary/>
     public List<string> AsStringList() => option.AsStringList();
+    /// <summary/>
     public List<int> AsIntList() => option.AsIntList();
+    /// <summary/>
     public List<double> AsDoubleList() => option.AsDoubleList();
+    /// <summary/>
     public List<bool> AsBoolList() => option.AsBoolList();
 
 
@@ -53,11 +66,6 @@ public class JSONConfigFile {
                     readingIndex = file.IndexOf(']', readingIndex);
                 }
             }
-
-            //if (nextChar(file, readingIndex) == ']') {
-            //    readingIndex += 2;
-            //    break;
-            //}
         }
 
         return new ArrayConfigOption(list);
@@ -123,7 +131,6 @@ public class JSONConfigFile {
             }
 
             readingIndex = nextComma + 1;
-            nextComma = file.IndexOf(',', readingIndex);
         }
         return new ObjectConfigOption(dict);
     }

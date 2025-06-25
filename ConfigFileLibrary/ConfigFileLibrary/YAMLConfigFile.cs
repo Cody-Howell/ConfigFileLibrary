@@ -2,9 +2,16 @@
 using ConfigFileLibrary.Primitives;
 namespace ConfigFileLibrary;
 
+/// <summary>
+/// This reads a .yml or .yaml file. It expects either tabs or 4-spaced indents, and 
+/// compiles it into either an Object or Array config option.
+/// </summary>
 public class YAMLConfigFile : IBaseConfigOption {
     private IBaseConfigOption option;
 
+    /// <summary>
+    /// Takes in a filepath and parses the YAML into the IBaseConfigOption.
+    /// </summary>
     public YAMLConfigFile(string path) {
         string filename = Path.GetFileName(path);
 
@@ -26,15 +33,25 @@ public class YAMLConfigFile : IBaseConfigOption {
         }
     }
 
+    /// <summary/>
     public IBaseConfigOption this[string key] => option[key];
+    /// <summary/>
     public IBaseConfigOption this[int index] => option[index];
+    /// <summary/>
     public bool AsBool() => option.AsBool();
+    /// <summary/>
     public List<bool> AsBoolList() => option.AsBoolList();
+    /// <summary/>
     public double AsDouble() => option.AsDouble();
+    /// <summary/>
     public List<double> AsDoubleList() => option.AsDoubleList();
+    /// <summary/>
     public int AsInt() => option.AsInt();
+    /// <summary/>
     public List<int> AsIntList() => option.AsIntList();
+    /// <summary/>
     public string AsString() => option.AsString();
+    /// <summary/>
     public List<string> AsStringList() => option.AsStringList();
 
     private IBaseConfigOption ReadLineAsPrimitive(string line) {
