@@ -16,8 +16,4 @@
     <ProjectReference Include="..\ConfigFileLibrary\ConfigFileLibrary.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TXT\Realistic\" />
-  </ItemGroup>
-
 </Project>
