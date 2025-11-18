@@ -1,4 +1,4 @@
-﻿namespace ConfigFileLibrary.Tests.BaseTests;
+﻿namespace ConfigFileLibrary.Tests.FileCollector;
 
 public class FileCollectorTests {
     [Test]
@@ -82,7 +82,7 @@ public class YAMLFileCollectorTests {
     [Test]
     public async Task CanImportTwoYAMLFileAndReadThem() {
         ConfigFileCollector c = new ConfigFileCollector(
-            ["../../../YAML/Realistic/ComplexObject.yaml", "../../../YAML/SecondOrder/MixedArray.yaml"]
+            ["../../../YAML/Realistic/ComplexObject.yaml", "../../../YAML/SecondOrder/MixedArray.yml"]
             );
 
         YAMLConfigFile reader1 = c.GetYAMLFile("ComplexObject");
@@ -104,14 +104,14 @@ public class YAMLFileCollectorTests {
 
     [Test]
     public async Task TwoYAMLFilesWithSameNameAndExtensionThrowError() {
-        await Assert.That(() => new ConfigFileCollector(["../../../YAML/SecondOrder/MixedArray.yaml", "../../../YAML/SecondOrder/MixedArray.yaml"]))
+        await Assert.That(() => new ConfigFileCollector(["../../../YAML/SecondOrder/MixedArray.yml", "../../../YAML/SecondOrder/MixedArray.yml"]))
             .Throws<NotSupportedException>()
             .WithMessage("Cannot add in two filenames of the same name and extension.");
     }
 
     [Test]
     public async Task RetrievingUnknownYAMLFileThrowsHelpfulError() {
-        ConfigFileCollector c = new ConfigFileCollector(["../../../YAML/SecondOrder/MixedArray.yaml"]);
+        ConfigFileCollector c = new ConfigFileCollector(["../../../YAML/SecondOrder/MixedArray.yml"]);
         await Assert.That(() => c.GetYAMLFile("File1"))
             .Throws<FileNotFoundException>()
             .WithMessage("Filename does not exist. Available keys: \n\tMixedArray");

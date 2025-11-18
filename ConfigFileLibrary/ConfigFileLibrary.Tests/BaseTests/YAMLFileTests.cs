@@ -91,7 +91,7 @@ public class SecondOrderTests {
 
     [Test]
     public async Task MixedArray() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/MixedArray.yaml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/MixedArray.yml");
 
         await Assert.That(reader[0]["object"].AsString()).IsEqualTo("this is");
         await Assert.That(reader[0]["part2"].AsString()).IsEqualTo("still part of this object");

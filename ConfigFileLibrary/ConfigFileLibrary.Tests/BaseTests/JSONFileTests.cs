@@ -105,3 +105,13 @@ public class RealisticTests {
         await Assert.That(reader["second"]["otherThing"].AsString()).IsEqualTo("hopefully");
     }
 }
+
+public class TextReadingTests {
+    [Test]
+    public async Task ReadingTest1() {
+        JSONConfigFile reader = JSONConfigFile.ReadText("[ 14,  \"lorem string\",  true  ]");
+        await Assert.That(reader[0].AsInt()).IsEqualTo(14);
+        await Assert.That(reader[1].AsString()).IsEqualTo("lorem string");
+        await Assert.That(reader[2].AsBool()).IsEqualTo(true);
+    }
+}

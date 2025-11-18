@@ -7,6 +7,10 @@ namespace ConfigFileLibrary;
 /// </summary>
 public class JSONConfigFile {
     private IBaseConfigOption option;
+
+    private JSONConfigFile() {
+        option = new PrimitiveConfigOption("");
+    }
     
     /// <summary>
     /// Parses in the entire file as a single line and parses it using my own parser. 
@@ -28,6 +32,17 @@ public class JSONConfigFile {
     public List<double> AsDoubleList() => option.AsDoubleList();
     /// <summary/>
     public List<bool> AsBoolList() => option.AsBoolList();
+
+    /// <summary>
+    /// Creates a new <c>JSONConfigFile</c> with the text input. 
+    /// </summary>
+    /// <param name="text">JSON text to be read</param>
+    /// <returns><c>JSONConfigFile</c></returns>
+    public static JSONConfigFile ReadText(string text) {
+        JSONConfigFile configFile = new JSONConfigFile();
+        configFile.option = configFile.ParseFileContents(text);
+        return configFile;
+    }
 
 
     private IBaseConfigOption ReadAsList(string file, ref int readingIndex) {
