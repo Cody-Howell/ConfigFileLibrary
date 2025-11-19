@@ -11,6 +11,8 @@ arrays can have any type within them (string, int, double, and bool), and you ca
 at runtime. I've included a number of error messages to help you debug your files and ensure proper 
 type matching back to C# primitives. 
 
+See the wiki [here](https://wiki.codyhowell.dev/configfilelibrary) for more information.
+
 ## Weak Typing
 
 This was accomplished by my primitive classes implementing an interface (IBaseConfigOption) that includes 
@@ -49,6 +51,13 @@ and their calls to read the values. In each case they start with "reader[...]", 
 for each file type. The constructor just takes in the path to the file, and some have options for a different 
 splitter or something like that. Read the XML comments for more information.
 
+### Collector
+
+I added a new class called `ConfigFileCollector` that takes in a list of filepaths and parses them 
+all together. When you need a specific file, request it from the proper method and use it as normal. 
+
+There's a number of exceptions thrown to help with the process. 
+
 ### TXT
 
 This only supports single-order objects, though you can have arrays within them (which are split via commas). It's 
@@ -85,7 +94,7 @@ reader["info"].AsStringList(); // ["John Doe", "29", "6.1", "True"]
 
 ### YAML
 
-This supports any amount of nested objects and arrays, and (somewhat) follows the YAML spec. I spend some time 
+This supports any amount of nested objects and arrays, and (somewhat) follows the YAML spec. I spent some time 
 reading through it and as I am writing all the parsing logic, I've decided to stop where I'm at. 
 
 Tabs are supported, and I also currently support only 4 space indents. The below object will show what I 
@@ -121,11 +130,70 @@ reader["second"]["arrayOfObjects"][1]["something2"].AsBool(); // false
 
 ### JSON
 
-Not yet implemented. 
+The way I'm implementing JSON requires some syntax specifics; first, you can only start with a 
+[] or a {} for an array or object. Arrays are always split by commas ',' and objects are 
+always keyed with a colon ':' and again split via commas. I don't support escape characters 
+at the moment (or comments, in any form), but otherwise is formatted exactly like JSON.
+
+This is the exact same data as stored in the above YAML file, referenced in the same way in C#.
+
+```json
+{
+  "first": {
+    "simple Array": [
+      1,
+      2,
+      3
+    ],
+    "brother": "sample String",
+    "other sibling": {
+      "sibKey": "sibValue"
+    }
+  },
+  "second": {
+    "arrayOfObjects": [
+      {
+        "lorem": "ipsum",
+        "something": 1.2
+      },
+      {
+        "lorem2": "ipsum2",
+        "something2": false
+      }
+    ],
+    "otherThing": "hopefully"
+  }
+}
+```
+
+```csharp
+reader["first"]["simple Array"][1].AsInt(); // 2
+reader["first"]["other sibling"]["sibKey"].AsString(); // "sibValue"
+reader["second"]["arrayOfObjects"][0]["lorem"].AsString(); // "ipsum"
+reader["second"]["arrayOfObjects"][0]["something"].AsDouble(); // 1.2
+reader["second"]["arrayOfObjects"][1]["something2"].AsBool(); // false
+```
+
 
 ## Changelog
 
-0.7 (2/27/25)
+1.0 (6/25/25)
+
+- Added new class to compile multiple file readers together, ConfigFileCollector
+    - with a number of tests in many configurations
+- Removed all warnings
+- Updated all documentation
+
+0.8 (5/12/25)
+
+- Added JSON option
+
+0.7 (3/8/25)
+
+- Added a helper class for YAML parsing
+- YAML parsing works as expected and passes all tests
+
+0.4 (2/27/25)
 	
 - Primitive objects are fully implemented with errors and tests
 - Arrays and objects seem to be working fine
