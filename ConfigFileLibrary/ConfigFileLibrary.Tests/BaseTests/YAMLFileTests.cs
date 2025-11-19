@@ -4,20 +4,20 @@ namespace ConfigFileLibrary.Tests.YAMLFile;
 public class FirstOrderTests {
     [Test]
     public async Task PrimitiveTest1() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/FirstOrder/Primitive1.yaml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../data/YAML/FirstOrder/Primitive1.yaml");
         await Assert.That(reader.AsString()).IsEqualTo("45");
         await Assert.That(reader.AsInt()).IsEqualTo(45);
     }
 
     [Test]
     public async Task PrimitiveTest2() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/FirstOrder/Primitive2.yaml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../data/YAML/FirstOrder/Primitive2.yaml");
         await Assert.That(reader.AsString()).IsEqualTo("This is a sample multiline string that may become useful");
     }
 
     [Test]
     public async Task ObjectTest() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/FirstOrder/Object.yaml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../data/YAML/FirstOrder/Object.yaml");
         await Assert.That(reader["Lorem"].AsString()).IsEqualTo("Test String");
         await Assert.That(reader["Lorem2"].AsInt()).IsEqualTo(15);
         await Assert.That(reader["Lorem3"].AsDouble()).IsEqualTo(3.15);
@@ -26,14 +26,14 @@ public class FirstOrderTests {
 
     [Test]
     public async Task BrokenObjectThrowsError() {
-        await Assert.That(() => new YAMLConfigFile("../../../YAML/FirstOrder/BrokenObject.yaml"))
+        await Assert.That(() => new YAMLConfigFile("../../../data/YAML/FirstOrder/BrokenObject.yaml"))
             .Throws<FormatException>()
             .WithMessage("Don't include multiple (:) on the same line. I read key: \"Broken\"");
     }
 
     [Test]
     public async Task ArrayTest() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/FirstOrder/Array.yaml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../data/YAML/FirstOrder/Array.yaml");
         await Assert.That(reader[0].AsString()).IsEqualTo("Test String");
         await Assert.That(reader[1].AsInt()).IsEqualTo(15);
         await Assert.That(reader[2].AsDouble()).IsEqualTo(3.15);
@@ -43,7 +43,7 @@ public class FirstOrderTests {
 public class SecondOrderTests {
     [Test]
     public async Task ObjectWithObject() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/ObjectWithObject.yaml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../data/YAML/SecondOrder/ObjectWithObject.yaml");
 
         await Assert.That(reader["first"]["lorem"].AsString()).IsEqualTo("test");
         await Assert.That(reader["first"]["num"].AsInt()).IsEqualTo(1);
@@ -57,7 +57,7 @@ public class SecondOrderTests {
 
     [Test]
     public async Task ObjectWithArray() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/ObjectWithArray.yaml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../data/YAML/SecondOrder/ObjectWithArray.yaml");
 
         await Assert.That(reader["first"][0].AsInt()).IsEqualTo(1);
         await Assert.That(reader["first"][1].AsInt()).IsEqualTo(5);
@@ -68,7 +68,7 @@ public class SecondOrderTests {
 
     [Test]
     public async Task ArrayWithObject() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/ArrayWithObject.yaml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../data/YAML/SecondOrder/ArrayWithObject.yaml");
 
         await Assert.That(reader[0]["lorem"].AsString()).IsEqualTo("inside");
         await Assert.That(reader[0]["whatsthis"].AsDouble()).IsEqualTo(2.5);
@@ -79,7 +79,7 @@ public class SecondOrderTests {
 
     [Test]
     public async Task ArrayWithArray() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/ArrayWithArray.yaml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../data/YAML/SecondOrder/ArrayWithArray.yaml");
 
         await Assert.That(reader[0][0].AsString()).IsEqualTo("lorem");
         await Assert.That(reader[0][1].AsDouble()).IsEqualTo(2.5);
@@ -91,7 +91,7 @@ public class SecondOrderTests {
 
     [Test]
     public async Task MixedArray() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/SecondOrder/MixedArray.yml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../data/YAML/SecondOrder/MixedArray.yml");
 
         await Assert.That(reader[0]["object"].AsString()).IsEqualTo("this is");
         await Assert.That(reader[0]["part2"].AsString()).IsEqualTo("still part of this object");
@@ -103,7 +103,7 @@ public class SecondOrderTests {
 public class RealisticTests {
     [Test]
     public async Task RealisticTest() {
-        YAMLConfigFile reader = new YAMLConfigFile("../../../YAML/Realistic/ComplexObject.yaml");
+        YAMLConfigFile reader = new YAMLConfigFile("../../../data/YAML/Realistic/ComplexObject.yaml");
         
         await Assert.That(reader["first"]["simple Array"][0].AsInt()).IsEqualTo(1);
         await Assert.That(reader["first"]["simple Array"][1].AsInt()).IsEqualTo(2);

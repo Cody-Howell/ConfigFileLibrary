@@ -4,7 +4,7 @@ namespace ConfigFileLibrary.Tests.Helpers;
 public class FirstOrderYAMLHelperTests {
     [Test]
     public async Task ArrayTest() {
-        List<(int, string)> vals = YAMLHelper.ReturnOrderedLines("../../../YAML/FirstOrder/Array.yaml");
+        List<(int, string)> vals = YAMLHelper.ReturnOrderedLines("../../../data/YAML/FirstOrder/Array.yaml");
         await Assert.That(vals[0].Item1).IsEqualTo(0);
         await Assert.That(vals[0].Item2).IsEqualTo("- Test String");
         await Assert.That(vals[1].Item1).IsEqualTo(0);
@@ -17,7 +17,7 @@ public class FirstOrderYAMLHelperTests {
 
     [Test]
     public async Task ObjectTest() {
-        List<(int, string)> vals = YAMLHelper.ReturnOrderedLines("../../../YAML/FirstOrder/Object.yaml");
+        List<(int, string)> vals = YAMLHelper.ReturnOrderedLines("../../../data/YAML/FirstOrder/Object.yaml");
         await Assert.That(vals[0].Item1).IsEqualTo(0);
         await Assert.That(vals[0].Item2).IsEqualTo("Lorem: Test String");
         await Assert.That(vals[1].Item1).IsEqualTo(0);
@@ -31,7 +31,7 @@ public class FirstOrderYAMLHelperTests {
 public class SecondOrderYAMLHelperTests {
     [Test]
     public async Task SimpleObjectTest() {
-        List<(int, string)> vals = YAMLHelper.ReturnOrderedLines("../../../YAML/SecondOrder/ObjectWithObject.yaml");
+        List<(int, string)> vals = YAMLHelper.ReturnOrderedLines("../../../data/YAML/SecondOrder/ObjectWithObject.yaml");
         await Assert.That(vals[0].Item1).IsEqualTo(0);
         await Assert.That(vals[0].Item2).IsEqualTo("first:");
         await Assert.That(vals[1].Item1).IsEqualTo(1);
@@ -57,7 +57,7 @@ public class SecondOrderYAMLHelperTests {
 public class ComplexObjectYAMLHelperTests {
     [Test]
     public async Task ComplexObjectTest() {
-        List<(int, string)> vals = YAMLHelper.ReturnOrderedLines("../../../YAML/Realistic/ComplexObject.yaml");
+        List<(int, string)> vals = YAMLHelper.ReturnOrderedLines("../../../data/YAML/Realistic/ComplexObject.yaml");
 
         await Assert.That(vals[0].Item1).IsEqualTo(0);
         await Assert.That(vals[0].Item2).IsEqualTo("first:");

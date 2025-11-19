@@ -18,7 +18,7 @@ public class FileCollectorTests {
 public class TXTFileCollectorTests {
     [Test]
     public async Task CanImportOneTXTFileAndReadIt() {
-        ConfigFileCollector c = new ConfigFileCollector(["../../../TXT/Realistic/File1.txt"]);
+        ConfigFileCollector c = new ConfigFileCollector(["../../../data/TXT/Realistic/File1.txt"]);
 
         TXTConfigFile reader = c.GetTXTFile("File1");
         await Assert.That(reader["Enemy Name"].AsString()).IsEqualTo("Bad Guy");
@@ -31,7 +31,7 @@ public class TXTFileCollectorTests {
     [Test]
     public async Task CanImportTwoTXTFileAndReadThem() {
         ConfigFileCollector c = new ConfigFileCollector(
-            ["../../../TXT/Realistic/File1.txt", "../../../TXT/SingleLineArrayTests/Ints.txt"]
+            ["../../../data/TXT/Realistic/File1.txt", "../../../data/TXT/SingleLineArrayTests/Ints.txt"]
             );
 
         TXTConfigFile reader1 = c.GetTXTFile("File1");
@@ -51,14 +51,14 @@ public class TXTFileCollectorTests {
 
     [Test]
     public async Task TwoTXTFilesWithSameNameAndExtensionThrowError() {
-        await Assert.That(() => new ConfigFileCollector(["../../../TXT/Realistic/File1.txt", "../../../TXT/Realistic/File1.txt"]))
+        await Assert.That(() => new ConfigFileCollector(["../../../data/TXT/Realistic/File1.txt", "../../../data/TXT/Realistic/File1.txt"]))
             .Throws<NotSupportedException>()
             .WithMessage("Cannot add in two filenames of the same name and extension.");
     }
 
     [Test]
     public async Task RetrievingUnknownTXTFileThrowsHelpfulError() {
-        ConfigFileCollector c = new ConfigFileCollector(["../../../TXT/Realistic/File1.txt", "../../../TXT/Realistic/File2.txt"]);
+        ConfigFileCollector c = new ConfigFileCollector(["../../../data/TXT/Realistic/File1.txt", "../../../data/TXT/Realistic/File2.txt"]);
         await Assert.That(() => c.GetTXTFile("File3"))
             .Throws<FileNotFoundException>()
             .WithMessage("Filename does not exist. Available keys: \n\tFile1\n\tFile2");
@@ -67,7 +67,7 @@ public class TXTFileCollectorTests {
 public class YAMLFileCollectorTests {
     [Test]
     public async Task CanImportOneYAMLFileAndReadIt() {
-        ConfigFileCollector c = new ConfigFileCollector(["../../../YAML/Realistic/ComplexObject.yaml"]);
+        ConfigFileCollector c = new ConfigFileCollector(["../../../data/YAML/Realistic/ComplexObject.yaml"]);
 
         YAMLConfigFile reader = c.GetYAMLFile("ComplexObject");
         await Assert.That(reader["first"]["simple Array"][0].AsInt()).IsEqualTo(1);
@@ -82,7 +82,7 @@ public class YAMLFileCollectorTests {
     [Test]
     public async Task CanImportTwoYAMLFileAndReadThem() {
         ConfigFileCollector c = new ConfigFileCollector(
-            ["../../../YAML/Realistic/ComplexObject.yaml", "../../../YAML/SecondOrder/MixedArray.yml"]
+            ["../../../data/YAML/Realistic/ComplexObject.yaml", "../../../data/YAML/SecondOrder/MixedArray.yml"]
             );
 
         YAMLConfigFile reader1 = c.GetYAMLFile("ComplexObject");
@@ -104,14 +104,14 @@ public class YAMLFileCollectorTests {
 
     [Test]
     public async Task TwoYAMLFilesWithSameNameAndExtensionThrowError() {
-        await Assert.That(() => new ConfigFileCollector(["../../../YAML/SecondOrder/MixedArray.yml", "../../../YAML/SecondOrder/MixedArray.yml"]))
+        await Assert.That(() => new ConfigFileCollector(["../../../data/YAML/SecondOrder/MixedArray.yml", "../../../data/YAML/SecondOrder/MixedArray.yml"]))
             .Throws<NotSupportedException>()
             .WithMessage("Cannot add in two filenames of the same name and extension.");
     }
 
     [Test]
     public async Task RetrievingUnknownYAMLFileThrowsHelpfulError() {
-        ConfigFileCollector c = new ConfigFileCollector(["../../../YAML/SecondOrder/MixedArray.yml"]);
+        ConfigFileCollector c = new ConfigFileCollector(["../../../data/YAML/SecondOrder/MixedArray.yml"]);
         await Assert.That(() => c.GetYAMLFile("File1"))
             .Throws<FileNotFoundException>()
             .WithMessage("Filename does not exist. Available keys: \n\tMixedArray");
@@ -120,7 +120,7 @@ public class YAMLFileCollectorTests {
 public class JSONFileCollectorTests {
     [Test]
     public async Task CanImportOneJSONFileAndReadIt() {
-        ConfigFileCollector c = new ConfigFileCollector(["../../../JSON/Realistic/ComplexObject.json"]);
+        ConfigFileCollector c = new ConfigFileCollector(["../../../data/JSON/Realistic/ComplexObject.json"]);
 
         JSONConfigFile reader = c.GetJSONFile("ComplexObject");
         await Assert.That(reader["first"]["simple Array"][0].AsInt()).IsEqualTo(1);
@@ -135,7 +135,7 @@ public class JSONFileCollectorTests {
     [Test]
     public async Task CanImportTwoJSONFileAndReadThem() {
         ConfigFileCollector c = new ConfigFileCollector(
-            ["../../../JSON/Realistic/ComplexObject.json", "../../../JSON/SecondOrder/ArrayWithArray.json"]
+            ["../../../data/JSON/Realistic/ComplexObject.json", "../../../data/JSON/SecondOrder/ArrayWithArray.json"]
             );
 
         JSONConfigFile reader1 = c.GetJSONFile("ComplexObject");
@@ -159,14 +159,14 @@ public class JSONFileCollectorTests {
 
     [Test]
     public async Task TwoYAMLFilesWithSameNameAndExtensionThrowError() {
-        await Assert.That(() => new ConfigFileCollector(["../../../JSON/SecondOrder/ArrayWithArray.json", "../../../JSON/SecondOrder/ArrayWithArray.json"]))
+        await Assert.That(() => new ConfigFileCollector(["../../../data/JSON/SecondOrder/ArrayWithArray.json", "../../../data/JSON/SecondOrder/ArrayWithArray.json"]))
             .Throws<NotSupportedException>()
             .WithMessage("Cannot add in two filenames of the same name and extension.");
     }
 
     [Test]
     public async Task RetrievingUnknownYAMLFileThrowsHelpfulError() {
-        ConfigFileCollector c = new ConfigFileCollector(["../../../JSON/SecondOrder/ArrayWithArray.json"]);
+        ConfigFileCollector c = new ConfigFileCollector(["../../../data/JSON/SecondOrder/ArrayWithArray.json"]);
         await Assert.That(() => c.GetJSONFile("File1"))
             .Throws<FileNotFoundException>()
             .WithMessage("Filename does not exist. Available keys: \n\tArrayWithArray");
@@ -176,9 +176,9 @@ public class MixedTests {
     [Test]
     public async Task CanImportOneOfEach() {
         ConfigFileCollector c = new ConfigFileCollector([
-            "../../../TXT/Realistic/File1.txt",
-            "../../../YAML/Realistic/ComplexObject.yaml",
-            "../../../JSON/Realistic/ComplexObject.json",
+            "../../../data/TXT/Realistic/File1.txt",
+            "../../../data/YAML/Realistic/ComplexObject.yaml",
+            "../../../data/JSON/Realistic/ComplexObject.json",
             ]);
 
         TXTConfigFile t = c.GetTXTFile("File1");
