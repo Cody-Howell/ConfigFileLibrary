@@ -3,6 +3,7 @@
 using ConfigFileLibrary.Helpers;
 using ConfigFileLibrary.Primitives;
 
+/// <summary/>
 public class ConfigFile {
     private IBaseConfigOption option;
 
@@ -26,6 +27,10 @@ public class ConfigFile {
     public string AsString() => option.AsString();
     /// <summary/>
     public List<string> AsStringList() => option.AsStringList();
+
+    private ConfigFile() {
+        option = new PrimitiveConfigOption("");
+    }
 
     /// <summary/>
     public ConfigFile(string file) {
@@ -53,10 +58,20 @@ public class ConfigFile {
                     option = ReadLineAsPrimitive(line);
                 }
                 break;
+            case ".json":
+                string fileValue = File.ReadAllText(file).Replace('\r', ' ').Replace('\n', ' ');
+                option = ParseFileContents(fileValue);
+                break;
             default:
                 throw new Exception($"Extension {extension} was not known.");
         }
         // option  = new PrimitiveConfigOption(" ");
+    }
+
+    public static ConfigFile ReadTextAsJSON(string fileValue) {
+        ConfigFile file = new ConfigFile();
+        file.option = file.ParseFileContents(fileValue);
+        return file;
     }
 
 
@@ -178,6 +193,125 @@ public class ConfigFile {
 
     private IBaseConfigOption ReadLineAsPrimitive(string line) {
         return new PrimitiveConfigOption(line);
+    }
+    #endregion
+
+    #region JSON
+
+    private IBaseConfigOption ReadAsList(string file, ref int readingIndex) {
+        List<IBaseConfigOption> list = new List<IBaseConfigOption>();
+        readingIndex++;
+        int nextComma = 0;
+        int nextBracket = 1;
+
+        string subString = "";
+        while (readingIndex != 0) {
+            nextComma = file.IndexOf(',', readingIndex);
+            nextBracket = file.IndexOf(']', readingIndex);
+
+            if (readingIndex >= nextBracket) {
+                readingIndex += 2;
+                break;
+            }
+
+            if (nextComma < 0) {
+                subString = file[readingIndex..nextBracket].Replace('"', ' '); // Uses a "range" operator for the substring
+            } else {
+                subString = file[readingIndex..nextComma].Replace('"', ' '); // Uses a "range" operator for the substring
+            }
+
+            if (subString.TrimStart().StartsWith('[')) {
+                readingIndex = file.IndexOf('[', readingIndex);
+                list.Add(ReadAsList(file, ref readingIndex));
+            } else if (subString.TrimStart().StartsWith('{')) {
+                readingIndex = file.IndexOf('{', readingIndex);
+                list.Add(ReadAsDictionary(file, ref readingIndex));
+            } else {
+                list.Add(new PrimitiveConfigOption(subString.Replace(']', ' ')));
+                if (nextBracket > nextComma) {
+                    readingIndex = nextComma + 1;
+                } else {
+                    readingIndex = file.IndexOf(']', readingIndex);
+                }
+            }
+        }
+
+        return new ArrayConfigOption(list);
+    }
+
+    private IBaseConfigOption ReadAsDictionary(string file, ref int readingIndex) {
+        Dictionary<string, IBaseConfigOption> dict = new Dictionary<string, IBaseConfigOption>();
+        readingIndex++;
+        int nextComma = 0;
+        int nextBracket = 0;
+
+        string subString = "";
+        string key = "";
+        string value = "";
+        bool breakFlag = false;
+        while (readingIndex != 0) {
+            nextComma = file.IndexOf(',', readingIndex);
+            nextBracket = file.IndexOf('}', readingIndex);
+
+            if (nextComma < 0) {
+                subString = file[readingIndex..nextBracket].Replace('"', ' '); // Uses a "range" operator for the substring
+                int colonIndex = subString.IndexOf(':');
+                key = subString[0..colonIndex];
+                colonIndex++;
+                value = subString[colonIndex..];
+            } else {
+                subString = file[readingIndex..nextComma].Replace('"', ' ');
+                int colonIndex = subString.IndexOf(':');
+                if (colonIndex < 0) {
+                    readingIndex = nextComma + 1;
+                    break;
+                }
+                key = subString[0..colonIndex];
+                colonIndex++;
+                if (nextComma > nextBracket) {
+                    breakFlag = true;
+                    value = subString[colonIndex..(subString.Length - 1)];
+                } else {
+                    value = subString[colonIndex..];
+                }
+            }
+
+            if (readingIndex >= nextBracket) {
+                readingIndex += 2;
+                break;
+            }
+
+            if (value.TrimStart().StartsWith('[')) {
+                readingIndex = file.IndexOf('[', readingIndex);
+                dict.Add(key.Trim(), ReadAsList(file, ref readingIndex));
+                continue;
+            } else if (value.TrimStart().StartsWith('{')) {
+                readingIndex = file.IndexOf('{', readingIndex);
+                dict.Add(key.Trim(), ReadAsDictionary(file, ref readingIndex));
+                continue;
+            } else {
+                dict.Add(key.Trim(), new PrimitiveConfigOption(value.Replace('}', ' ')));
+            }
+
+            if (breakFlag) {
+                readingIndex = nextBracket + 2;
+                break;
+            }
+
+            readingIndex = nextComma + 1;
+        }
+        return new ObjectConfigOption(dict);
+    }
+
+    private IBaseConfigOption ParseFileContents(string file) {
+        int _ = 0; // Just to satisfy the compiler
+        if (file.StartsWith("[")) {
+            return ReadAsList(file, ref _);
+        } else if (file.StartsWith("{")) {
+            return ReadAsDictionary(file, ref _);
+        } else {
+            throw new InvalidDataException("JSON file must start with either [ or {");
+        }
     }
     #endregion
 }

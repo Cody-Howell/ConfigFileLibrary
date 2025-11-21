@@ -6,7 +6,7 @@ namespace ConfigFileLibrary.Tests.JSONFile;
 public class FirstOrderTests {
     [Test]
     public async Task ArrayTest() {
-        JSONConfigFile reader = new JSONConfigFile("../../../data/JSON/FirstOrder/SimpleArray.json");
+        ConfigFile reader = new ConfigFile("../../../data/JSON/FirstOrder/SimpleArray.json");
 
         await Assert.That(reader[0].AsInt()).IsEqualTo(14);
         await Assert.That(reader[1].AsString()).IsEqualTo("lorem string");
@@ -15,7 +15,7 @@ public class FirstOrderTests {
 
     [Test]
     public async Task ObjectTest() {
-        JSONConfigFile reader = new JSONConfigFile("../../../data/JSON/FirstOrder/SimpleObject.json");
+        ConfigFile reader = new ConfigFile("../../../data/JSON/FirstOrder/SimpleObject.json");
 
         await Assert.That(reader["lorem"].AsBool()).IsEqualTo(true);
         await Assert.That(reader["works"].AsDouble()).IsEqualTo(2.5);
@@ -24,7 +24,7 @@ public class FirstOrderTests {
 
     [Test]
     public async Task IntArrayTest() {
-        JSONConfigFile reader = new JSONConfigFile("../../../data/JSON/FirstOrder/IntArray.json");
+        ConfigFile reader = new ConfigFile("../../../data/JSON/FirstOrder/IntArray.json");
 
         List<int> ints = reader.AsIntList();
 
@@ -38,7 +38,7 @@ public class FirstOrderTests {
 public class SecondOrderTests {
     [Test]
     public async Task ArrayWithArray() {
-        JSONConfigFile reader = new JSONConfigFile("../../../data/JSON/SecondOrder/ArrayWithArray.json");
+        ConfigFile reader = new ConfigFile("../../../data/JSON/SecondOrder/ArrayWithArray.json");
 
         await Assert.That(reader[0][0].AsInt()).IsEqualTo(1);
         await Assert.That(reader[0][1].AsBool()).IsEqualTo(true);
@@ -51,7 +51,7 @@ public class SecondOrderTests {
 
     [Test]
     public async Task ArrayWithObject() {
-        JSONConfigFile reader = new JSONConfigFile("../../../data/JSON/SecondOrder/ArrayWithObject.json");
+        ConfigFile reader = new ConfigFile("../../../data/JSON/SecondOrder/ArrayWithObject.json");
 
         await Assert.That(reader[0]["num"].AsInt()).IsEqualTo(1);
         await Assert.That(reader[0]["happy"].AsString()).IsEqualTo("maybe");
@@ -64,7 +64,7 @@ public class SecondOrderTests {
 
     [Test]
     public async Task ObjectWithObject() {
-        JSONConfigFile reader = new JSONConfigFile("../../../data/JSON/SecondOrder/ObjectWithObject.json");
+        ConfigFile reader = new ConfigFile("../../../data/JSON/SecondOrder/ObjectWithObject.json");
 
         await Assert.That(reader["first"]["type"].AsString()).IsEqualTo("object");
         await Assert.That(reader["first"]["number"].AsInt()).IsEqualTo(15);
@@ -76,7 +76,7 @@ public class SecondOrderTests {
 
     [Test]
     public async Task ObjectWithArray() {
-        JSONConfigFile reader = new JSONConfigFile("../../../data/JSON/SecondOrder/ObjectWithArray.json");
+        ConfigFile reader = new ConfigFile("../../../data/JSON/SecondOrder/ObjectWithArray.json");
 
         await Assert.That(reader["first"][0].AsInt()).IsEqualTo(15);
         await Assert.That(reader["first"][1].AsString()).IsEqualTo("open string");
@@ -90,7 +90,7 @@ public class RealisticTests {
     [Test]
     public async Task RealisticTest() {
         // Copied from the YAML system because I was lazy. But they're interoperable!
-        JSONConfigFile reader = new JSONConfigFile("../../../data/JSON/Realistic/ComplexObject.json");
+        ConfigFile reader = new ConfigFile("../../../data/JSON/Realistic/ComplexObject.json");
 
         await Assert.That(reader["first"]["simple Array"][0].AsInt()).IsEqualTo(1);
         await Assert.That(reader["first"]["simple Array"][1].AsInt()).IsEqualTo(2);
@@ -109,7 +109,7 @@ public class RealisticTests {
 public class TextReadingTests {
     [Test]
     public async Task ReadingTest1() {
-        JSONConfigFile reader = JSONConfigFile.ReadText("[ 14,  \"lorem string\",  true  ]");
+        ConfigFile reader = ConfigFile.ReadTextAsJSON("[ 14,  \"lorem string\",  true  ]");
         await Assert.That(reader[0].AsInt()).IsEqualTo(14);
         await Assert.That(reader[1].AsString()).IsEqualTo("lorem string");
         await Assert.That(reader[2].AsBool()).IsEqualTo(true);
