@@ -9,6 +9,28 @@ namespace ConfigFileLibrary;
 public class YAMLConfigFile : IBaseConfigOption {
     private IBaseConfigOption option;
 
+    
+    /// <summary/>
+    public IBaseConfigOption this[string key] => option[key];
+    /// <summary/>
+    public IBaseConfigOption this[int index] => option[index];
+    /// <summary/>
+    public bool AsBool() => option.AsBool();
+    /// <summary/>
+    public List<bool> AsBoolList() => option.AsBoolList();
+    /// <summary/>
+    public double AsDouble() => option.AsDouble();
+    /// <summary/>
+    public List<double> AsDoubleList() => option.AsDoubleList();
+    /// <summary/>
+    public int AsInt() => option.AsInt();
+    /// <summary/>
+    public List<int> AsIntList() => option.AsIntList();
+    /// <summary/>
+    public string AsString() => option.AsString();
+    /// <summary/>
+    public List<string> AsStringList() => option.AsStringList();
+
     /// <summary>
     /// Takes in a filepath and parses the YAML into the IBaseConfigOption.
     /// </summary>
@@ -32,27 +54,6 @@ public class YAMLConfigFile : IBaseConfigOption {
             option = ReadLineAsPrimitive(line);
         }
     }
-
-    /// <summary/>
-    public IBaseConfigOption this[string key] => option[key];
-    /// <summary/>
-    public IBaseConfigOption this[int index] => option[index];
-    /// <summary/>
-    public bool AsBool() => option.AsBool();
-    /// <summary/>
-    public List<bool> AsBoolList() => option.AsBoolList();
-    /// <summary/>
-    public double AsDouble() => option.AsDouble();
-    /// <summary/>
-    public List<double> AsDoubleList() => option.AsDoubleList();
-    /// <summary/>
-    public int AsInt() => option.AsInt();
-    /// <summary/>
-    public List<int> AsIntList() => option.AsIntList();
-    /// <summary/>
-    public string AsString() => option.AsString();
-    /// <summary/>
-    public List<string> AsStringList() => option.AsStringList();
 
     private IBaseConfigOption ReadLineAsPrimitive(string line) {
         return new PrimitiveConfigOption(line);

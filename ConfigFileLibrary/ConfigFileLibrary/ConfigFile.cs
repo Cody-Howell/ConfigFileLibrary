@@ -1,35 +1,48 @@
-﻿using ConfigFileLibrary.Primitives;
-namespace ConfigFileLibrary;
 
-/// <summary>
-/// This reads a standard TXT file for single-depth configuration options. It holds an internal <see cref="ObjectConfigOption"/>
-/// to retreive the values and has helper methods for converting to Ints, Doubles, and Bools. <br/>
-/// A sample file is below: <br/>
-/// <c>
-/// Enemy Name: Bad Guy <br/>
-/// Enemy Color: #9645ff <br/>
-/// Enemy Damage: 23.4 <br/>
-/// Enemy Speed: 15 <br/>
-/// Is Boss: true
-/// </c>
-/// </summary>
-public class TXTConfigFile {
-    private ObjectConfigOption obj;
 
-    /// <summary>
-    /// Retreives Key-Value pairs from the given file, one on each line. Keys and values are trimmed
-    /// before inserting into the internal dictionary. <br/>
-    /// 
-    /// Throws helpful exceptions (line numbers) with split character values, if more than 1 or no split characters were found.
-    /// </summary>
-    /// <param name="path">Relative or absolute path to the file</param>
-    /// <param name="split">Character to split key/value pairs by</param>
-    /// <exception cref="FormatException"></exception>
-    public TXTConfigFile(string path, char split = ':') {
-        NewMethod(path, split);
+using ConfigFileLibrary.Primitives;
+
+public class ConfigFile {
+    private IBaseConfigOption option;
+    
+    /// <summary/>
+    public IBaseConfigOption this[string key] => option[key];
+    /// <summary/>
+    public IBaseConfigOption this[int index] => option[index];
+    /// <summary/>
+    public bool AsBool() => option.AsBool();
+    /// <summary/>
+    public List<bool> AsBoolList() => option.AsBoolList();
+    /// <summary/>
+    public double AsDouble() => option.AsDouble();
+    /// <summary/>
+    public List<double> AsDoubleList() => option.AsDoubleList();
+    /// <summary/>
+    public int AsInt() => option.AsInt();
+    /// <summary/>
+    public List<int> AsIntList() => option.AsIntList();
+    /// <summary/>
+    public string AsString() => option.AsString();
+    /// <summary/>
+    public List<string> AsStringList() => option.AsStringList();
+    
+    /// <summary/>
+    public ConfigFile(string file) {
+        string extension = Path.GetExtension(file);
+        switch (extension) {
+            case ".txt":
+                option = ReadAsTXTFile(file);
+                return;
+            default: 
+                throw new Exception($"Extension {extension} was not known.");  
+        }
+        // option  = new PrimitiveConfigOption(" ");
     }
 
-    private void NewMethod(string path, char split) {
+
+    # region TXT
+    private IBaseConfigOption ReadAsTXTFile(string path) {
+        char split = ':';
         string[] file = File.ReadAllLines(path);
         Dictionary<string, IBaseConfigOption> values = new Dictionary<string, IBaseConfigOption>();
         for (int i = 0; i < file.Length; i++) {
@@ -60,7 +73,7 @@ public class TXTConfigFile {
                 string[] arrayValues = longString.Split(',');
                 List<IBaseConfigOption> array = new List<IBaseConfigOption>();
                 foreach (string value in arrayValues) {
-                    if (String.IsNullOrWhiteSpace(value)) continue;
+                    if (string.IsNullOrWhiteSpace(value)) continue;
                     array.Add(new PrimitiveConfigOption(value.Trim()));
                 }
                 values.Add(things[0].Trim(), new ArrayConfigOption(array));
@@ -70,11 +83,7 @@ public class TXTConfigFile {
         }
 
         string filename = Path.GetFileName(path);
-        obj = new ObjectConfigOption(values, filename);
+        return new ObjectConfigOption(values, filename);
     }
-
-    /// <summary>
-    /// Direct indexer into the internal object.
-    /// </summary>
-    public IBaseConfigOption this[string key] => obj[key];
+    #endregion
 }
