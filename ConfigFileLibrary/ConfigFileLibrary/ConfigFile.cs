@@ -62,8 +62,7 @@ public class ConfigFile {
                 string fileValue = File.ReadAllText(file).Replace('\r', ' ').Replace('\n', ' ');
                 option = ParseFileContents(fileValue);
                 break;
-            default:
-                throw new Exception($"Extension {extension} was not known.");
+            default: throw new FormatException($"Extension not recognized: {extension}");
         }
         // option  = new PrimitiveConfigOption(" ");
     }

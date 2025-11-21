@@ -18,25 +18,9 @@ public class ConfigFileCollector {
         foreach (string s in filenames) {
             if (!Path.HasExtension(s)) throw new FormatException($"File {s} does not have an extension.");
             string extension = Path.GetExtension(s);
-            switch (extension) {
-                case ".txt":
-                    if (files.ContainsKey(Path.GetFileName(s)))
-                        throw new NotSupportedException("Cannot add in two filenames of the same name and extension.");
-                    files.Add(Path.GetFileName(s), new ConfigFile(s)); 
-                    break;
-                case ".json":
-                    if (files.ContainsKey(Path.GetFileName(s)))
-                        throw new NotSupportedException("Cannot add in two filenames of the same name and extension.");
-                    files.Add(Path.GetFileName(s), new ConfigFile(s)); 
-                    break;
-                case ".yml": 
-                case ".yaml":
-                    if (files.ContainsKey(Path.GetFileName(s)))
-                        throw new NotSupportedException("Cannot add in two filenames of the same name and extension.");
-                    files.Add(Path.GetFileName(s), new ConfigFile(s)); 
-                    break;
-                default: throw new FormatException($"Extension not recognized: {extension}");
-            }
+            if (files.ContainsKey(Path.GetFileName(s)))
+                throw new NotSupportedException("Cannot add in two filenames of the same name and extension.");
+            files.Add(Path.GetFileName(s), new ConfigFile(s)); 
         }
     }
 
