@@ -21,7 +21,7 @@ public static class YAMLHelper {
 
     private static int CountIndexes(string line) {
         int count = 0;
-        for (int i = 0; i < line.Length - 3; i+=4) {
+        for (int i = 0; i < line.Length - 3; i += 4) {
             if (!char.IsWhiteSpace(line[i])) { break; }
             if ((line[i] == '\t') ||
                 string.IsNullOrWhiteSpace(line.Substring(i, 4))) {

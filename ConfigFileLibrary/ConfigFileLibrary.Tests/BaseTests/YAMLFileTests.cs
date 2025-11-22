@@ -104,7 +104,7 @@ public class RealisticTests {
     [Test]
     public async Task RealisticTest() {
         ConfigFile reader = new ConfigFile("../../../data/YAML/Realistic/ComplexObject.yaml");
-        
+
         await Assert.That(reader["first"]["simple Array"][0].AsInt()).IsEqualTo(1);
         await Assert.That(reader["first"]["simple Array"][1].AsInt()).IsEqualTo(2);
         await Assert.That(reader["first"]["simple Array"][2].AsInt()).IsEqualTo(3);

@@ -20,7 +20,7 @@ public class ConfigFileCollector {
             string extension = Path.GetExtension(s);
             if (files.ContainsKey(Path.GetFileName(s)))
                 throw new NotSupportedException("Cannot add in two filenames of the same name and extension.");
-            files.Add(Path.GetFileName(s), new ConfigFile(s)); 
+            files.Add(Path.GetFileName(s), new ConfigFile(s));
         }
     }
 
@@ -33,7 +33,7 @@ public class ConfigFileCollector {
         try {
             return files[filename];
         } catch {
-            List<string> keys = new (files.Select(v => v.Key));
+            List<string> keys = new(files.Select(v => v.Key));
             throw new FileNotFoundException($"Filename does not exist. Available keys: \n\t{String.Join("\n\t", keys)}");
         }
     }

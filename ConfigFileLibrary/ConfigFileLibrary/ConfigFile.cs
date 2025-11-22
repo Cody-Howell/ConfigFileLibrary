@@ -2,7 +2,9 @@
 
 using ConfigFileLibrary.Enums;
 using ConfigFileLibrary.Helpers;
+using ConfigFileLibrary.Parsers;
 using ConfigFileLibrary.Primitives;
+using System.Net.WebSockets;
 using System.Threading.Tasks.Dataflow;
 
 /// <summary>
@@ -41,7 +43,7 @@ public class ConfigFile {
         string extension = Path.GetExtension(file);
         switch (extension) {
             case ".txt":
-                option = ReadAsTXTFile(file);
+                option = ParseFileAsOption(new TXTParser(file));
                 return;
             case ".yaml":
             case ".yml":
@@ -71,52 +73,51 @@ public class ConfigFile {
         // option  = new PrimitiveConfigOption(" ");
     }
 
-/// <summary/>
-/// <param name="fileValue">JSON string</param>
-/// <returns></returns>
+    /// <summary/>
+    /// <param name="fileValue">JSON string</param>
+    /// <returns></returns>
     public static ConfigFile ReadTextAsJSON(string fileValue) {
         ConfigFile file = new ConfigFile();
         file.option = file.ParseFileContents(fileValue);
         return file;
     }
 
-    private IBaseConfigOption ParseObject(string fileValue, IEnumerable<(FileToken, string)> func) {
-        bool isArray = false;
-        bool isObject = false;
-        Dictionary<string, IBaseConfigOption>? kvp = null;
-        List<IBaseConfigOption>? list = null;
-        IBaseConfigOption? localOption = null;
+    private static IBaseConfigOption ParseFileAsOption(TokenParser func) {
+        var stack = new Stack<Frame>();
+        stack.Push(null!);
 
         foreach (var (type, value) in func) {
-            switch(type) {
+            var frame = stack.Peek();
+            switch (type) {
                 case FileToken.StartObject:
-                    kvp = new();
-                    isObject = true;
-                    isArray = false;
+                    stack.Push(new Frame(FrameKind.Object));
                     break;
                 case FileToken.EndObject:
-                    return new ObjectConfigOption(kvp);
-                case FileToken.KeyValue:
-                    if (!isObject) throw new FormatException("KeyValuePair token found outside of object.");
-                    if (localOption is null) throw new Exception($"Value for key {value} is null.");
-                    kvp.Add(value, localOption);
-                    break;
-                case FileToken.PairValue:
-                    if (!isObject) throw new FormatException("KeyValuePair token found outside of object.");
-                    localOption = new PrimitiveConfigOption(value);
+                    var obj = stack.Pop();
+                    var parent = stack.Peek();
+                    parent.Add(obj.AsOption());
                     break;
                 case FileToken.StartArray:
-                    list = new();
-                    isObject = false;
-                    isArray = true;
-                    localOption = ParseObject(fileValue, func);
+                    stack.Push(new Frame(FrameKind.Array));
                     break;
                 case FileToken.EndArray:
-                    return localOption;
-
+                    var arr = stack.Pop();
+                    parent = stack.Peek();
+                    parent.Add(arr.AsOption());
+                    break;
+                case FileToken.KeyValue:
+                    frame.PendingKey = value;
+                    break;
+                case FileToken.Primitive:
+                    frame.Add(new PrimitiveConfigOption(value));
+                    break;
+                case FileToken.Comment:
+                    break;
             }
         }
-        return localOption;
+
+        Frame root = stack.Pop();
+        return root.AsOption();
     }
 
 

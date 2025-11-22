@@ -1,10 +1,11 @@
 using ConfigFileLibrary.Enums;
 using System.Collections;
 
-#pragma warning disable 1591
-public class TXTParser(string fileValue): IEnumerable<(FileToken, string)> {
+namespace ConfigFileLibrary.Parsers;
 
+internal class TXTParser(string file) : TokenParser {
     public IEnumerator<(FileToken, string)> GetEnumerator() {
+
         yield return (FileToken.StartArray, "");
         // yield return (FileToken.PairValue, "Ipsum");
         // yield return (FileToken.KeyValue, "Lorem");

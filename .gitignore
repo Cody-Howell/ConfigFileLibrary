@@ -5,3 +5,4 @@
 /ConfigFileLibrary/TestLibrary/TestLibrary.csproj
 /ConfigFileLibrary/TestConsole/TestConsole.csproj
 /ConfigFileLibrary/TestConsole
+.editorconfig

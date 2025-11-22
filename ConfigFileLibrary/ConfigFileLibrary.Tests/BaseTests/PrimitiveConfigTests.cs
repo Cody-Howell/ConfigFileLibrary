@@ -10,7 +10,7 @@ public class PrimitiveConfigTests {
         PrimitiveConfigOption p = new PrimitiveConfigOption(s);
         await Assert.That(p.AsString()).IsEqualTo(exp);
     }
-    
+
     [Test]
     [Arguments("15", 15)]
     [Arguments("1293875", 1293875)]
