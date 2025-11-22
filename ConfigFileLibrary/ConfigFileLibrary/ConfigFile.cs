@@ -1,7 +1,9 @@
 
 
+using ConfigFileLibrary.Enums;
 using ConfigFileLibrary.Helpers;
 using ConfigFileLibrary.Primitives;
+using System.Threading.Tasks.Dataflow;
 
 /// <summary/>
 public class ConfigFile {
@@ -67,10 +69,52 @@ public class ConfigFile {
         // option  = new PrimitiveConfigOption(" ");
     }
 
+/// <summary/>
+/// <param name="fileValue">JSON string</param>
+/// <returns></returns>
     public static ConfigFile ReadTextAsJSON(string fileValue) {
         ConfigFile file = new ConfigFile();
         file.option = file.ParseFileContents(fileValue);
         return file;
+    }
+
+    private IBaseConfigOption ParseObject(string fileValue, IEnumerable<(FileToken, string)> func) {
+        bool isArray = false;
+        bool isObject = false;
+        Dictionary<string, IBaseConfigOption>? kvp = null;
+        List<IBaseConfigOption>? list = null;
+        IBaseConfigOption? localOption = null;
+
+        foreach (var (type, value) in func) {
+            switch(type) {
+                case FileToken.StartObject:
+                    kvp = new();
+                    isObject = true;
+                    isArray = false;
+                    break;
+                case FileToken.EndObject:
+                    return new ObjectConfigOption(kvp);
+                case FileToken.KeyValue:
+                    if (!isObject) throw new FormatException("KeyValuePair token found outside of object.");
+                    if (localOption is null) throw new Exception($"Value for key {value} is null.");
+                    kvp.Add(value, localOption);
+                    break;
+                case FileToken.PairValue:
+                    if (!isObject) throw new FormatException("KeyValuePair token found outside of object.");
+                    localOption = new PrimitiveConfigOption(value);
+                    break;
+                case FileToken.StartArray:
+                    list = new();
+                    isObject = false;
+                    isArray = true;
+                    localOption = ParseObject(fileValue, func);
+                    break;
+                case FileToken.EndArray:
+                    return localOption;
+
+            }
+        }
+        return localOption;
     }
 
 
