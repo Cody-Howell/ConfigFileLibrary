@@ -5,7 +5,9 @@ using ConfigFileLibrary.Helpers;
 using ConfigFileLibrary.Primitives;
 using System.Threading.Tasks.Dataflow;
 
-/// <summary/>
+/// <summary>
+/// This config file takes in a file path and reads it as either a JSON, YAML, or TXT file.
+/// </summary>
 public class ConfigFile {
     private IBaseConfigOption option;
 
