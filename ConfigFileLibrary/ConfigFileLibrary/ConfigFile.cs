@@ -39,15 +39,16 @@ public class ConfigFile {
     }
 
     /// <summary/>
-    public ConfigFile(string file) {
-        string extension = Path.GetExtension(file);
+    public ConfigFile(string filePath) {
+        string extension = Path.GetExtension(filePath);
+        string file = File.ReadAllText(filePath);
         switch (extension) {
             case ".txt":
                 option = ParseFileAsOption(new TXTParser(file));
                 return;
             case ".yaml":
             case ".yml":
-                List<(int indentCount, string data)> lines = YAMLHelper.ReturnOrderedLines(file);
+                List<(int indentCount, string data)> lines = YAMLHelper.ReturnOrderedLines(filePath);
 
                 if (lines[0].data.StartsWith('-')) {
                     // Read lines as list
@@ -65,7 +66,7 @@ public class ConfigFile {
                 }
                 break;
             case ".json":
-                string fileValue = File.ReadAllText(file).Replace('\r', ' ').Replace('\n', ' ');
+                string fileValue = file.Replace('\r', ' ').Replace('\n', ' ');
                 option = ParseFileContents(fileValue);
                 break;
             default: throw new FormatException($"Extension not recognized: {extension}");

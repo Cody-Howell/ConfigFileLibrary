@@ -5,7 +5,7 @@ internal class Frame {
     public FrameKind Kind { get; }
     private Dictionary<string, IBaseConfigOption>? Obj;
     private List<IBaseConfigOption>? Arr;
-    private IBaseConfigOption? option;
+    private IBaseConfigOption? option = null;
 
 
     private string? pendingKey;
@@ -24,19 +24,20 @@ internal class Frame {
     }
 
     public IBaseConfigOption AsOption() {
+        if (Kind == FrameKind.Root) return option!;
         if (Kind == FrameKind.Object) return new ObjectConfigOption(Obj!);
         return new ArrayConfigOption(Arr!);
     }
 
     public void Add(IBaseConfigOption option) {
         if (Kind == FrameKind.Root) {
-            if (option is not null) throw new Exception("Root cannot have two base objects.");
+            if (this.option is not null) throw new Exception("Root cannot have two base objects.");
             this.option = option;
         } else if (Kind == FrameKind.Object) {
             if (PendingKey is null) throw new Exception("Object must provide a pending key.");
-            Obj.Add(PendingKey, option);
+            Obj!.Add(PendingKey, option);
         } else { // Type is Array
-            Arr.Add(option);
+            Arr!.Add(option);
         }
     }
 }

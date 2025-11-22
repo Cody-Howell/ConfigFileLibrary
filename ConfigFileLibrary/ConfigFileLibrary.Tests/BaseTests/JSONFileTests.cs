@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using TUnit.Assertions.Extensions;
-
-namespace ConfigFileLibrary.Tests.JSONFile;
+﻿namespace ConfigFileLibrary.Tests.JSONFile;
 
 public class FirstOrderTests {
     [Test]
