@@ -3,8 +3,10 @@ using ConfigFileLibrary.Primitives;
 
 internal class Frame {
     public FrameKind Kind { get; }
-    public Dictionary<string, IBaseConfigOption>? Obj;
-    public List<IBaseConfigOption>? Arr;
+    private Dictionary<string, IBaseConfigOption>? Obj;
+    private List<IBaseConfigOption>? Arr;
+    private IBaseConfigOption? option;
+
 
     private string? pendingKey;
     public string? PendingKey {
@@ -27,7 +29,10 @@ internal class Frame {
     }
 
     public void Add(IBaseConfigOption option) {
-        if (Kind == FrameKind.Object) {
+        if (Kind == FrameKind.Root) {
+            if (option is not null) throw new Exception("Root cannot have two base objects.");
+            this.option = option;
+        } else if (Kind == FrameKind.Object) {
             if (PendingKey is null) throw new Exception("Object must provide a pending key.");
             Obj.Add(PendingKey, option);
         } else { // Type is Array
@@ -36,4 +41,4 @@ internal class Frame {
     }
 }
 
-enum FrameKind { Object, Array }
+enum FrameKind { Object, Array, Root }

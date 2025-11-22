@@ -84,7 +84,7 @@ public class ConfigFile {
 
     private static IBaseConfigOption ParseFileAsOption(TokenParser func) {
         var stack = new Stack<Frame>();
-        stack.Push(null!);
+        stack.Push(new Frame(FrameKind.Root));
 
         foreach (var (type, value) in func) {
             var frame = stack.Peek();
