@@ -193,7 +193,6 @@ public class ConfigFile {
         return new PrimitiveConfigOption(line);
     }
     #endregion
-
     #region JSON
 
     private IBaseConfigOption ReadAsList(string file, ref int readingIndex) {
