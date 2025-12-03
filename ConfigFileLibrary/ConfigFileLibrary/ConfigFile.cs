@@ -71,7 +71,6 @@ public class ConfigFile {
                 break;
             default: throw new FormatException($"Extension not recognized: {extension}");
         }
-        // option  = new PrimitiveConfigOption(" ");
     }
 
     /// <summary/>
