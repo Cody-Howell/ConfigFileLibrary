@@ -1,17 +1,16 @@
-
-
 using ConfigFileLibrary.Enums;
 using ConfigFileLibrary.Helpers;
 using ConfigFileLibrary.Parsers;
 using ConfigFileLibrary.Primitives;
-using System.Net.WebSockets;
-using System.Threading.Tasks.Dataflow;
 
 /// <summary>
 /// This config file takes in a file path and reads it as either a JSON, YAML, or TXT file.
 /// </summary>
-public class ConfigFile {
+public class ConfigFile : IBaseConfigOption {
     private IBaseConfigOption option;
+
+    /// <summary/>
+    public BaseType type => option.type;
 
     /// <summary/>
     public IBaseConfigOption this[string key] => option[key];
@@ -89,29 +88,29 @@ public class ConfigFile {
         foreach (var (type, value) in func) {
             var frame = stack.Peek();
             switch (type) {
-                case FileToken.StartObject:
+                case TextToken.StartObject:
                     stack.Push(new Frame(FrameKind.Object));
                     break;
-                case FileToken.EndObject:
+                case TextToken.EndObject:
                     var obj = stack.Pop();
                     var parent = stack.Peek();
                     parent.Add(obj.AsOption());
                     break;
-                case FileToken.StartArray:
+                case TextToken.StartArray:
                     stack.Push(new Frame(FrameKind.Array));
                     break;
-                case FileToken.EndArray:
+                case TextToken.EndArray:
                     var arr = stack.Pop();
                     parent = stack.Peek();
                     parent.Add(arr.AsOption());
                     break;
-                case FileToken.KeyValue:
+                case TextToken.KeyValue:
                     frame.PendingKey = value;
                     break;
-                case FileToken.Primitive:
+                case TextToken.Primitive:
                     frame.Add(new PrimitiveConfigOption(value));
                     break;
-                case FileToken.Comment:
+                case TextToken.Comment:
                     break;
             }
         }

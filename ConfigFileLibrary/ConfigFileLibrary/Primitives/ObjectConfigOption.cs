@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ConfigFileLibrary.Enums;
+using System.ComponentModel;
 
 namespace ConfigFileLibrary.Primitives;
 
@@ -7,6 +8,9 @@ namespace ConfigFileLibrary.Primitives;
 public class ObjectConfigOption : IBaseConfigOption {
     private Dictionary<string, IBaseConfigOption> obj = new Dictionary<string, IBaseConfigOption>();
     private string resourcePath;
+
+    public BaseType type => BaseType.Object;
+
     /// <summary/>
     public ObjectConfigOption(Dictionary<string, IBaseConfigOption> obj, string parentPath = "", string myPath = "") {
         this.obj = new(obj);

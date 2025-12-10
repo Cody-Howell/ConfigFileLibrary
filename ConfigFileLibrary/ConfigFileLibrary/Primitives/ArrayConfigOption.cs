@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ConfigFileLibrary.Enums;
+using System.ComponentModel;
 
 namespace ConfigFileLibrary.Primitives;
 
@@ -7,6 +8,8 @@ namespace ConfigFileLibrary.Primitives;
 public class ArrayConfigOption : IBaseConfigOption {
     private List<IBaseConfigOption> array = new List<IBaseConfigOption>();
     private string resourcePath;
+
+    public BaseType type => BaseType.Array;
 
     /// <summary/>
     public ArrayConfigOption(List<IBaseConfigOption> array, string parentPath = "", string myPath = "") {

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using ConfigFileLibrary.Enums;
+using System.ComponentModel;
 
 namespace ConfigFileLibrary.Primitives;
 
@@ -6,6 +7,9 @@ namespace ConfigFileLibrary.Primitives;
 [EditorBrowsable(EditorBrowsableState.Never)]
 public class PrimitiveConfigOption : IBaseConfigOption {
     private string value;
+
+    public BaseType type => BaseType.Primitive;
+
     /// <summary/>
     public PrimitiveConfigOption(string value) {
         this.value = value.Trim();

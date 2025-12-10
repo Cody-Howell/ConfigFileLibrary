@@ -4,8 +4,8 @@ using System.Collections;
 namespace ConfigFileLibrary.Parsers;
 
 internal class TXTParser(string file) : TokenParser {
-    public IEnumerator<(FileToken, string)> GetEnumerator() {
-        yield return (FileToken.StartObject, "");
+    public IEnumerator<(TextToken, string)> GetEnumerator() {
+        yield return (TextToken.StartObject, "");
 
         char split = ':';
         string[] fileLines = file.Split('\n');
@@ -35,20 +35,20 @@ internal class TXTParser(string file) : TokenParser {
 
                 longString = longString.Replace("[", "").Replace("]", "");
                 string[] arrayValues = longString.Split(',');
-                yield return (FileToken.KeyValue, things[0].Trim());
-                yield return (FileToken.StartArray, "");
+                yield return (TextToken.KeyValue, things[0].Trim());
+                yield return (TextToken.StartArray, "");
 
                 foreach (string value in arrayValues) {
                     if (string.IsNullOrWhiteSpace(value)) continue;
-                    yield return (FileToken.Primitive, value);
+                    yield return (TextToken.Primitive, value);
                 }
-                yield return (FileToken.EndArray, "");
+                yield return (TextToken.EndArray, "");
             } else {
-                yield return (FileToken.KeyValue, things[0].Trim());
-                yield return (FileToken.Primitive, things[1].Trim());
+                yield return (TextToken.KeyValue, things[0].Trim());
+                yield return (TextToken.Primitive, things[1].Trim());
             }
         }
-        yield return (FileToken.EndObject, "");
+        yield return (TextToken.EndObject, "");
     }
 
     IEnumerator IEnumerable.GetEnumerator() {

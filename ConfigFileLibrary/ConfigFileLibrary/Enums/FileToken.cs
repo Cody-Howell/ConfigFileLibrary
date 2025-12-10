@@ -1,7 +1,7 @@
 namespace ConfigFileLibrary.Enums;
 
 #pragma warning disable 1591
-public enum FileToken {
+public enum TextToken {
     StartObject,
     EndObject,
     StartArray,
