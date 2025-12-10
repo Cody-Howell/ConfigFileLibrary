@@ -2,6 +2,7 @@ using ConfigFileLibrary.Enums;
 using ConfigFileLibrary.Helpers;
 using ConfigFileLibrary.Parsers;
 using ConfigFileLibrary.Primitives;
+using System.Security.AccessControl;
 
 /// <summary>
 /// This config file takes in a file path and reads it as either a JSON, YAML, or TXT file.
@@ -11,6 +12,12 @@ public class ConfigFile : IBaseConfigOption {
 
     /// <summary/>
     public BaseType type => option.type;
+    /// <summary/>
+    public int Count => option.Count;
+    /// <summary/>
+    public IEnumerable<IBaseConfigOption> Items => option.Items;
+    /// <summary/>
+    public IEnumerable<string> Keys => option.Keys;
 
     /// <summary/>
     public IBaseConfigOption this[string key] => option[key];
@@ -33,6 +40,13 @@ public class ConfigFile : IBaseConfigOption {
     /// <summary/>
     public List<string> AsStringList() => option.AsStringList();
 
+    /// <summary/>
+    public bool TryGet(string key, out IBaseConfigOption value) => option.TryGet(key, out value);
+    /// <summary/>
+    public bool Contains(string key) => option.Contains(key);
+
+    private List<string> acceptedExtensions = [".txt", ".yml", ".yaml", ".json"];
+
     private ConfigFile() {
         option = new PrimitiveConfigOption("");
     }
@@ -40,6 +54,10 @@ public class ConfigFile : IBaseConfigOption {
     /// <summary/>
     public ConfigFile(string filePath) {
         string extension = Path.GetExtension(filePath);
+        if (!acceptedExtensions.Contains(extension)) {
+            throw new FormatException($"Extension not recognized: {extension}");
+        }
+
         string file = File.ReadAllText(filePath);
         switch (extension) {
             case ".txt":
@@ -68,7 +86,7 @@ public class ConfigFile : IBaseConfigOption {
                 string fileValue = file.Replace('\r', ' ').Replace('\n', ' ');
                 option = ParseFileContents(fileValue);
                 break;
-            default: throw new FormatException($"Extension not recognized: {extension}");
+            default: throw new Exception("Extension error should be handled above.");
         }
     }
 

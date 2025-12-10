@@ -13,8 +13,8 @@ internal class TXTParser(string file) : TokenParser {
             if (String.IsNullOrWhiteSpace(fileLines[i])) continue;
 
             string[] things = fileLines[i].Split(split);
-            if (things.Length > 2) throw new FormatException($"More than 1 split character was found at line {i + 1}. Please remove it or change your character to something else.");
-            if (things.Length == 1) throw new FormatException($"No split character was found at line {i + 1}. Please add it or override your custom split character.");
+            if (things.Length > 2) throw new FormatException($"More than 1 split character was found at line {i + 1}.");
+            if (things.Length == 1) throw new FormatException($"No split character was found at line {i + 1}.");
 
             if (things[1].Contains("[")) {
                 string longString = things[1];

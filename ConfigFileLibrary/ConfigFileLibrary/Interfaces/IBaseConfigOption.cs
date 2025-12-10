@@ -5,6 +5,6 @@ namespace ConfigFileLibrary.Primitives;
 /// <summary/>
 [EditorBrowsable(EditorBrowsableState.Never)]
 public interface IBaseConfigOption : IBasePrimitiveOption, IBaseArrayOption, IBaseObjectOption {
-    /// </summary>
+    /// <summary/>
     BaseType type { get; }
 }

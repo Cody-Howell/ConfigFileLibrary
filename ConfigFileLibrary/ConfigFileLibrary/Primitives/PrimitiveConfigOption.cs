@@ -8,7 +8,15 @@ namespace ConfigFileLibrary.Primitives;
 public class PrimitiveConfigOption : IBaseConfigOption {
     private string value;
 
+    /// <summary/>
     public BaseType type => BaseType.Primitive;
+
+    /// <summary/>
+    public IEnumerable<string> Keys => throw new InvalidOperationException("Key enumeration not allowed on type of PrimitiveConfigOption.");
+    /// <summary/>
+    public int Count => throw new InvalidOperationException("Count not allowed on type of PrimitiveConfigOption.");
+    /// <summary/>
+    public IEnumerable<IBaseConfigOption> Items => throw new InvalidOperationException("Item enumeration not allowed on type of PrimitiveConfigOption.");
 
     /// <summary/>
     public PrimitiveConfigOption(string value) {
@@ -63,5 +71,15 @@ public class PrimitiveConfigOption : IBaseConfigOption {
     /// <summary/>
     public override string ToString() {
         return value;
+    }
+
+    /// <summary/>
+    public bool TryGet(string key, out IBaseConfigOption value) {
+        throw new InvalidOperationException("TryGet not allowed on type PrimitiveConfigOption");
+    }
+
+    /// <summary/>
+    public bool Contains(string key) {
+        throw new InvalidOperationException("Contains not allowed on type PrimitiveConfigOption");
     }
 }

@@ -9,7 +9,14 @@ public class ArrayConfigOption : IBaseConfigOption {
     private List<IBaseConfigOption> array = new List<IBaseConfigOption>();
     private string resourcePath;
 
+    /// <summary/>
     public BaseType type => BaseType.Array;
+    /// <summary/>
+    public int Count => array.Count;
+    /// <summary/>
+    public IEnumerable<IBaseConfigOption> Items => array;
+    /// <summary/>
+    public IEnumerable<string> Keys => throw new InvalidOperationException("Key enumeration not allowed on type of ArrayConfigOption.");
 
     /// <summary/>
     public ArrayConfigOption(List<IBaseConfigOption> array, string parentPath = "", string myPath = "") {
@@ -72,4 +79,10 @@ public class ArrayConfigOption : IBaseConfigOption {
         }
         return outList;
     }
+
+    /// <summary/>
+    public bool TryGet(string key, out IBaseConfigOption value) => throw new InvalidOperationException("TryGet not allowed on type of ArrayConfigOption.");
+
+    /// <summary/>
+    public bool Contains(string key) => throw new InvalidOperationException("Contains not allowed on type of ArrayConfigOption.");
 }

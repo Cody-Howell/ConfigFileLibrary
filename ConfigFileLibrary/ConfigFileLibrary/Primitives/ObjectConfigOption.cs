@@ -9,7 +9,14 @@ public class ObjectConfigOption : IBaseConfigOption {
     private Dictionary<string, IBaseConfigOption> obj = new Dictionary<string, IBaseConfigOption>();
     private string resourcePath;
 
+    /// <summary/>
     public BaseType type => BaseType.Object;
+    /// <summary/>
+    public int Count => obj.Count;
+    /// <summary/>
+    public IEnumerable<IBaseConfigOption> Items => throw new InvalidOperationException("Item enumeration not allowed on type of ObjectConfigOption.");
+    /// <summary/>
+    public IEnumerable<string> Keys => obj.Keys;
 
     /// <summary/>
     public ObjectConfigOption(Dictionary<string, IBaseConfigOption> obj, string parentPath = "", string myPath = "") {
@@ -47,4 +54,14 @@ public class ObjectConfigOption : IBaseConfigOption {
     public List<double> AsDoubleList() => throw new InvalidOperationException("List returning not allowed on type ObjectConfigOption");
     /// <summary/>
     public List<bool> AsBoolList() => throw new InvalidOperationException("List returning not allowed on type ObjectConfigOption");
+
+    /// <summary/>
+    public bool TryGet(string key, out IBaseConfigOption value) {
+        return obj.TryGetValue(key, out value!); // I'm just passing it through. 
+    }
+
+    /// <summary/>
+    public bool Contains(string key) {
+        return obj.ContainsKey(key);
+    }
 }
