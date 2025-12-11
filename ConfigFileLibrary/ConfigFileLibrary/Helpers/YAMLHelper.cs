@@ -10,9 +10,8 @@ public static class YAMLHelper {
     /// <summary>
     /// Return int-string pairs as parsed indentation. Parses either a tab or 4 spaces. 
     /// </summary>
-    public static List<(int, string)> ReturnOrderedLines(string path) {
+    public static List<(int, string)> ReturnOrderedLines(string[] fileLines) {
         List<(int, string)> lines = new List<(int, string)>();
-        string[] fileLines = File.ReadAllLines(path);
         for (int i = 0; i < fileLines.Length; i++) {
             lines.Add((CountIndexes(fileLines[i]), fileLines[i].Trim()));
         }
