@@ -92,8 +92,6 @@ public class ConfigFile : IBaseConfigOption {
         var stack = new Stack<Frame>();
         stack.Push(new Frame(FrameKind.Root));
 
-        //List<(TextToken, string)> tokens = new(func);
-
         foreach (var (type, value) in func) {
             var frame = stack.Peek();
             switch (type) {
