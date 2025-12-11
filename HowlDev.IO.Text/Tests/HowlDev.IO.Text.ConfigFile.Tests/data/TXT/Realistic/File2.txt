@@ -1,0 +1,15 @@
+name: John Doe
+age: 27
+height: 5.9
+weight: 175
+is student: true
+favorite color: Blue
+has pet: False
+city: Seattle
+temperature: 72.5
+has driving license: True
+zip code: 98101
+is employed: false
+salary: 55000.50
+likes coffee: True
+hobbies: Reading

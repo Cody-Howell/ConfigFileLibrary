@@ -1,0 +1,9 @@
+info: [John Doe, 29, 6.1, True]
+data: [
+    True,
+    42,
+    Seattle, ]
+preferences: [ Travel,
+    Music,
+    3.14
+]

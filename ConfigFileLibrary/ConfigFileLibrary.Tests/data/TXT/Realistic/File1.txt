@@ -1,5 +1,0 @@
-Enemy Speed: 15
-Enemy Damage: 23.4
-Enemy Name: Bad Guy
-Enemy Color: #9645ff
-Is Boss: true
