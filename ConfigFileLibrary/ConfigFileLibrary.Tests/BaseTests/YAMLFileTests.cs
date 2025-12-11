@@ -1,7 +1,7 @@
 ﻿using ConfigFileLibrary;
 namespace ConfigFileLibrary.Tests.YAMLFile;
 
-public class FirstOrderTests {
+public class FirstOrderYAMLFileTests {
     [Test]
     public async Task PrimitiveTest1() {
         ConfigFile reader = new ConfigFile("../../../data/YAML/FirstOrder/Primitive1.yaml");
@@ -40,7 +40,7 @@ public class FirstOrderTests {
         await Assert.That(reader[3].AsBool()).IsEqualTo(true);
     }
 }
-public class SecondOrderTests {
+public class SecondOrderYAMLFileTests {
     [Test]
     public async Task ObjectWithObject() {
         ConfigFile reader = new ConfigFile("../../../data/YAML/SecondOrder/ObjectWithObject.yaml");
@@ -100,7 +100,7 @@ public class SecondOrderTests {
         await Assert.That(reader[2].AsString()).IsEqualTo("test string");
     }
 }
-public class RealisticTests {
+public class RealisticYAMLFileTests {
     [Test]
     public async Task RealisticTest() {
         ConfigFile reader = new ConfigFile("../../../data/YAML/Realistic/ComplexObject.yaml");
