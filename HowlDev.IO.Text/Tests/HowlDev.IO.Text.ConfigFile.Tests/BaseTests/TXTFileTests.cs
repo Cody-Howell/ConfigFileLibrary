@@ -62,8 +62,7 @@ public class SingleLineTXTFileTests {
             .WithMessage("Object does not contain key \"Random Thing\".");
     }
 }
-public class FiveLineTXTFileTests
-{
+public class FiveLineTXTFileTests {
     [Test]
     public async Task FiveStringTest() {
         TextConfigFile reader = new TextConfigFile("../../../data/TXT/5LineTests/AllStrings.txt");
@@ -131,8 +130,7 @@ public class FiveLineTXTFileTests
         await Assert.That(reader["Lorem5"].AsInt()).IsEqualTo(-25);
     }
 }
-public class SingleLineArrayTXTFileTests
-{
+public class SingleLineArrayTXTFileTests {
     [Test]
     public async Task StringsAreParsed() {
         TextConfigFile reader = new TextConfigFile("../../../data/TXT/SingleLineArrayTests/Strings.txt");
@@ -183,8 +181,7 @@ public class SingleLineArrayTXTFileTests
         await Assert.That(reader["Mixed Array"][3].AsBool()).IsEqualTo(true);
     }
 }
-public class MultiLineArrayTXTFileTests
-{
+public class MultiLineArrayTXTFileTests {
     [Test]
     public async Task TwoLineArrayTest() {
         TextConfigFile reader = new TextConfigFile("../../../data/TXT/MultiLineArrayTests/TwoLineArray.txt");
