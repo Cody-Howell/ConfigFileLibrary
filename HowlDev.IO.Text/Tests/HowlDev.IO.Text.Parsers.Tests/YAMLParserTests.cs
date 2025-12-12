@@ -6,6 +6,8 @@ internal class YAMLParserTests {
     [Test]
     public async Task Primitive2() {
         List<(TextToken token, string value)> parsed = new(new YAMLParser(File.ReadAllText("../../../data/YAML/Primitive2.yaml")));
+        await Assert.That(parsed[0].token).IsEqualTo(TextToken.Primitive);
+        await Assert.That(parsed[0].value).IsEqualTo("This is a sample multiline string that may become useful");
     }
 
     [Test]
