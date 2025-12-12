@@ -89,13 +89,12 @@ public class TextConfigFile : IBaseConfigOption {
                 string fileValue = file.Replace('\r', ' ').Replace('\n', ' ');
                 option = ParseFileContents(fileValue);
                 break;
-            default: throw new Exception("Extension error should be handled above.");
+            default: throw new Exception("Extension error should be handled above. Extension was not recognized.");
         }
     }
 
     /// <summary/>
     /// <param name="fileValue">JSON string</param>
-    /// <returns></returns>
     public static TextConfigFile ReadTextAsJSON(string fileValue) {
         TextConfigFile file = new TextConfigFile();
         file.option = file.ParseFileContents(fileValue);
