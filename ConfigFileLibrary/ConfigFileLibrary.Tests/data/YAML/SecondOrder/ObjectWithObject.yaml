@@ -1,0 +1,10 @@
+first: 
+    lorem: test
+    num: 1
+    double: 2.0
+    bool: true
+second: 
+    ipsum: something
+    num: 2
+    double: 3.2
+    bool: false

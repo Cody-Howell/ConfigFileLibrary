@@ -1,0 +1,26 @@
+{
+  "first": {
+    "simple Array": [
+      1,
+      2,
+      3
+    ],
+    "brother": "sample String",
+    "other sibling": {
+      "sibKey": "sibValue"
+    }
+  },
+  "second": {
+    "arrayOfObjects": [
+      {
+        "lorem": "ipsum",
+        "something": 1.2
+      },
+      {
+        "lorem2": "ipsum2",
+        "something2": false
+      }
+    ], 
+    "otherThing":  "hopefully"
+  }
+}

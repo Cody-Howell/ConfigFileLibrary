@@ -1,2 +1,0 @@
-Two Line Array : [ Line 1, 14, 
-				Line 2, 3.25, true, 46]
