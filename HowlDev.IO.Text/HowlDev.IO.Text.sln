@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HowlDev.IO.Text.Parsers", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HowlDev.IO.Text.ConfigFile", "HowlDev.IO.Text.ConfigFile\HowlDev.IO.Text.ConfigFile.csproj", "{7E31216F-E03E-3275-8272-7DCBDDF88056}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HowlDev.IO.Text.ConfigFile.Tests", "Tests\HowlDev.IO.Text.ConfigFile.Tests\HowlDev.IO.Text.ConfigFile.Tests.csproj", "{E1D5735D-ED82-7E43-51BF-30F606956BC0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigFileLibrary.Tests", "Tests\HowlDev.IO.Text.ConfigFile.Tests\ConfigFileLibrary.Tests.csproj", "{E1D5735D-ED82-7E43-51BF-30F606956BC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HowlDev.IO.Text.Parsers.Tests", "Tests\HowlDev.IO.Text.Parsers.Tests\HowlDev.IO.Text.Parsers.Tests.csproj", "{3383B2A2-ADD4-41C3-A7DC-9AAD6B51D45C}"
 EndProject
