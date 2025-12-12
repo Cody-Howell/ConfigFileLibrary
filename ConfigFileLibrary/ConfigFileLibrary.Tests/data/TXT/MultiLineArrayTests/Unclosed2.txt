@@ -1,4 +1,0 @@
-Lorem ints: [ 5, 4, 
-3, 2, 1
-this thing: doesn't matter
-but it : should throw good errors

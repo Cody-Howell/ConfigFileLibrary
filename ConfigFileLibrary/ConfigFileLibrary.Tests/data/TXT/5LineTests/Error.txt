@@ -1,5 +1,0 @@
-Lorem: String 1
-Lorem2: String 2
-Lorem3: String 3
-Lorem4:: String 4
-Lorem5: String 5

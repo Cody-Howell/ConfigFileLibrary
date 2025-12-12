@@ -1,0 +1,12 @@
+[
+  {
+    "num": 1,
+    "happy": "maybe",
+    "number": 5.3
+  },
+  {
+    "num": 2,
+    "happy": "yes",
+    "number": false
+  }
+]

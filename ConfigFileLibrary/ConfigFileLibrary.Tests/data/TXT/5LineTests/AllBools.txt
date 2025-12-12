@@ -1,5 +1,0 @@
-Lorem: True
-Lorem2: false
-Lorem3: true
-Lorem4: False
-Lorem5: True

@@ -1,0 +1,12 @@
+[
+  [
+    1,
+    true,
+    "string"
+  ],
+  [
+    "second array",
+    5.3,
+    false
+  ]
+]
