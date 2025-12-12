@@ -1,5 +1,4 @@
 ﻿using HowlDev.IO.Text.Parsers.Enums;
-using System.ComponentModel;
 
 namespace HowlDev.IO.Text.Parsers.Tests;
 
