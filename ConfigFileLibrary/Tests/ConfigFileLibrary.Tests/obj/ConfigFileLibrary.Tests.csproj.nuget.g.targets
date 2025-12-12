@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)tunit.core\0.6.159\buildTransitive\net9.0\TUnit.Core.targets" Condition="Exists('$(NuGetPackageRoot)tunit.core\0.6.159\buildTransitive\net9.0\TUnit.Core.targets')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.testing.platform.msbuild\1.4.3\buildTransitive\net8.0\Microsoft.Testing.Platform.MSBuild.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.testing.platform.msbuild\1.4.3\buildTransitive\net8.0\Microsoft.Testing.Platform.MSBuild.targets')" />
+    <Import Project="$(NuGetPackageRoot)tunit.assertions\0.6.159\buildTransitive\net9.0\TUnit.Assertions.targets" Condition="Exists('$(NuGetPackageRoot)tunit.assertions\0.6.159\buildTransitive\net9.0\TUnit.Assertions.targets')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.testing.extensions.codecoverage\17.14.2\buildTransitive\net8.0\Microsoft.Testing.Extensions.CodeCoverage.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.testing.extensions.codecoverage\17.14.2\buildTransitive\net8.0\Microsoft.Testing.Extensions.CodeCoverage.targets')" />
+  </ImportGroup>
+</Project>
