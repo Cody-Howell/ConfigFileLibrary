@@ -33,6 +33,8 @@ public class YAMLParser(string file) : TokenParser {
             yield break;
         }
 
+        int currentIndent = lines[0].indentCount;
+        
         for (int i = 0; i < lines.Count; i++) {
             (int indentCount, string data) line = lines[i];
             
@@ -52,6 +54,7 @@ public class YAMLParser(string file) : TokenParser {
             }
 
             if (isObject) {
+                // Processing object (dictionary)
                 string[] splits = line.data.Split(':');
                 if (splits.Length > 2) {
                     throw new FormatException($"Don't include multiple (:) on the same line. I read key: \"{splits[0].Trim()}\"");
@@ -61,41 +64,71 @@ public class YAMLParser(string file) : TokenParser {
                 yield return (TextToken.KeyValue, key);
 
                 if (string.IsNullOrWhiteSpace(splits[1])) {
-                    // Check what comes next
+                    // Value is on next line(s)
                     if (i + 1 < lines.Count) {
                         if (lines[i + 1].data.StartsWith('-')) {
                             // Next line is an array
                             yield return (TextToken.StartArray, "");
                             structureStack.Push((false, lines[i + 1].indentCount));
+                            
+                            // Skip ahead through array items
+                            i++;
+                            while (i < lines.Count && lines[i].data.StartsWith('-')) { 
+                                i++; 
+                            }
+                            i--; // Step back to last array item
                         } else if (lines[i + 1].indentCount > line.indentCount) {
-                            // Next line is a nested object
+                            // Next line is a nested object (dictionary)
                             yield return (TextToken.StartObject, "");
                             structureStack.Push((true, lines[i + 1].indentCount));
+                            
+                            // Skip ahead through nested object
+                            i++;
+                            int targetIndent = line.indentCount;
+                            while (i < lines.Count && lines[i].indentCount != targetIndent) { 
+                                i++; 
+                            }
+                            i--; // Step back to last item in nested object
                         }
                     }
                 } else {
-                    // Inline value
+                    // Inline primitive value
                     yield return (TextToken.Primitive, splits[1].Trim());
                 }
             } else {
-                // We're in an array
-                string lineData = line.data.Replace('-', ' ').Trim();
-                
-                if (string.IsNullOrWhiteSpace(lineData)) {
-                    continue;
-                }
-                
-                if (lineData.Contains(':')) {
-                    // Array item is an object
-                    yield return (TextToken.StartObject, "");
-                    structureStack.Push((true, line.indentCount + 1));
-                } else if (i + 1 < lines.Count && lines[i + 1].indentCount > line.indentCount) {
-                    // Array item has nested structure
+                // Processing array (list)
+                if (currentIndent < line.indentCount && structureStack.Count > 0) {
+                    // Nested array within current array
                     yield return (TextToken.StartArray, "");
-                    structureStack.Push((false, lines[i + 1].indentCount));
+                    structureStack.Push((false, line.indentCount));
+                    
+                    // Skip ahead through nested array
+                    while (i < lines.Count && lines[i].indentCount != currentIndent) { 
+                        i++; 
+                    }
+                    i--; // Step back
                 } else {
-                    // Simple primitive value
-                    yield return (TextToken.Primitive, lineData);
+                    string lineData = line.data.Replace('-', ' ').Trim();
+                    
+                    if (string.IsNullOrWhiteSpace(lineData)) {
+                        continue;
+                    }
+                    
+                    if (lineData.Contains(':')) {
+                        // Array item is an object (dictionary)
+                        yield return (TextToken.StartObject, "");
+                        structureStack.Push((true, line.indentCount + 1));
+                        
+                        // Skip ahead through object in array
+                        i++;
+                        while (i < lines.Count && !lines[i].data.StartsWith('-')) { 
+                            i++; 
+                        }
+                        i--; // Step back
+                    } else {
+                        // Simple primitive value
+                        yield return (TextToken.Primitive, lineData);
+                    }
                 }
             }
         }
