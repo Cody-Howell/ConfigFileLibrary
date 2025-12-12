@@ -68,7 +68,7 @@ public class TextConfigFile : IBaseConfigOption {
                 return;
             case ".yaml":
             case ".yml":
-                List<(int indentCount, string data)> lines = YAMLHelper.ReturnOrderedLines(filePath);
+                List<(int indentCount, string data)> lines = YAMLHelper.ReturnOrderedLines(file);
 
                 if (lines[0].data.StartsWith('-')) {
                     // Read lines as list
