@@ -16,4 +16,8 @@
 		<ProjectReference Include="..\..\HowlDev.IO.Text.Parsers\HowlDev.IO.Text.Parsers.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="data\" />
+	</ItemGroup>
+
 </Project>
