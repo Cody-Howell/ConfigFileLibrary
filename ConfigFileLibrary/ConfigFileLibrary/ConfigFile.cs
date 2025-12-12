@@ -7,7 +7,7 @@ using ConfigFileLibrary.Primitives;
 /// </summary>
 public class ConfigFile : IBaseConfigOption {
     private IBaseConfigOption option;
-    #region IBaseConfigOption Implementation
+
     /// <summary/>
     public BaseType type => option.type;
     /// <summary/>
@@ -42,7 +42,6 @@ public class ConfigFile : IBaseConfigOption {
     public bool TryGet(string key, out IBaseConfigOption value) => option.TryGet(key, out value);
     /// <summary/>
     public bool Contains(string key) => option.Contains(key);
-#endregion
 
     private List<string> acceptedExtensions = [".txt", ".yml", ".yaml", ".json"];
 
@@ -75,24 +74,17 @@ public class ConfigFile : IBaseConfigOption {
     }
 
     /// <summary/>
-    /// <param name="fileValue">String</param>
-    /// <param name="type">Type the string should be parsed as</param>
+    /// <param name="fileValue">JSON string</param>
     /// <returns></returns>
-    public static ConfigFile ReadTextAs(string fileValue, FileTypes type) {
+    public static ConfigFile ReadTextAsJSON(string fileValue) {
         ConfigFile file = new ConfigFile();
-        switch (type) {
-            case FileTypes.JSON:  file.option = ParseFileAsOption(new JSONParser(fileValue)); break;
-            case FileTypes.YAML: file.option = ParseFileAsOption(new YAMLParser(fileValue)); break;
-            case FileTypes.TXT: file.option = ParseFileAsOption(new TXTParser(fileValue)); break;
-        };
+        file.option = ParseFileAsOption(new JSONParser(fileValue));
         return file;
     }
 
     private static IBaseConfigOption ParseFileAsOption(TokenParser func) {
         var stack = new Stack<Frame>();
         stack.Push(new Frame(FrameKind.Root));
-
-        //List<(TextToken, string)> tokens = new(func);
 
         foreach (var (type, value) in func) {
             var frame = stack.Peek();
@@ -102,9 +94,6 @@ public class ConfigFile : IBaseConfigOption {
                     break;
                 case TextToken.EndObject:
                     var obj = stack.Pop();
-                    if (obj.Kind != FrameKind.Object) {
-                        throw new FormatException("Mismatched end object token.");
-                    }
                     var parent = stack.Peek();
                     parent.Add(obj.AsOption());
                     break;
@@ -113,9 +102,6 @@ public class ConfigFile : IBaseConfigOption {
                     break;
                 case TextToken.EndArray:
                     var arr = stack.Pop();
-                    if (arr.Kind != FrameKind.Array) {
-                        throw new FormatException("Mismatched end array token.");
-                    }
                     parent = stack.Peek();
                     parent.Add(arr.AsOption());
                     break;

@@ -1,6 +1,6 @@
 ﻿namespace ConfigFileLibrary.Tests.TXTFile;
 
-public class SingleLineTXTFileTests {
+public class SingleLineTests {
     [Test]
     public async Task StringValues() {
         ConfigFile reader = new ConfigFile("../../../data/TXT/1LineTests/String.txt"); // Path from my test area to my test file
@@ -62,7 +62,7 @@ public class SingleLineTXTFileTests {
             .WithMessage("Object does not contain key \"Random Thing\".");
     }
 }
-public class FiveLineTXTFileTests {
+public class FiveLineTests {
     [Test]
     public async Task FiveStringTest() {
         ConfigFile reader = new ConfigFile("../../../data/TXT/5LineTests/AllStrings.txt");
@@ -130,7 +130,7 @@ public class FiveLineTXTFileTests {
         await Assert.That(reader["Lorem5"].AsInt()).IsEqualTo(-25);
     }
 }
-public class SingleLineArrayTXTFileTests {
+public class SingleLineArrayTests {
     [Test]
     public async Task StringsAreParsed() {
         ConfigFile reader = new ConfigFile("../../../data/TXT/SingleLineArrayTests/Strings.txt");
@@ -181,7 +181,7 @@ public class SingleLineArrayTXTFileTests {
         await Assert.That(reader["Mixed Array"][3].AsBool()).IsEqualTo(true);
     }
 }
-public class MultiLineArrayTXTFileTests {
+public class MultiLineArrayTests {
     // [Test]
     // public async Task TwoLineArrayTest() {
     //     ConfigFile reader = new ConfigFile("../../../data/TXT/MultiLineArrayTests/TwoLineArray.txt");
@@ -218,7 +218,7 @@ public class MultiLineArrayTXTFileTests {
     //         .WithMessage("Error parsing array around line 3. Please ensure you have a closing array brace.");
     // }
 }
-public class RealisticTXTFileTests {
+public class RealisticTests {
     [Test]
     public async Task FiveStringTest() {
         ConfigFile reader = new ConfigFile("../../../data/TXT/Realistic/File1.txt");

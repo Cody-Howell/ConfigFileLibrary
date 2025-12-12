@@ -40,12 +40,6 @@ internal class Frame {
             Arr!.Add(option);
         }
     }
-
-    public override string ToString() {
-        if (Kind == FrameKind.Root) return "Frame: Root";
-        if (Kind == FrameKind.Array) return $"Frame: Array, Count: {Arr!.Count}";
-        return $"Frame: Object, Count: {Obj!.Count}";
-    }
 }
 
 enum FrameKind { Object, Array, Root }

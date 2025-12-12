@@ -1,6 +1,6 @@
 ﻿namespace ConfigFileLibrary.Tests.JSONFile;
 
-public class FirstOrderJSONFileTests {
+public class FirstOrderTests {
     [Test]
     public async Task ArrayTest() {
         ConfigFile reader = new ConfigFile("../../../data/JSON/FirstOrder/SimpleArray.json");
@@ -32,7 +32,7 @@ public class FirstOrderJSONFileTests {
         await Assert.That(ints[3]).IsEqualTo(7);
     }
 }
-public class SecondOrderJSONFileTests {
+public class SecondOrderTests {
     [Test]
     public async Task ArrayWithArray() {
         ConfigFile reader = new ConfigFile("../../../data/JSON/SecondOrder/ArrayWithArray.json");
@@ -83,7 +83,7 @@ public class SecondOrderJSONFileTests {
         await Assert.That(reader["second"][1].AsString()).IsEqualTo("closed string");
     }
 }
-public class RealisticJSONFileTests {
+public class RealisticTests {
     [Test]
     public async Task RealisticTest() {
         // Copied from the YAML system because I was lazy. But they're interoperable!
@@ -103,10 +103,10 @@ public class RealisticJSONFileTests {
     }
 }
 
-public class TextReadingJSONFileTests {
+public class TextReadingTests {
     [Test]
     public async Task ReadingTest1() {
-        ConfigFile reader = ConfigFile.ReadTextAs("[ 14,  \"lorem string\",  true  ]", Enums.FileTypes.JSON);
+        ConfigFile reader = ConfigFile.ReadTextAsJSON("[ 14,  \"lorem string\",  true  ]");
         await Assert.That(reader[0].AsInt()).IsEqualTo(14);
         await Assert.That(reader[1].AsString()).IsEqualTo("lorem string");
         await Assert.That(reader[2].AsBool()).IsEqualTo(true);
