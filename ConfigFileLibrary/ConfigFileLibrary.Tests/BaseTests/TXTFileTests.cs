@@ -182,41 +182,41 @@ public class SingleLineArrayTests {
     }
 }
 public class MultiLineArrayTests {
-    // [Test]
-    // public async Task TwoLineArrayTest() {
-    //     ConfigFile reader = new ConfigFile("../../../data/TXT/MultiLineArrayTests/TwoLineArray.txt");
-    //     await Assert.That(reader["Two Line Array"][0].AsString()).IsEqualTo("Line 1");
-    //     await Assert.That(reader["Two Line Array"][1].AsInt()).IsEqualTo(14);
-    //     await Assert.That(reader["Two Line Array"][2].AsString()).IsEqualTo("Line 2");
-    //     await Assert.That(reader["Two Line Array"][3].AsDouble()).IsEqualTo(3.25);
-    //     await Assert.That(reader["Two Line Array"][4].AsBool()).IsEqualTo(true);
-    //     await Assert.That(reader["Two Line Array"][5].AsInt()).IsEqualTo(46);
-    // }
+    [Test]
+    public async Task TwoLineArrayTest() {
+        ConfigFile reader = new ConfigFile("../../../data/TXT/MultiLineArrayTests/TwoLineArray.txt");
+        await Assert.That(reader["Two Line Array"][0].AsString()).IsEqualTo("Line 1");
+        await Assert.That(reader["Two Line Array"][1].AsInt()).IsEqualTo(14);
+        await Assert.That(reader["Two Line Array"][2].AsString()).IsEqualTo("Line 2");
+        await Assert.That(reader["Two Line Array"][3].AsDouble()).IsEqualTo(3.25);
+        await Assert.That(reader["Two Line Array"][4].AsBool()).IsEqualTo(true);
+        await Assert.That(reader["Two Line Array"][5].AsInt()).IsEqualTo(46);
+    }
 
-    // [Test]
-    // public async Task FourLineArrayTest() {
-    //     ConfigFile reader = new ConfigFile("../../../data/TXT/MultiLineArrayTests/FourLineArray.txt");
-    //     await Assert.That(reader["Four Line Array"][0].AsString()).IsEqualTo("Line 1");
-    //     await Assert.That(reader["Four Line Array"][1].AsInt()).IsEqualTo(14);
-    //     await Assert.That(reader["Four Line Array"][2].AsString()).IsEqualTo("Line 2");
-    //     await Assert.That(reader["Four Line Array"][3].AsDouble()).IsEqualTo(3.25);
-    //     await Assert.That(reader["Four Line Array"][4].AsBool()).IsEqualTo(true);
-    //     await Assert.That(reader["Four Line Array"][5].AsInt()).IsEqualTo(46);
-    // }
+    [Test]
+    public async Task FourLineArrayTest() {
+        ConfigFile reader = new ConfigFile("../../../data/TXT/MultiLineArrayTests/FourLineArray.txt");
+        await Assert.That(reader["Four Line Array"][0].AsString()).IsEqualTo("Line 1");
+        await Assert.That(reader["Four Line Array"][1].AsInt()).IsEqualTo(14);
+        await Assert.That(reader["Four Line Array"][2].AsString()).IsEqualTo("Line 2");
+        await Assert.That(reader["Four Line Array"][3].AsDouble()).IsEqualTo(3.25);
+        await Assert.That(reader["Four Line Array"][4].AsBool()).IsEqualTo(true);
+        await Assert.That(reader["Four Line Array"][5].AsInt()).IsEqualTo(46);
+    }
 
-    // [Test]
-    // public async Task UnclosedArrayThrowsError() {
-    //     await Assert.That(() => new ConfigFile("../../../data/TXT/MultiLineArrayTests/Unclosed.txt"))
-    //         .Throws<FormatException>()
-    //         .WithMessage("Error parsing array around line 3. Please ensure you have a closing array brace.");
-    // }
+    [Test]
+    public async Task UnclosedArrayThrowsError() {
+        await Assert.That(() => new ConfigFile("../../../data/TXT/MultiLineArrayTests/Unclosed.txt"))
+            .Throws<FormatException>()
+            .WithMessage("Error parsing array around line 3. Please ensure you have a closing array brace.");
+    }
 
-    // [Test]
-    // public async Task UnclosedArrayStopsBeforeNextKVP() {
-    //     await Assert.That(() => new ConfigFile("../../../data/TXT/MultiLineArrayTests/Unclosed2.txt"))
-    //         .Throws<FormatException>()
-    //         .WithMessage("Error parsing array around line 3. Please ensure you have a closing array brace.");
-    // }
+    [Test]
+    public async Task UnclosedArrayStopsBeforeNextKVP() {
+        await Assert.That(() => new ConfigFile("../../../data/TXT/MultiLineArrayTests/Unclosed2.txt"))
+            .Throws<FormatException>()
+            .WithMessage("Error parsing array around line 3. Please ensure you have a closing array brace.");
+    }
 }
 public class RealisticTests {
     [Test]
@@ -257,24 +257,24 @@ public class RealisticTests {
             .WithMessage("Object does not contain key \"Enemy Name\".");
     }
 
-    // [Test]
-    // public async Task AIGeneratedSlop2() {
-    //     // Intentional error for closing commas
-    //     ConfigFile reader = new ConfigFile("../../../data/TXT/Realistic/File3.txt");
-    //     await Assert.That(reader["info"][0].AsString()).IsEqualTo("John Doe");
-    //     await Assert.That(reader["info"][1].AsInt()).IsEqualTo(29);
-    //     await Assert.That(reader["info"][2].AsDouble()).IsEqualTo(6.1);
-    //     await Assert.That(reader["info"][3].AsBool()).IsEqualTo(true);
+    [Test]
+    public async Task AIGeneratedSlop2() {
+        ConfigFile reader = new ConfigFile("../../../data/TXT/Realistic/File3.txt");
+        await Assert.That(reader["info"][0].AsString()).IsEqualTo("John Doe");
+        await Assert.That(reader["info"][1].AsInt()).IsEqualTo(29);
+        await Assert.That(reader["info"][2].AsDouble()).IsEqualTo(6.1);
+        await Assert.That(reader["info"][3].AsBool()).IsEqualTo(true);
 
-    //     await Assert.That(reader["data"][0].AsString()).IsEqualTo("True");
-    //     await Assert.That(reader["data"][1].AsInt()).IsEqualTo(42);
-    //     await Assert.That(reader["data"][2].AsString()).IsEqualTo("Seattle");
+        await Assert.That(reader["data"][0].AsString()).IsEqualTo("True");
+        await Assert.That(reader["data"][1].AsInt()).IsEqualTo(42);
+        await Assert.That(reader["data"][2].AsString()).IsEqualTo("Seattle");
 
-    //     await Assert.That(reader["preferences"][0].AsString()).IsEqualTo("Travel");
-    //     await Assert.That(reader["preferences"][1].AsString()).IsEqualTo("Music");
-    //     await Assert.That(reader["preferences"][2].AsDouble()).IsEqualTo(3.14);
+        await Assert.That(reader["preferences"][0].AsString()).IsEqualTo("Travel");
+        await Assert.That(reader["preferences"][1].AsString()).IsEqualTo("Music");
+        await Assert.That(reader["preferences"][2].AsDouble()).IsEqualTo(3.14);
 
-    //     await Assert.That(() => reader["data"][3])
-    //         .Throws<IndexOutOfRangeException>();
-    // }
+        // Intentional error for closing commas
+        await Assert.That(() => reader["data"][3])
+            .Throws<IndexOutOfRangeException>();
+    }
 }
