@@ -22,7 +22,7 @@ public class TXTParser(string file) : TokenParser {
                     if (!longString.Contains("]")) {
                         while (!longString.Contains("]")) {
                             i++;
-                            longString += file[i];
+                            longString += fileLines[i];
 
                             if (longString.Contains(split)) {
                                 throw new Exception();

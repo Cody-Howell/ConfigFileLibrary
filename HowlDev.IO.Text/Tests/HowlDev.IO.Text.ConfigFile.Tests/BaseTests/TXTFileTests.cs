@@ -211,7 +211,7 @@ public class MultiLineArrayTXTFileTests
     public async Task UnclosedArrayThrowsError() {
         await Assert.That(() => new TextConfigFile("../../../data/TXT/MultiLineArrayTests/Unclosed.txt"))
             .Throws<FormatException>()
-            .WithMessage("Error parsing array around line 3. Please ensure you have a closing array brace.");
+            .WithMessage("Error parsing array around line 4. Please ensure you have a closing array brace.");
     }
 
     [Test]
