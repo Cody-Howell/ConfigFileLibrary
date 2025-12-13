@@ -149,6 +149,27 @@ public class TextConfigFile : IBaseConfigOption {
         return Map<T>(new OptionMappingOptions() { UseConstructors = true, StrictMatching = true });
     }
 
+    /// <summary>
+    /// Uses parameters to build an object. It requires a parameterless constructor to be available 
+    /// on the type. 
+    /// </summary>
+    /// <exception cref="InvalidOperationException"/>
+    public T AsProperties<T>() {
+        return Map<T>(new OptionMappingOptions() { UseProperties = true });
+    }
+
+    /// <summary>
+    /// Uses parameters to build an object. It requires a parameterless constructor to be available 
+    /// on the type. <br/>
+    /// For Strict mapping, it will either throw an exception if the writable keys and the object count 
+    /// have a different number, or will throw any property name that does not have an object equivalent. 
+    /// </summary>
+    /// <exception cref="InvalidOperationException"/>
+    /// <exception cref="StrictMappingException"/>
+    public T AsStrictProperties<T>() {
+        return Map<T>(new OptionMappingOptions() { UseProperties = true, StrictMatching = true });
+    }
+
     private T Map<T>(OptionMappingOptions options, IBaseConfigOption? option = null) {
         option ??= this.option; // nice
 
@@ -183,6 +204,43 @@ public class TextConfigFile : IBaseConfigOption {
                 @$"No suitable constructor found for {typeof(T).Name}. 
                 Tried to find a constructor that matched the following keys: {String.Join(", ", option.Keys.ToArray())}."
             );
+        }
+
+        if (options.UseProperties) {
+            if (typeof(T).GetConstructor(Type.EmptyTypes) == null)
+            {
+                throw new InvalidOperationException(
+                    $"Type {typeof(T).Name} must have a parameterless constructor to use property mapping."
+                );
+            }
+
+            T instance = Activator.CreateInstance<T>()!;
+            var properties = typeof(T).GetProperties().Where(p => p.CanWrite);
+
+            if (options.StrictMatching) {
+                if (properties.Count() != option.Count){
+                    throw new StrictMappingException(
+                        @$"Property count mismatch for {typeof(T).Name}. Consider removing the StrictMatching flag. 
+                        Property count of type: {properties.Count()}. Key count of object: {option.Count}."
+                    );
+                }
+            }
+
+            foreach (var prop in properties)
+            {
+                if (option.TryGet(prop.Name, out var value))
+                {
+                    prop.SetValue(instance, Convert.ChangeType(value, prop.PropertyType));
+                } 
+                else if (options.StrictMatching) {
+                    throw new StrictMappingException(
+                        @$"Property mismatch for {typeof(T).Name}. Consider removing the StrictMatching flag. 
+                        Could not find matching name for property: {prop.Name}."
+                    );
+                }
+            }
+
+            return instance;
         }
 
         throw new InvalidOperationException(

@@ -1,6 +1,4 @@
-using TUnit.Engine.Services;
-
-namespace HowlDev.IO.Text.ConfigFile.Tests.AsConstructedTests.Classes;
+namespace HowlDev.IO.Text.ConfigFile.Tests.Classes;
 
 
 public record PersonRecord(string name, int id);
