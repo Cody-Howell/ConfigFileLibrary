@@ -105,10 +105,9 @@ public class TextConfigFile : IBaseConfigOption
     }
 
     /// <summary>
-    /// 
+    /// Uses constructors to build an object. 
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
     public T AsConstructed<T>()
     {
         var ctors = typeof(T).GetConstructors();
@@ -120,9 +119,8 @@ public class TextConfigFile : IBaseConfigOption
 
             if (canCreate)
             {
-                // Gather args from your object’s data store
                 var args = parameters
-                    .Select(p => ConvertToType(option[p.Name!], p.ParameterType))
+                    .Select(p => ConvertToPrimitive(option[p.Name!], p.ParameterType))
                     .ToArray();
 
                 return (T)ctor.Invoke(args);
@@ -134,7 +132,7 @@ public class TextConfigFile : IBaseConfigOption
         );
     }
 
-    private object ConvertToType(IBaseConfigOption baseConfigOption, Type parameterType)
+    private static object ConvertToPrimitive(IBaseConfigOption baseConfigOption, Type parameterType)
     {
         switch (parameterType.Name)
         {
