@@ -59,6 +59,19 @@ public class AsConstructedTests
     }
 
     [Test]
+    public async Task PersonClassTestForEmptyConstructor()
+    {
+        string txt = """
+        idx: 23
+        """;
+        TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+        PersonClass p = reader.AsConstructed<PersonClass>();
+        await Assert.That(p.name).IsEqualTo(string.Empty);
+        await Assert.That(p.id).IsEqualTo(0);
+    }
+
+    [Test]
     public async Task PersonClassTestIgnoresExtraInformation()
     {
         string txt = """
@@ -75,11 +88,25 @@ public class AsConstructedTests
     }
 
     [Test]
-    public async Task PersonClassTestIgnoresCaseForConstruction()
+    public async Task PersonClassTestIgnoresCaseForConstruction1()
     {
         string txt = """
         Name: Jane
         Id: 23
+        """;
+        TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+        PersonClass p = reader.AsConstructed<PersonClass>();
+        await Assert.That(p.name).IsEqualTo("Jane");
+        await Assert.That(p.id).IsEqualTo(23);
+    }
+
+    [Test]
+    public async Task PersonClassTestIgnoresCaseForConstruction2()
+    {
+        string txt = """
+        Name: Jane
+        id: 23
         """;
         TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
 
@@ -98,5 +125,51 @@ public class AsConstructedTests
         TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
 
         await Assert.That(() => reader.AsConstructed<PersonRecord>()).Throws<InvalidOperationException>();
+    }
+
+    [Test]
+    public async Task PersonRecordIgnoresExtraValues()
+    {
+        string txt = """
+        name: Jane
+        id: 23
+        lorem: empty
+        irrelevant: ignored
+        """;
+        TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+        PersonRecord p = reader.AsConstructed<PersonRecord>();
+        await Assert.That(p.name).IsEqualTo("Jane");
+        await Assert.That(p.id).IsEqualTo(23);
+    }
+}
+public class AsConstructedStrictTests
+{
+    [Test]
+    public async Task PersonRecordTest()
+    {
+        string txt = """
+        name: Jane
+        id: 23
+        """;
+        TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+        PersonRecord p = reader.AsConstructed<PersonRecord>(new OptionMappingOptions() {StrictMatching = true});
+        await Assert.That(p.name).IsEqualTo("Jane");
+        await Assert.That(p.id).IsEqualTo(23);
+    }
+
+    [Test]
+    public async Task PersonClassTest()
+    {
+        string txt = """
+        name: Jane
+        id: 23
+        """;
+        TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+        PersonClass p = reader.AsConstructed<PersonClass>(new OptionMappingOptions() {StrictMatching = true});
+        await Assert.That(p.name).IsEqualTo("Jane");
+        await Assert.That(p.id).IsEqualTo(23);
     }
 }

@@ -1,10 +1,8 @@
-using System.Runtime.InteropServices;
 using HowlDev.IO.Text.ConfigFile.Enums;
 using HowlDev.IO.Text.ConfigFile.Interfaces;
 using HowlDev.IO.Text.ConfigFile.Primitives;
 using HowlDev.IO.Text.Parsers;
 using HowlDev.IO.Text.Parsers.Enums;
-using HowlDev.IO.Text.Parsers.Helpers;
 
 namespace HowlDev.IO.Text.ConfigFile;
 
@@ -105,30 +103,54 @@ public class TextConfigFile : IBaseConfigOption
     }
 
     /// <summary>
-    /// Uses constructors to build an object. 
+    /// Uses constructors to build an object. It sorts by descending length of parameters 
+    /// and uses the first that the object satisfies all values.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public T AsConstructed<T>()
     {
-        var ctors = typeof(T).GetConstructors();
+        return Map<T>(new OptionMappingOptions() { UseConstructors = true });
+    }
 
-        foreach (var ctor in ctors.OrderByDescending(c => c.GetParameters().Length))
+    /// <summary>
+    /// Uses constructors to build an object. It sorts by descending length of parameters 
+    /// and uses the first that the object satisfies all values. 
+    /// Set the StrictMatching property to enable strict constructor matching.
+    /// </summary>
+    public T AsConstructed<T>(OptionMappingOptions options)
+    {
+        return Map<T>(new OptionMappingOptions() { UseConstructors = true, StrictMatching = options.StrictMatching });
+    }
+
+    private T Map<T>(OptionMappingOptions options, IBaseConfigOption? option = null)
+    {
+        option ??= this.option; // nice
+
+        if (options.UseConstructors)
         {
-            var parameters = ctor.GetParameters();
-            bool canCreate = parameters.All(p => Contains(p.Name!));
+            var ctors = typeof(T).GetConstructors();
 
-            if (canCreate)
+            foreach (var ctor in ctors.OrderByDescending(c => c.GetParameters().Length))
             {
-                var args = parameters
-                    .Select(p => ConvertToPrimitive(option[p.Name!], p.ParameterType))
-                    .ToArray();
+                var parameters = ctor.GetParameters();
+                bool canCreate = parameters.All(p => Contains(p.Name!));
 
-                return (T)ctor.Invoke(args);
+                if (canCreate)
+                {
+                    var args = parameters
+                        .Select(p => ConvertToPrimitive(option[p.Name!], p.ParameterType))
+                        .ToArray();
+
+                    return (T)ctor.Invoke(args);
+                }
             }
+
+            throw new InvalidOperationException(
+                $"No suitable constructor found for {typeof(T).Name}."
+            );
         }
 
         throw new InvalidOperationException(
-            $"No suitable constructor found for {typeof(T).Name}."
+            $"Was not able to construct object for {typeof(T).Name}"
         );
     }
 
