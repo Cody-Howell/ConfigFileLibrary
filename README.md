@@ -189,6 +189,51 @@ You can now export types from config files! It's similar to having the JSON seri
 
 It isn't very well tested (though I have a number of unit tests for those methods), so I will spend some time in the "real world" trying it out. 
 
+Here's a few tests, showing how it works: 
+
+```csharp
+[Test]
+public async Task PersonRecordTest() {
+    string txt = """
+    name: Jane
+    id: 23
+    """;
+    TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+    PersonRecord p = reader.As<PersonRecord>();
+    await Assert.That(p.name).IsEqualTo("Jane");
+    await Assert.That(p.id).IsEqualTo(23);
+}
+
+
+[Test]
+public async Task BookClassTest() {
+    string txt = """
+    name: Little Women
+    weight: 2.3
+    height: 12.3
+    """;
+    TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+    BookClass b = reader.AsProperties<BookClass>();
+    await Assert.That(b.name).IsEqualTo("Little Women");
+    await Assert.That(b.weight).IsEqualTo(2.3);
+    await Assert.That(b.height).IsEqualTo(12.3);
+}
+
+[Test]
+public async Task PersonRecordTest() {
+    string txt = """
+    name: Jane
+    id: 23
+    """;
+    TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+    PersonRecord p = reader.AsConstructed<PersonRecord>();
+    await Assert.That(p.name).IsEqualTo("Jane");
+    await Assert.That(p.id).IsEqualTo(23);
+}
+```
 
 ## Changelog
 
