@@ -32,6 +32,17 @@ public class FirstOrderObjectConfigTests {
     }
 
     [Test]
+    public async Task ObjectDoesntAllowCaseInsensitiveKeys() {
+        await Assert.That(() => 
+        new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
+            { "key1", new PrimitiveConfigOption("value1") },
+            { "Key1", new PrimitiveConfigOption("value1") }
+        }, "test"))
+            .Throws<ArgumentException>()
+            .WithMessage("An item with the same key has already been added. Key: Key1");
+    }
+
+    [Test]
     public async Task ObjectCannotDuplicateKeys() {
         await Assert.That(() => new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
             { "key1", new PrimitiveConfigOption("value1") },
