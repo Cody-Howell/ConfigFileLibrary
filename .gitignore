@@ -1,8 +1,0 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/ConfigFileLibrary/TestLibrary/TestLibrary.csproj
-/ConfigFileLibrary/TestConsole/TestConsole.csproj
-/ConfigFileLibrary/TestConsole
-.editorconfig
