@@ -139,6 +139,15 @@ public class TextConfigFile : IBaseConfigOption {
     }
 
     /// <summary>
+    /// Takes in an <see cref="OptionMappingOptions"/> type through to the inner Map function. 
+    /// </summary>
+    /// <exception cref="InvalidOperationException"/>
+    /// <exception cref="StrictMappingException"/>
+    public T As<T>(OptionMappingOptions option) {
+        return Map<T>(option);
+    }
+
+    /// <summary>
     /// Defaults to attempt a constructor call first, and if that fails, uses a parameterless constructor and 
     /// fills in any available properties. <br/>
     /// Will strictly test for the number of values in the object and the constructor and/or number of writable 
@@ -197,6 +206,10 @@ public class TextConfigFile : IBaseConfigOption {
         if (options.UseConstructors) {
             var ctors = typeof(T).GetConstructors();
 
+            if (options.UseProperties) {
+                ctors = [.. ctors.Where(p => p.GetParameters().Length > 0)];
+            }
+
             if (options.StrictMatching) {
                 ctors = [.. ctors.Where(p => p.GetParameters().Length == option.Count)];
             }
@@ -214,7 +227,7 @@ public class TextConfigFile : IBaseConfigOption {
                 }
             }
 
-            if (options.StrictMatching) {
+            if (options.StrictMatching && !options.UseProperties) {
                 throw new StrictMappingException(
                     $"""
                     No suitable constructor found for {typeof(T).Name}. Consider removing the StrictMatching flag. 
@@ -223,12 +236,14 @@ public class TextConfigFile : IBaseConfigOption {
                 );
             }
 
-            throw new InvalidOperationException(
-                $"""
-                No suitable constructor found for {typeof(T).Name}. 
-                Tried to find a constructor that matched the following keys: {String.Join(", ", option.Keys.ToArray())}.
-                """
-            );
+            if (!options.UseProperties) {
+                throw new InvalidOperationException(
+                    $"""
+                    No suitable constructor found for {typeof(T).Name}. 
+                    Tried to find a constructor that matched the following keys: {String.Join(", ", option.Keys.ToArray())}.
+                    """
+                );
+            }
         }
 
         if (options.UseProperties) {
