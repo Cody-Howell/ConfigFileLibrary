@@ -3,8 +3,10 @@ using System.Collections;
 
 namespace HowlDev.IO.Text.Parsers;
 
+/// <summary/>
 public class JSONParser(string file) : TokenParser {
     private int readingIndex = 0;
+    /// <summary/>
     public IEnumerator<(TextToken, string)> GetEnumerator() {
         string fileValue = file.Replace('\r', ' ').Replace('\n', ' ');
 

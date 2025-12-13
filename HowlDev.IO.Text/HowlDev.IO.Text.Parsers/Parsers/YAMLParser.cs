@@ -4,7 +4,10 @@ using System.Collections;
 
 namespace HowlDev.IO.Text.Parsers;
 
+/// <summary/>
+/// <param name="file"></param>
 public class YAMLParser(string file) : TokenParser {
+    /// <summary/>
     public IEnumerator<(TextToken, string)> GetEnumerator() {
         List<(int indentCount, string data)> lines = YAMLHelper.ReturnOrderedLines(file);
 

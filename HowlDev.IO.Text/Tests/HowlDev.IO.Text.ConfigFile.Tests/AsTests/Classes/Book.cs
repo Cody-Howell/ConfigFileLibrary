@@ -12,12 +12,12 @@ public class BrokenBookClass {
     public double Weight { get; set; }
     public double Height { get; set; }
 
-    public BrokenBookClass() {}
+    public BrokenBookClass() { }
 
     public BrokenBookClass(string innerName, double weight, double height) {
         Name = innerName;
         Weight = weight;
         Height = height;
     }
-    
+
 }

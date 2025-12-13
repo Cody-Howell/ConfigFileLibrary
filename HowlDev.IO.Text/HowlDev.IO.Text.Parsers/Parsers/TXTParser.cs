@@ -3,7 +3,9 @@ using System.Collections;
 
 namespace HowlDev.IO.Text.Parsers;
 
+/// <summary/>
 public class TXTParser(string file) : TokenParser {
+    /// <summary/>
     public IEnumerator<(TextToken, string)> GetEnumerator() {
         yield return (TextToken.StartObject, "");
 

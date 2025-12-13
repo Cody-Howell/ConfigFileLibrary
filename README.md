@@ -1,4 +1,4 @@
-# HowlDev.IO.Text
+# HowlDev.IO.Text.ConfigFile
 
 This is a hand-written text parser for TXT, YAML, and JSON files. It's designed for use in constructors
 and NOT as efficient runtime collections. I simply use internal lists and dictionaries to store the data.
@@ -222,3 +222,22 @@ This will be removed from beta probably in a few months.
 - Arrays and objects seem to be working fine
 - TXT files are working within spec and have tests
 - Starting on YAML; built a helper class and hope to get it up soon
+
+# HowlDev.IO.Text.Parsers
+
+Contains helpers and enums as well as the 3 text parsers used for the ConfigFile above. There is still a bit more to test, so this will also be in beta for some time. Though it already is sufficient for the current suite of ConfigFile tests. 
+
+## Token Format
+
+The tokens come back in a particular way. There is a Frame object in the ConfigFile library that takes them in a particular order and outputs the results objects, arrays, and primitives. 
+
+That order has a general format with a few rules: 
+- Objects must specify a key before applying a value
+- Primitives, close object tokens, and close array tokens can all be children to an object or array
+
+1.0-beta (12/12/25)
+
+- Created project
+
+This will be removed from beta probably in a few months. 
+
