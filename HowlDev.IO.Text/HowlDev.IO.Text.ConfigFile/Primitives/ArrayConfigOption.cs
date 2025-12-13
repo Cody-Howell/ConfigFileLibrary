@@ -86,4 +86,55 @@ public class ArrayConfigOption : IBaseConfigOption {
 
     /// <summary/>
     public bool Contains(string key) => throw new InvalidOperationException("Contains not allowed on type of ArrayConfigOption.");
+    
+    /// <inheritdoc/>
+    public TypeCode GetTypeCode() => throw new InvalidOperationException("GetTypeCode not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public bool ToBoolean(IFormatProvider? provider) => throw new InvalidOperationException("ToBoolean not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public byte ToByte(IFormatProvider? provider) => throw new InvalidOperationException("ToByte not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public char ToChar(IFormatProvider? provider) => throw new InvalidOperationException("ToChar not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public DateTime ToDateTime(IFormatProvider? provider) => throw new InvalidOperationException("ToDateTime not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public decimal ToDecimal(IFormatProvider? provider) => throw new InvalidOperationException("ToDecimal not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public double ToDouble(IFormatProvider? provider) => throw new InvalidOperationException("ToDouble not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public short ToInt16(IFormatProvider? provider) => throw new InvalidOperationException("ToInt16 not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public int ToInt32(IFormatProvider? provider) => throw new InvalidOperationException("ToInt32 not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public long ToInt64(IFormatProvider? provider) => throw new InvalidOperationException("ToInt64 not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public sbyte ToSByte(IFormatProvider? provider) => throw new InvalidOperationException("ToSByte not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public float ToSingle(IFormatProvider? provider) => throw new InvalidOperationException("ToSingle not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public string ToString(IFormatProvider? provider) => throw new InvalidOperationException("ToString not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public object ToType(Type conversionType, IFormatProvider? provider) => throw new InvalidOperationException("ToType not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public ushort ToUInt16(IFormatProvider? provider) => throw new InvalidOperationException("ToUInt16 not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public uint ToUInt32(IFormatProvider? provider) => throw new InvalidOperationException("ToUInt32 not allowed on type of ArrayConfigOption.");
+
+    /// <inheritdoc/>
+    public ulong ToUInt64(IFormatProvider? provider) => throw new InvalidOperationException("ToUInt64 not allowed on type of ArrayConfigOption.");
 }

@@ -83,4 +83,55 @@ public class PrimitiveConfigOption : IBaseConfigOption {
     public bool Contains(string key) {
         throw new InvalidOperationException("Contains not allowed on type PrimitiveConfigOption");
     }
+
+    /// <inheritdoc/>
+    public TypeCode GetTypeCode() => TypeCode.String;
+
+    /// <inheritdoc/>
+    public bool ToBoolean(IFormatProvider? provider) => AsBool();
+
+    /// <inheritdoc/>
+    public byte ToByte(IFormatProvider? provider) => throw new InvalidOperationException("ToByte not supported on type PrimitiveConfigOption");
+
+    /// <inheritdoc/>
+    public char ToChar(IFormatProvider? provider) => throw new InvalidOperationException("ToChar not supported on type PrimitiveConfigOption");
+
+    /// <inheritdoc/>
+    public DateTime ToDateTime(IFormatProvider? provider) => throw new InvalidOperationException("ToDateTime not supported on type PrimitiveConfigOption");
+
+    /// <inheritdoc/>
+    public decimal ToDecimal(IFormatProvider? provider) => (decimal)AsDouble();
+
+    /// <inheritdoc/>
+    public double ToDouble(IFormatProvider? provider) => AsDouble();
+
+    /// <inheritdoc/>
+    public short ToInt16(IFormatProvider? provider) => (short)AsInt();
+
+    /// <inheritdoc/>
+    public int ToInt32(IFormatProvider? provider) => AsInt();
+
+    /// <inheritdoc/>
+    public long ToInt64(IFormatProvider? provider) => throw new InvalidOperationException("ToInt64 not supported on type PrimitiveConfigOption");
+
+    /// <inheritdoc/>
+    public sbyte ToSByte(IFormatProvider? provider) => throw new InvalidOperationException("ToSByte not supported on type PrimitiveConfigOption");
+
+    /// <inheritdoc/>
+    public float ToSingle(IFormatProvider? provider) => throw new InvalidOperationException("ToSingle not supported on type PrimitiveConfigOption");
+
+    /// <inheritdoc/>
+    public string ToString(IFormatProvider? provider) => AsString();
+
+    /// <inheritdoc/>
+    public object ToType(Type conversionType, IFormatProvider? provider) => throw new InvalidOperationException("ToType not supported on type PrimitiveConfigOption");
+
+    /// <inheritdoc/>
+    public ushort ToUInt16(IFormatProvider? provider) => (ushort)AsInt();
+
+    /// <inheritdoc/>
+    public uint ToUInt32(IFormatProvider? provider) => (uint)AsInt();
+
+    /// <inheritdoc/>
+    public ulong ToUInt64(IFormatProvider? provider) => (ulong)AsInt();
 }

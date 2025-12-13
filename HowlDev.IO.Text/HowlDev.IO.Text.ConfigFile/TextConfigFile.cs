@@ -48,6 +48,40 @@ public class TextConfigFile : IBaseConfigOption
     public bool TryGet(string key, out IBaseConfigOption value) => option.TryGet(key, out value);
     /// <summary/>
     public bool Contains(string key) => option.Contains(key);
+    /// <inheritdoc/>
+    public TypeCode GetTypeCode() => option.GetTypeCode();
+    /// <inheritdoc/>
+    public bool ToBoolean(IFormatProvider? provider) => option.ToBoolean(provider);
+    /// <inheritdoc/>
+    public byte ToByte(IFormatProvider? provider) => option.ToByte(provider);
+    /// <inheritdoc/>
+    public char ToChar(IFormatProvider? provider) => option.ToChar(provider);
+    /// <inheritdoc/>
+    public DateTime ToDateTime(IFormatProvider? provider) => option.ToDateTime(provider);
+    /// <inheritdoc/>
+    public decimal ToDecimal(IFormatProvider? provider) => option.ToDecimal(provider);
+    /// <inheritdoc/>
+    public double ToDouble(IFormatProvider? provider) => option.ToDouble(provider);
+    /// <inheritdoc/>
+    public short ToInt16(IFormatProvider? provider) => option.ToInt16(provider);
+    /// <inheritdoc/>
+    public int ToInt32(IFormatProvider? provider) => option.ToInt32(provider);
+    /// <inheritdoc/>
+    public long ToInt64(IFormatProvider? provider) => option.ToInt64(provider);
+    /// <inheritdoc/>
+    public sbyte ToSByte(IFormatProvider? provider) => option.ToSByte(provider);
+    /// <inheritdoc/>
+    public float ToSingle(IFormatProvider? provider) => option.ToSingle(provider);
+    /// <inheritdoc/>
+    public string ToString(IFormatProvider? provider) => option.ToString(provider);
+    /// <inheritdoc/>
+    public object ToType(Type conversionType, IFormatProvider? provider) => option.ToType(conversionType, provider);
+    /// <inheritdoc/>
+    public ushort ToUInt16(IFormatProvider? provider) => option.ToUInt16(provider);
+    /// <inheritdoc/>
+    public uint ToUInt32(IFormatProvider? provider) => option.ToUInt32(provider);
+    /// <inheritdoc/>
+    public ulong ToUInt64(IFormatProvider? provider) => option.ToUInt64(provider);
     #endregion
 
     private List<string> acceptedExtensions = [".txt", ".yml", ".yaml", ".json"];
