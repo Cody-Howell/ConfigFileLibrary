@@ -40,7 +40,6 @@ public class YAMLParser(string file) : TokenParser {
                     while (i < lines.Count && lines[i].data.StartsWith('-')) { i++; }
                     i--; // Don't really know what's up with this stuff.
                 } else {
-                    // Is dictionary
                     foreach (var item in ReadLinesAsDictionary(NextLineLessOrEqual(lines, i + 1))) yield return item;
                     i++;
                     while (i < lines.Count && lines[i].indentCount != currentIndent) { i++; }
@@ -61,7 +60,9 @@ public class YAMLParser(string file) : TokenParser {
             (int indentCount, string data) line = lines[i];
             if (currentIndent < line.indentCount) {
                 foreach (var item in ReadLinesAsList(NextLineLessOrEqual(lines, i))) yield return item;
+                i++;
                 while (i < lines.Count && lines[i].indentCount != currentIndent) { i++; }
+                i--;
             } else {
                 string lineData = line.data.Replace('-', ' ');
                 if (string.IsNullOrWhiteSpace(lineData)) {
