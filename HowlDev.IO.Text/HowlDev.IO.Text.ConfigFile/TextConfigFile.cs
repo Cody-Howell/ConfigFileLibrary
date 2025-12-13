@@ -178,7 +178,7 @@ public class TextConfigFile : IBaseConfigOption
                 if (canCreate)
                 {
                     var args = parameters
-                        .Select(p => ConvertToPrimitive(option[p.Name!], p.ParameterType))
+                        .Select(p => Convert.ChangeType(option[p.Name!], p.ParameterType))
                         .ToArray();
 
                     return (T)ctor.Invoke(args);
@@ -193,25 +193,6 @@ public class TextConfigFile : IBaseConfigOption
         throw new InvalidOperationException(
             $"Was not able to construct object for {typeof(T).Name}."
         );
-    }
-
-    private static object ConvertToPrimitive(IBaseConfigOption baseConfigOption, Type parameterType)
-    {
-        switch (parameterType.Name)
-        {
-            case "String":
-                return baseConfigOption.AsString();
-            case "Int32":
-                return baseConfigOption.AsInt();
-            case "Double":
-                return baseConfigOption.AsDouble();
-            case "Boolean":
-                return baseConfigOption.AsBool();
-            default:
-                throw new InvalidOperationException(
-                    $"Unsupported parameter type {parameterType.Name} in constructor."
-                );
-        }
     }
 
     private static IBaseConfigOption ParseFileAsOption(TokenParser func)
