@@ -1,7 +1,6 @@
 using HowlDev.IO.Text.Parsers.Enums;
 using HowlDev.IO.Text.Parsers.Helpers;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace HowlDev.IO.Text.Parsers;
 
@@ -10,10 +9,8 @@ public class YAMLParser(string file) : TokenParser {
         List<(int indentCount, string data)> lines = YAMLHelper.ReturnOrderedLines(file);
 
         if (lines[0].data.StartsWith('-')) {
-            // Read lines as list
             foreach (var item in ReadLinesAsList(lines)) yield return item;
         } else if (lines[0].data.Contains(':')) {
-            // Read lines as dictionary
             foreach (var item in ReadLinesAsDictionary(lines)) yield return item;
         } else {
             string line = "";
@@ -76,14 +73,14 @@ public class YAMLParser(string file) : TokenParser {
                     while (i < lines.Count && !lines[i].data.StartsWith('-')) { i++; }
                     i--; // Don't really know what's up with this stuff.
                 } else {
-                    yield return (TextToken.Primitive, lineData);
+                    yield return (TextToken.Primitive, lineData.Trim());
                 }
             }
         }
         yield return (TextToken.EndArray, "");
     }
 
-    private List<(int indentCount, string data)> NextLineLessOrEqual(List<(int indentCount, string data)> lines, int index, char startCharacter = '!') {
+    private static List<(int indentCount, string data)> NextLineLessOrEqual(List<(int indentCount, string data)> lines, int index, char startCharacter = '!') {
         List<(int, string)> outList = new List<(int, string)>();
         int indentCount = lines[index].indentCount;
         for (int i = index; i < lines.Count; i++) {
