@@ -21,7 +21,7 @@ public class ObjectConfigOption : IBaseConfigOption {
 
     /// <summary/>
     public ObjectConfigOption(Dictionary<string, IBaseConfigOption> obj, string parentPath = "", string myPath = "") {
-        this.obj = new(obj);
+        this.obj = new(obj, StringComparer.OrdinalIgnoreCase);
         resourcePath = parentPath;
         if (myPath.Length > 0) resourcePath += "[" + myPath + "]";
     }

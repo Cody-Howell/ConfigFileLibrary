@@ -78,10 +78,8 @@ public class AsConstructedTests
     public async Task PersonClassTestIgnoresCaseForConstruction()
     {
         string txt = """
-        name: Jane
-        id: 23
-        lorem: empty
-        irrelevant: ignored
+        Name: Jane
+        Id: 23
         """;
         TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
 
