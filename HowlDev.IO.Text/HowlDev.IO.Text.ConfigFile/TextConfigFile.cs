@@ -130,6 +130,27 @@ public class TextConfigFile : IBaseConfigOption {
     }
 
     /// <summary>
+    /// Defaults to attempt a constructor call first, and if that fails, uses a parameterless constructor and 
+    /// fills in any available properties. 
+    /// </summary>
+    /// <exception cref="InvalidOperationException"/>
+    public T As<T>() {
+        return Map<T>(new OptionMappingOptions() { UseProperties = true, UseConstructors = true });
+    }
+
+    /// <summary>
+    /// Defaults to attempt a constructor call first, and if that fails, uses a parameterless constructor and 
+    /// fills in any available properties. <br/>
+    /// Will strictly test for the number of values in the object and the constructor and/or number of writable 
+    /// properties in the passed in type. 
+    /// </summary>
+    /// <exception cref="InvalidOperationException"/>
+    /// <exception cref="StrictMappingException"/>
+    public T AsStrict<T>() {
+        return Map<T>(new OptionMappingOptions() { UseProperties = true, UseConstructors = true, StrictMatching = true });
+    }
+
+    /// <summary>
     /// Uses constructors to build an object. It sorts by descending length of parameters 
     /// and uses the first that the object satisfies all values.
     /// </summary>
