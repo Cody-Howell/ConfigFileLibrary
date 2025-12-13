@@ -1,4 +1,4 @@
-# Config File Library
+# HowlDev.IO.Text
 
 This is a hand-written text parser for TXT, YAML, and JSON files. It's designed for use in constructors
 and NOT as efficient runtime collections. I simply use internal lists and dictionaries to store the data.
@@ -11,7 +11,7 @@ arrays can have any type within them (string, int, double, and bool), and you ca
 at runtime. I've included a number of error messages to help you debug your files and ensure proper 
 type matching back to C# primitives. 
 
-See the wiki [here](https://wiki.codyhowell.dev/configfilelibrary) for more information.
+See the wiki [here](https://wiki.codyhowell.dev/io.text) for more information.
 
 ## Weak Typing
 
@@ -58,6 +58,14 @@ all together. When you need a specific file, request it from the proper method a
 
 There's a number of exceptions thrown to help with the process. 
 
+### TextConfigFile
+
+There are no more single-type classes. Everything goes through this parent class, `TextConfigFile`. They will automatically parse by the extension or throw an error if it is unrecognized. 
+
+To get text parsed without going through the file system, go through the `ReadTextAs` method. There are comments to guide you. 
+
+Below is the three file types I support and an example (mostly legacy from having 3 separate classes). 
+
 ### TXT
 
 This only supports single-order objects, though you can have arrays within them (which are split via commas). It's 
@@ -94,8 +102,9 @@ reader["info"].AsStringList(); // ["John Doe", "29", "6.1", "True"]
 
 ### YAML
 
-This supports any amount of nested objects and arrays, and (somewhat) follows the YAML spec. I spent some time 
-reading through it and as I am writing all the parsing logic, I've decided to stop where I'm at. 
+This supports any amount of nested objects and arrays, and (somewhat) follows the YAML spec. I spent some time reading through it and as I am writing all the parsing logic, I've decided to stop where I'm at. 
+
+If you want text parsed as a single primitive (such as a multiline string), use this file extension (or parse it using this type in `ReadTextAs`).  
 
 Tabs are supported, and I also currently support only 4 space indents. The below object will show what I 
 expect in terms of arrays of objects, and I think everything else is somewhat self-explanatory. If you'd 
@@ -174,8 +183,22 @@ reader["second"]["arrayOfObjects"][0]["something"].AsDouble(); // 1.2
 reader["second"]["arrayOfObjects"][1]["something2"].AsBool(); // false
 ```
 
+### As
+
+You can now export types from config files! It's similar to having the JSON serializer export to a type, but now, you can go through my class instead. There's a few options, such as going only through constructors or properties (not both) and filling in values that way, and there's also a Strict mode which should help if you are experiencing random empty values that you thought would be filled. 
+
+It isn't very well tested (though I have a number of unit tests for those methods), so I will spend some time in the "real world" trying it out. 
+
 
 ## Changelog
+
+2.0-beta (12/12/25)
+
+- Consolidated to TextConfigFile for all classes
+- Moved parsers to another library (to be read externally if it would be helpful)
+- Added the As__&lt;T&gt;() functions to strongly type. 
+
+This will be removed from beta probably in a few months. 
 
 1.0 (6/25/25)
 
