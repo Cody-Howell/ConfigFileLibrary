@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using HowlDev.IO.Text.ConfigFile.Enums;
 using HowlDev.IO.Text.ConfigFile.Interfaces;
 using HowlDev.IO.Text.ConfigFile.Primitives;
@@ -10,7 +11,8 @@ namespace HowlDev.IO.Text.ConfigFile;
 /// <summary>
 /// This config file takes in a file path and reads it as either a JSON, YAML, or TXT file.
 /// </summary>
-public class TextConfigFile : IBaseConfigOption {
+public class TextConfigFile : IBaseConfigOption
+{
     private IBaseConfigOption option;
 
     #region Option Exports
@@ -52,19 +54,23 @@ public class TextConfigFile : IBaseConfigOption {
 
     private List<string> acceptedExtensions = [".txt", ".yml", ".yaml", ".json"];
 
-    private TextConfigFile() {
+    private TextConfigFile()
+    {
         option = new PrimitiveConfigOption("");
     }
 
     /// <summary/>
-    public TextConfigFile(string filePath) {
+    public TextConfigFile(string filePath)
+    {
         string extension = Path.GetExtension(filePath);
-        if (!acceptedExtensions.Contains(extension)) {
+        if (!acceptedExtensions.Contains(extension))
+        {
             throw new FormatException($"Extension not recognized: {extension}");
         }
 
         string file = File.ReadAllText(filePath);
-        switch (extension) {
+        switch (extension)
+        {
             case ".txt":
                 option = ParseFileAsOption(new TXTParser(file));
                 return;
@@ -86,7 +92,8 @@ public class TextConfigFile : IBaseConfigOption {
     /// </summary>
     /// <param name="fileValue">JSON string</param>
     /// <param name="type">File type to parse</param>
-    public static TextConfigFile ReadTextAs(FileTypes type, string fileValue) {
+    public static TextConfigFile ReadTextAs(FileTypes type, string fileValue)
+    {
         TextConfigFile file = new TextConfigFile();
         switch (type)
         {
@@ -97,13 +104,65 @@ public class TextConfigFile : IBaseConfigOption {
         return file;
     }
 
-    private static IBaseConfigOption ParseFileAsOption(TokenParser func) {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public T AsConstructed<T>()
+    {
+        var ctors = typeof(T).GetConstructors();
+
+        foreach (var ctor in ctors.OrderByDescending(c => c.GetParameters().Length))
+        {
+            var parameters = ctor.GetParameters();
+            bool canCreate = parameters.All(p => Contains(p.Name!));
+
+            if (canCreate)
+            {
+                // Gather args from your object’s data store
+                var args = parameters
+                    .Select(p => ConvertToType(option[p.Name!], p.ParameterType))
+                    .ToArray();
+
+                return (T)ctor.Invoke(args);
+            }
+        }
+
+        throw new InvalidOperationException(
+            $"No suitable constructor found for {typeof(T).Name}."
+        );
+    }
+
+    private object ConvertToType(IBaseConfigOption baseConfigOption, Type parameterType)
+    {
+        switch (parameterType.Name)
+        {
+            case "String":
+                return baseConfigOption.AsString();
+            case "Int32":
+                return baseConfigOption.AsInt();
+            case "Double":
+                return baseConfigOption.AsDouble();
+            case "Boolean":
+                return baseConfigOption.AsBool();
+            default:
+                throw new InvalidOperationException(
+                    $"Unsupported parameter type {parameterType.Name} in constructor."
+                );
+        }
+    }
+
+    private static IBaseConfigOption ParseFileAsOption(TokenParser func)
+    {
         var stack = new Stack<Frame>();
         stack.Push(new Frame(FrameKind.Root));
 
-        foreach (var (type, value) in func) {
+        foreach (var (type, value) in func)
+        {
             var frame = stack.Peek();
-            switch (type) {
+            switch (type)
+            {
                 case TextToken.StartObject:
                     stack.Push(new Frame(FrameKind.Object));
                     break;
