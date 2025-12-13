@@ -140,19 +140,22 @@ public class TextConfigFile : IBaseConfigOption
     /// Uses constructors to build an object. It sorts by descending length of parameters 
     /// and uses the first that the object satisfies all values.
     /// </summary>
+    /// <exception cref="InvalidOperationException"/>
     public T AsConstructed<T>()
     {
         return Map<T>(new OptionMappingOptions() { UseConstructors = true });
     }
 
     /// <summary>
-    /// Uses constructors to build an object. It sorts by descending length of parameters 
-    /// and uses the first that the object satisfies all values. 
-    /// Set the StrictMatching property to enable strict constructor matching.
+    /// Uses constructors to build an object. 
+    /// It uses Strict matching, so it only checks constructors that have the same length 
+    /// as the object this contains.
     /// </summary>
-    public T AsConstructed<T>(OptionMappingOptions options)
+    /// <exception cref="InvalidOperationException"/>
+    /// <exception cref="StrictMappingException"/>
+    public T AsStrictConstructed<T>()
     {
-        return Map<T>(new OptionMappingOptions() { UseConstructors = true, StrictMatching = options.StrictMatching });
+        return Map<T>(new OptionMappingOptions() { UseConstructors = true, StrictMatching = true });
     }
 
     private T Map<T>(OptionMappingOptions options, IBaseConfigOption? option = null)
@@ -162,6 +165,10 @@ public class TextConfigFile : IBaseConfigOption
         if (options.UseConstructors)
         {
             var ctors = typeof(T).GetConstructors();
+
+            if (options.StrictMatching) {
+                ctors = [.. ctors.Where(p => p.GetParameters().Length == option.Count)];
+            }
 
             foreach (var ctor in ctors.OrderByDescending(c => c.GetParameters().Length))
             {
@@ -184,7 +191,7 @@ public class TextConfigFile : IBaseConfigOption
         }
 
         throw new InvalidOperationException(
-            $"Was not able to construct object for {typeof(T).Name}"
+            $"Was not able to construct object for {typeof(T).Name}."
         );
     }
 

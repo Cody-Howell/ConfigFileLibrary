@@ -154,9 +154,35 @@ public class AsConstructedStrictTests
         """;
         TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
 
-        PersonRecord p = reader.AsConstructed<PersonRecord>(new OptionMappingOptions() {StrictMatching = true});
+        PersonRecord p = reader.AsStrictConstructed<PersonRecord>();
         await Assert.That(p.name).IsEqualTo("Jane");
         await Assert.That(p.id).IsEqualTo(23);
+    }
+
+    [Test]
+    public async Task PersonRecordFailsWhenNotEnoughInformation()
+    {
+        string txt = """
+        name: Jane
+        """;
+        TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+        await Assert.That(() => reader.AsStrictConstructed<PersonRecord>())
+            .Throws<InvalidOperationException>();
+    }
+
+    [Test]
+    public async Task PersonRecordFailsWhenTooMuchInformation()
+    {
+        string txt = """
+        name: Jane
+        id: 23
+        lorem: breaks
+        """;
+        TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+        await Assert.That(() => reader.AsStrictConstructed<PersonRecord>())
+            .Throws<InvalidOperationException>();
     }
 
     [Test]
@@ -168,8 +194,34 @@ public class AsConstructedStrictTests
         """;
         TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
 
-        PersonClass p = reader.AsConstructed<PersonClass>(new OptionMappingOptions() {StrictMatching = true});
+        StrictPersonClass p = reader.AsStrictConstructed<StrictPersonClass>();
         await Assert.That(p.name).IsEqualTo("Jane");
         await Assert.That(p.id).IsEqualTo(23);
+    }
+
+    [Test]
+    public async Task PersonClassFailsWhenNotEnoughInformation()
+    {
+        string txt = """
+        name: Jane
+        """;
+        TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+        await Assert.That(() => reader.AsStrictConstructed<StrictPersonClass>())
+            .Throws<InvalidOperationException>();
+    }
+
+    [Test]
+    public async Task PersonClassFailsWhenTooMuchInformation()
+    {
+        string txt = """
+        name: Jane
+        id: 23
+        lorem: breaks
+        """;
+        TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
+
+        await Assert.That(() => reader.AsStrictConstructed<StrictPersonClass>())
+            .Throws<InvalidOperationException>();
     }
 }

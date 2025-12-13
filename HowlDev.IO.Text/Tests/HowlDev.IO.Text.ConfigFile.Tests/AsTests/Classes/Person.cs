@@ -27,3 +27,14 @@ public class PersonClass
         this.id = id;
     }
 }
+public class StrictPersonClass
+{
+    public string name {get;set;} = string.Empty;
+    public int id {get;set;}
+
+    public StrictPersonClass(string name, int id)
+    {
+        this.name = name;
+        this.id = id;
+    }
+}
