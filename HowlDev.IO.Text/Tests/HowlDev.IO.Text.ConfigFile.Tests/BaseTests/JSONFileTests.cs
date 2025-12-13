@@ -1,4 +1,5 @@
-﻿namespace HowlDev.IO.Text.ConfigFile.Tests.BaseTests;
+﻿using HowlDev.IO.Text.ConfigFile.Enums;
+namespace HowlDev.IO.Text.ConfigFile.Tests.BaseTests;
 
 public class FirstOrderJSONFileTests {
     [Test]
@@ -106,7 +107,7 @@ public class RealisticJSONFileTests {
 public class TextReadingJSONTests {
     [Test]
     public async Task ReadingTest1() {
-        TextConfigFile reader = TextConfigFile.ReadTextAsJSON("[ 14,  \"lorem string\",  true  ]");
+        TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.JSON, "[ 14,  \"lorem string\",  true  ]");
         await Assert.That(reader[0].AsInt()).IsEqualTo(14);
         await Assert.That(reader[1].AsString()).IsEqualTo("lorem string");
         await Assert.That(reader[2].AsBool()).IsEqualTo(true);

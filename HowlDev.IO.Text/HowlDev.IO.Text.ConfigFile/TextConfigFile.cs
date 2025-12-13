@@ -79,11 +79,21 @@ public class TextConfigFile : IBaseConfigOption {
         }
     }
 
-    /// <summary/>
+    /// <summary>
+    /// Get a configuration file without the file system through this method. <br/>
+    /// If you need an option that just reads all lines as a single primitive, use
+    /// the YAML type. Otherwise, pick the type that best fits the format.
+    /// </summary>
     /// <param name="fileValue">JSON string</param>
-    public static TextConfigFile ReadTextAsJSON(string fileValue) {
+    /// <param name="type">File type to parse</param>
+    public static TextConfigFile ReadTextAs(FileTypes type, string fileValue) {
         TextConfigFile file = new TextConfigFile();
-        file.option = ParseFileAsOption(new JSONParser(fileValue));
+        switch (type)
+        {
+            case FileTypes.TXT: file.option = ParseFileAsOption(new TXTParser(fileValue)); break;
+            case FileTypes.YAML: file.option = ParseFileAsOption(new YAMLParser(fileValue)); break;
+            case FileTypes.JSON: file.option = ParseFileAsOption(new JSONParser(fileValue)); break;
+        }
         return file;
     }
 
