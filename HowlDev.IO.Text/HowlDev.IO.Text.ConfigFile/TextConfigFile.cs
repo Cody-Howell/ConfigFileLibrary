@@ -185,8 +185,16 @@ public class TextConfigFile : IBaseConfigOption
                 }
             }
 
+            if (options.StrictMatching) {
+                throw new StrictMappingException(
+                    @$"No suitable constructor found for {typeof(T).Name}. Consider removing the StrictMatching flag. 
+                    Tried to find a constructor that matched the following keys: {String.Join(", ", option.Keys.ToArray())}."
+                );
+            }
+
             throw new InvalidOperationException(
-                $"No suitable constructor found for {typeof(T).Name}."
+                @$"No suitable constructor found for {typeof(T).Name}. 
+                Tried to find a constructor that matched the following keys: {String.Join(", ", option.Keys.ToArray())}."
             );
         }
 

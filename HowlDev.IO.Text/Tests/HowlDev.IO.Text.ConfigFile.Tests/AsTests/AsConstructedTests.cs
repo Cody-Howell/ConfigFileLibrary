@@ -124,7 +124,10 @@ public class AsConstructedTests
         """;
         TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
 
-        await Assert.That(() => reader.AsConstructed<PersonRecord>()).Throws<InvalidOperationException>();
+        await Assert.That(() => reader.AsConstructed<PersonRecord>())
+            .Throws<InvalidOperationException>()
+            .WithMessage(@"No suitable constructor found for PersonRecord. 
+                Tried to find a constructor that matched the following keys: name, idx.");
     }
 
     [Test]
@@ -168,7 +171,9 @@ public class AsConstructedStrictTests
         TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
 
         await Assert.That(() => reader.AsStrictConstructed<PersonRecord>())
-            .Throws<InvalidOperationException>();
+            .Throws<InvalidOperationException>()
+            .WithMessage(@"No suitable constructor found for PersonRecord. Consider removing the StrictMatching flag. 
+                    Tried to find a constructor that matched the following keys: name.");
     }
 
     [Test]
@@ -182,7 +187,9 @@ public class AsConstructedStrictTests
         TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
 
         await Assert.That(() => reader.AsStrictConstructed<PersonRecord>())
-            .Throws<InvalidOperationException>();
+            .Throws<StrictMappingException>()
+            .WithMessage(@"No suitable constructor found for PersonRecord. Consider removing the StrictMatching flag. 
+                    Tried to find a constructor that matched the following keys: name, id, lorem.");
     }
 
     [Test]
@@ -208,7 +215,9 @@ public class AsConstructedStrictTests
         TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
 
         await Assert.That(() => reader.AsStrictConstructed<StrictPersonClass>())
-            .Throws<InvalidOperationException>();
+            .Throws<InvalidOperationException>()
+            .WithMessage(@"No suitable constructor found for StrictPersonClass. Consider removing the StrictMatching flag. 
+                    Tried to find a constructor that matched the following keys: name.");
     }
 
     [Test]
@@ -222,6 +231,8 @@ public class AsConstructedStrictTests
         TextConfigFile reader = TextConfigFile.ReadTextAs(FileTypes.TXT, txt);
 
         await Assert.That(() => reader.AsStrictConstructed<StrictPersonClass>())
-            .Throws<InvalidOperationException>();
+            .Throws<StrictMappingException>()
+            .WithMessage(@"No suitable constructor found for StrictPersonClass. Consider removing the StrictMatching flag. 
+                    Tried to find a constructor that matched the following keys: name, id, lorem.");
     }
 }
