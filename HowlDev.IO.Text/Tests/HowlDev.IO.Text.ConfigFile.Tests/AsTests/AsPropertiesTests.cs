@@ -98,8 +98,10 @@ public class AsPropertiesStrictTests {
 
         await Assert.That(() => reader.AsStrictProperties<BookClass>())
             .Throws<StrictMappingException>()
-            .WithMessage(@$"Property count mismatch for BookClass. Consider removing the StrictMatching flag. 
-                        Property count of type: 3. Key count of object: 2.");
+            .WithMessage($"""
+                        Property count mismatch for BookClass. Consider removing the StrictMatching flag. 
+                        Property count of type: 3. Key count of object: 2.
+                        """);
     }
 
     [Test]
@@ -111,8 +113,10 @@ public class AsPropertiesStrictTests {
 
         await Assert.That(() => reader.AsStrictProperties<BookClass>())
             .Throws<StrictMappingException>()
-            .WithMessage(@$"Property count mismatch for BookClass. Consider removing the StrictMatching flag. 
-                        Property count of type: 3. Key count of object: 1.");
+            .WithMessage($"""
+                        Property count mismatch for BookClass. Consider removing the StrictMatching flag. 
+                        Property count of type: 3. Key count of object: 1.
+                        """);
     }
 
     [Test]
@@ -127,8 +131,10 @@ public class AsPropertiesStrictTests {
 
         await Assert.That(() => reader.AsStrictProperties<BookClass>())
             .Throws<StrictMappingException>()
-            .WithMessage(@$"Property count mismatch for BookClass. Consider removing the StrictMatching flag. 
-                        Property count of type: 3. Key count of object: 4.");
+            .WithMessage($"""
+                        Property count mismatch for BookClass. Consider removing the StrictMatching flag. 
+                        Property count of type: 3. Key count of object: 4.
+                        """);
     }
 
     [Test]
@@ -142,8 +148,10 @@ public class AsPropertiesStrictTests {
 
         await Assert.That(() => reader.AsStrictProperties<BookClass>())
             .Throws<StrictMappingException>()
-            .WithMessage(@"Property mismatch for BookClass. Consider removing the StrictMatching flag. 
-                        Could not find matching name for property: height.");
+            .WithMessage("""
+                        Property mismatch for BookClass. Consider removing the StrictMatching flag. 
+                        Could not find matching object key for property: height.
+                        """);
     }
 
     [Test]
@@ -157,7 +165,9 @@ public class AsPropertiesStrictTests {
 
         await Assert.That(() => reader.AsStrictProperties<BookClass>())
             .Throws<StrictMappingException>()
-            .WithMessage(@"Property mismatch for BookClass. Consider removing the StrictMatching flag. 
-                        Could not find matching name for property: name.");
+            .WithMessage("""
+                        Property mismatch for BookClass. Consider removing the StrictMatching flag. 
+                        Could not find matching object key for property: name.
+                        """);
     }
 }

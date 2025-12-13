@@ -116,8 +116,10 @@ public class AsConstructedTests {
 
         await Assert.That(() => reader.AsConstructed<PersonRecord>())
             .Throws<InvalidOperationException>()
-            .WithMessage(@"No suitable constructor found for PersonRecord. 
-                Tried to find a constructor that matched the following keys: name, idx.");
+            .WithMessage("""
+                No suitable constructor found for PersonRecord. 
+                Tried to find a constructor that matched the following keys: name, idx.
+                """);
     }
 
     [Test]
@@ -158,8 +160,10 @@ public class AsConstructedStrictTests {
 
         await Assert.That(() => reader.AsStrictConstructed<PersonRecord>())
             .Throws<InvalidOperationException>()
-            .WithMessage(@"No suitable constructor found for PersonRecord. Consider removing the StrictMatching flag. 
-                    Tried to find a constructor that matched the following keys: name.");
+            .WithMessage("""
+                    No suitable constructor found for PersonRecord. Consider removing the StrictMatching flag. 
+                    Tried to find a constructor that matched the following keys: name.
+                    """);
     }
 
     [Test]
@@ -173,8 +177,10 @@ public class AsConstructedStrictTests {
 
         await Assert.That(() => reader.AsStrictConstructed<PersonRecord>())
             .Throws<StrictMappingException>()
-            .WithMessage(@"No suitable constructor found for PersonRecord. Consider removing the StrictMatching flag. 
-                    Tried to find a constructor that matched the following keys: name, id, lorem.");
+            .WithMessage("""
+                    No suitable constructor found for PersonRecord. Consider removing the StrictMatching flag. 
+                    Tried to find a constructor that matched the following keys: name, id, lorem.
+                    """);
     }
 
     [Test]
@@ -199,8 +205,10 @@ public class AsConstructedStrictTests {
 
         await Assert.That(() => reader.AsStrictConstructed<StrictPersonClass>())
             .Throws<InvalidOperationException>()
-            .WithMessage(@"No suitable constructor found for StrictPersonClass. Consider removing the StrictMatching flag. 
-                    Tried to find a constructor that matched the following keys: name.");
+            .WithMessage("""
+                    No suitable constructor found for StrictPersonClass. Consider removing the StrictMatching flag. 
+                    Tried to find a constructor that matched the following keys: name.
+                    """);
     }
 
     [Test]
@@ -214,7 +222,9 @@ public class AsConstructedStrictTests {
 
         await Assert.That(() => reader.AsStrictConstructed<StrictPersonClass>())
             .Throws<StrictMappingException>()
-            .WithMessage(@"No suitable constructor found for StrictPersonClass. Consider removing the StrictMatching flag. 
-                    Tried to find a constructor that matched the following keys: name, id, lorem.");
+            .WithMessage("""
+                    No suitable constructor found for StrictPersonClass. Consider removing the StrictMatching flag. 
+                    Tried to find a constructor that matched the following keys: name, id, lorem.
+                    """);
     }
 }
