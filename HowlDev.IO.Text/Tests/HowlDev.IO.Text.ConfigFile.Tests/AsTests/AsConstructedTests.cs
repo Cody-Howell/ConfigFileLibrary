@@ -2,11 +2,9 @@ using HowlDev.IO.Text.ConfigFile.Enums;
 using HowlDev.IO.Text.ConfigFile.Tests.AsConstructedTests.Classes;
 namespace HowlDev.IO.Text.ConfigFile.Tests.AsConstructedTests;
 
-public class AsConstructedTests
-{
+public class AsConstructedTests {
     [Test]
-    public async Task PersonRecordTest()
-    {
+    public async Task PersonRecordTest() {
         string txt = """
         name: Jane
         id: 23
@@ -19,8 +17,7 @@ public class AsConstructedTests
     }
 
     [Test]
-    public async Task PersonClassTest()
-    {
+    public async Task PersonClassTest() {
         string txt = """
         name: Jane
         id: 23
@@ -33,8 +30,7 @@ public class AsConstructedTests
     }
 
     [Test]
-    public async Task PersonClassTestForMissingInformation1()
-    {
+    public async Task PersonClassTestForMissingInformation1() {
         string txt = """
         name: Jane
         """;
@@ -46,8 +42,7 @@ public class AsConstructedTests
     }
 
     [Test]
-    public async Task PersonClassTestForMissingInformation2()
-    {
+    public async Task PersonClassTestForMissingInformation2() {
         string txt = """
         id: 23
         """;
@@ -59,8 +54,7 @@ public class AsConstructedTests
     }
 
     [Test]
-    public async Task PersonClassTestForEmptyConstructor()
-    {
+    public async Task PersonClassTestForEmptyConstructor() {
         string txt = """
         idx: 23
         """;
@@ -72,8 +66,7 @@ public class AsConstructedTests
     }
 
     [Test]
-    public async Task PersonClassTestIgnoresExtraInformation()
-    {
+    public async Task PersonClassTestIgnoresExtraInformation() {
         string txt = """
         name: Jane
         id: 23
@@ -88,8 +81,7 @@ public class AsConstructedTests
     }
 
     [Test]
-    public async Task PersonClassTestIgnoresCaseForConstruction1()
-    {
+    public async Task PersonClassTestIgnoresCaseForConstruction1() {
         string txt = """
         Name: Jane
         Id: 23
@@ -102,8 +94,7 @@ public class AsConstructedTests
     }
 
     [Test]
-    public async Task PersonClassTestIgnoresCaseForConstruction2()
-    {
+    public async Task PersonClassTestIgnoresCaseForConstruction2() {
         string txt = """
         Name: Jane
         id: 23
@@ -116,8 +107,7 @@ public class AsConstructedTests
     }
 
     [Test]
-    public async Task PersonRecordThrowsErrorWithoutAllParameters()
-    {
+    public async Task PersonRecordThrowsErrorWithoutAllParameters() {
         string txt = """
         name: Jane
         idx: 23
@@ -131,8 +121,7 @@ public class AsConstructedTests
     }
 
     [Test]
-    public async Task PersonRecordIgnoresExtraValues()
-    {
+    public async Task PersonRecordIgnoresExtraValues() {
         string txt = """
         name: Jane
         id: 23
@@ -146,11 +135,9 @@ public class AsConstructedTests
         await Assert.That(p.id).IsEqualTo(23);
     }
 }
-public class AsConstructedStrictTests
-{
+public class AsConstructedStrictTests {
     [Test]
-    public async Task PersonRecordTest()
-    {
+    public async Task PersonRecordTest() {
         string txt = """
         name: Jane
         id: 23
@@ -163,8 +150,7 @@ public class AsConstructedStrictTests
     }
 
     [Test]
-    public async Task PersonRecordFailsWhenNotEnoughInformation()
-    {
+    public async Task PersonRecordFailsWhenNotEnoughInformation() {
         string txt = """
         name: Jane
         """;
@@ -177,8 +163,7 @@ public class AsConstructedStrictTests
     }
 
     [Test]
-    public async Task PersonRecordFailsWhenTooMuchInformation()
-    {
+    public async Task PersonRecordFailsWhenTooMuchInformation() {
         string txt = """
         name: Jane
         id: 23
@@ -193,8 +178,7 @@ public class AsConstructedStrictTests
     }
 
     [Test]
-    public async Task PersonClassTest()
-    {
+    public async Task PersonClassTest() {
         string txt = """
         name: Jane
         id: 23
@@ -207,8 +191,7 @@ public class AsConstructedStrictTests
     }
 
     [Test]
-    public async Task PersonClassFailsWhenNotEnoughInformation()
-    {
+    public async Task PersonClassFailsWhenNotEnoughInformation() {
         string txt = """
         name: Jane
         """;
@@ -221,8 +204,7 @@ public class AsConstructedStrictTests
     }
 
     [Test]
-    public async Task PersonClassFailsWhenTooMuchInformation()
-    {
+    public async Task PersonClassFailsWhenTooMuchInformation() {
         string txt = """
         name: Jane
         id: 23

@@ -33,7 +33,7 @@ public class FirstOrderObjectConfigTests {
 
     [Test]
     public async Task ObjectDoesntAllowCaseInsensitiveKeys() {
-        await Assert.That(() => 
+        await Assert.That(() =>
         new ObjectConfigOption(new Dictionary<string, IBaseConfigOption> {
             { "key1", new PrimitiveConfigOption("value1") },
             { "Key1", new PrimitiveConfigOption("value1") }

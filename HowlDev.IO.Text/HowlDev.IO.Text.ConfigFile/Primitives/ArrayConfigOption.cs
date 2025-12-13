@@ -86,7 +86,7 @@ public class ArrayConfigOption : IBaseConfigOption {
 
     /// <summary/>
     public bool Contains(string key) => throw new InvalidOperationException("Contains not allowed on type of ArrayConfigOption.");
-    
+
     /// <inheritdoc/>
     public TypeCode GetTypeCode() => throw new InvalidOperationException("GetTypeCode not allowed on type of ArrayConfigOption.");
 

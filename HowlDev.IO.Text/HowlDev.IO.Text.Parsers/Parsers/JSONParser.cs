@@ -41,8 +41,7 @@ public class JSONParser(string file) : TokenParser {
                 foreach (var item in ReadAsDictionary(file)) yield return item;
             } else {
                 string primitive = subString.Replace(']', ' ').Trim();
-                if (!string.IsNullOrEmpty(primitive))
-                {
+                if (!string.IsNullOrEmpty(primitive)) {
                     yield return (TextToken.Primitive, primitive);
                 }
                 if (nextBracket > nextComma) {

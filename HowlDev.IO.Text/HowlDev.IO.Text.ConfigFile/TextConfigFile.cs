@@ -9,8 +9,7 @@ namespace HowlDev.IO.Text.ConfigFile;
 /// <summary>
 /// This config file takes in a file path and reads it as either a JSON, YAML, or TXT file.
 /// </summary>
-public class TextConfigFile : IBaseConfigOption
-{
+public class TextConfigFile : IBaseConfigOption {
     private IBaseConfigOption option;
 
     #region Option Exports
@@ -86,23 +85,19 @@ public class TextConfigFile : IBaseConfigOption
 
     private List<string> acceptedExtensions = [".txt", ".yml", ".yaml", ".json"];
 
-    private TextConfigFile()
-    {
+    private TextConfigFile() {
         option = new PrimitiveConfigOption("");
     }
 
     /// <summary/>
-    public TextConfigFile(string filePath)
-    {
+    public TextConfigFile(string filePath) {
         string extension = Path.GetExtension(filePath);
-        if (!acceptedExtensions.Contains(extension))
-        {
+        if (!acceptedExtensions.Contains(extension)) {
             throw new FormatException($"Extension not recognized: {extension}");
         }
 
         string file = File.ReadAllText(filePath);
-        switch (extension)
-        {
+        switch (extension) {
             case ".txt":
                 option = ParseFileAsOption(new TXTParser(file));
                 return;
@@ -124,11 +119,9 @@ public class TextConfigFile : IBaseConfigOption
     /// </summary>
     /// <param name="fileValue">JSON string</param>
     /// <param name="type">File type to parse</param>
-    public static TextConfigFile ReadTextAs(FileTypes type, string fileValue)
-    {
+    public static TextConfigFile ReadTextAs(FileTypes type, string fileValue) {
         TextConfigFile file = new TextConfigFile();
-        switch (type)
-        {
+        switch (type) {
             case FileTypes.TXT: file.option = ParseFileAsOption(new TXTParser(fileValue)); break;
             case FileTypes.YAML: file.option = ParseFileAsOption(new YAMLParser(fileValue)); break;
             case FileTypes.JSON: file.option = ParseFileAsOption(new JSONParser(fileValue)); break;
@@ -141,8 +134,7 @@ public class TextConfigFile : IBaseConfigOption
     /// and uses the first that the object satisfies all values.
     /// </summary>
     /// <exception cref="InvalidOperationException"/>
-    public T AsConstructed<T>()
-    {
+    public T AsConstructed<T>() {
         return Map<T>(new OptionMappingOptions() { UseConstructors = true });
     }
 
@@ -153,30 +145,25 @@ public class TextConfigFile : IBaseConfigOption
     /// </summary>
     /// <exception cref="InvalidOperationException"/>
     /// <exception cref="StrictMappingException"/>
-    public T AsStrictConstructed<T>()
-    {
+    public T AsStrictConstructed<T>() {
         return Map<T>(new OptionMappingOptions() { UseConstructors = true, StrictMatching = true });
     }
 
-    private T Map<T>(OptionMappingOptions options, IBaseConfigOption? option = null)
-    {
+    private T Map<T>(OptionMappingOptions options, IBaseConfigOption? option = null) {
         option ??= this.option; // nice
 
-        if (options.UseConstructors)
-        {
+        if (options.UseConstructors) {
             var ctors = typeof(T).GetConstructors();
 
             if (options.StrictMatching) {
                 ctors = [.. ctors.Where(p => p.GetParameters().Length == option.Count)];
             }
 
-            foreach (var ctor in ctors.OrderByDescending(c => c.GetParameters().Length))
-            {
+            foreach (var ctor in ctors.OrderByDescending(c => c.GetParameters().Length)) {
                 var parameters = ctor.GetParameters();
                 bool canCreate = parameters.All(p => Contains(p.Name!));
 
-                if (canCreate)
-                {
+                if (canCreate) {
                     var args = parameters
                         .Select(p => Convert.ChangeType(option[p.Name!], p.ParameterType))
                         .ToArray();
@@ -203,16 +190,13 @@ public class TextConfigFile : IBaseConfigOption
         );
     }
 
-    private static IBaseConfigOption ParseFileAsOption(TokenParser func)
-    {
+    private static IBaseConfigOption ParseFileAsOption(TokenParser func) {
         var stack = new Stack<Frame>();
         stack.Push(new Frame(FrameKind.Root));
 
-        foreach (var (type, value) in func)
-        {
+        foreach (var (type, value) in func) {
             var frame = stack.Peek();
-            switch (type)
-            {
+            switch (type) {
                 case TextToken.StartObject:
                     stack.Push(new Frame(FrameKind.Object));
                     break;

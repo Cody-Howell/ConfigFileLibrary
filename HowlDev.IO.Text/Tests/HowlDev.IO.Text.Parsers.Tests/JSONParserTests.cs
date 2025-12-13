@@ -97,7 +97,7 @@ internal class JSONParserTests {
         await Assert.That(parsed[33].token).IsEqualTo(TextToken.EndArray);
         await Assert.That(parsed[34].token).IsEqualTo(TextToken.KeyValue);
         await Assert.That(parsed[35].token).IsEqualTo(TextToken.Primitive);
-        await Assert.That(parsed[35].value).IsEqualTo("hopefully"); 
+        await Assert.That(parsed[35].value).IsEqualTo("hopefully");
         await Assert.That(parsed[36].token).IsEqualTo(TextToken.EndObject);
         await Assert.That(parsed[37].token).IsEqualTo(TextToken.EndObject);
     }
